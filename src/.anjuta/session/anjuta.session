@@ -1,0 +1,30 @@
+[Anjuta]
+Geometry=1144x662+0+65
+
+[Project Manager]
+Expand=src
+
+[File Loader]
+Files=../../common/DataSource.cpp#476%%%../../common/BlockWithPos.cpp#199%%%../../common/BlockWithPos.h#170%%%../../common/PosBlock.cpp#62%%%../../common/PosBlock.h#131%%%../../Wrappers/PosType2Block.cpp#46%%%../../Wrappers/PosType2Block.h#161%%%../../Wrappers/Type2Block.cpp#1247%%%../../Wrappers/Type2Block.h#168%%%../../Wrappers/StringDataSource.cpp#184
+
+[Document Manager]
+bookmarks=<?xml version="1.0" encoding="UTF-8"?>\n<bookmarks/>\n
+
+[Execution]
+Program arguments=0 1 Query1S%%%0 1 2
+Program uri=../../cstoreqptest
+Run in terminal=2
+Working directories=../../../src
+
+[Build]
+Configuration list=1:Default:%%%1:Debug:Debug%%%1:Profiling:Profiling%%%1:Optimized:Optimized
+Selected Configuration=Default
+BuildArgs/Default=--enable-maintainer-mode
+BuildArgs/Debug=--enable-maintainer-mode 'CFLAGS=-g -O0' 'CXXFLAGS=-g -O0' 'JFLAGS=-g -O0' 'FFLAGS=-g -O0'
+BuildArgs/Profiling=--enable-maintainer-mode 'CFLAGS=-g -pg' 'CXXFLAGS=-g -pg' 'JFLAGS=-g -pg' 'FFLAGS=-g -pg'
+BuildArgs/Optimized=--enable-maintainer-mode 'CFLAGS=-O2' 'CXXFLAGS=-O2' 'JFLAGS=-O2' 'FFLAGS=-O2'
+
+[Debugger]
+Watch=\snumIntsPtr
+Breakpoint=1:../../Operators/BlockPrinter.cpp:95:0:
+Stop at beginning=2
