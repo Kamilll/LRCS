@@ -98,26 +98,15 @@ Berkeley DB Installation Test:
 
 DIRECTORY STRUCTURE:
 
-LRCS/data: contains all data files (that were received when you did make data)
-
-LRCS/Build: contains all build related files for project. Contains makefile.init which contains some of the important makefile flags used when compiling LRCS
-
-LRCS/RuntimeData: all BerkeleyDB data files will be put in this directory
-
-LRCS/src: root code source code directory. Also contains test.cnf and global.cnf which are described below.
-
-LRCS/src/UnitTests: contains the unit tests that can be run via test.cnf
-
-LRCS/src/AM: contains interface classes of LRCS with BerkeleyDB, currently also contains the catalog code
-
-LRCS/src/TM: contains code for the tuple mover
-
-LRCS/src/Util: contains some useful files for the project (e.g. an output logger, a stopwatch, and a HashMap)
-
-LRCS/src/Operators: contains all operator code for LRCS
-
-LRCS/src/Writers: contains all Block Writers for each compression type
-
-LRCS/src/Wrappers: contains datasources, blocks, encoders, and decoders for each compression type
-
-LRCS/src/common: contains some source code used by all parts of C-Store
+	LRCS/data: contains all data files (that were received when you did make data)
+	LRCS/Build: contains all build related files for project. Contains makefile.init which contains some of the important makefile flags used when compiling LRCS
+	LRCS/RuntimeData: all BerkeleyDB data files will be put in this directory
+	LRCS/src: root code source code directory. Also contains test.cnf and global.cnf which are described below.
+	LRCS/src/UnitTests: contains the unit tests that can be run via test.cnf
+	LRCS/src/AM: contains interface classes of LRCS with BerkeleyDB, currently also contains the catalog code
+	LRCS/src/TM: contains code for the tuple mover
+	LRCS/src/Util: contains some useful files for the project (e.g. an output logger, a stopwatch, and a HashMap)
+	LRCS/src/Operators: contains all operator code for LRCS
+	LRCS/src/Writers: contains all Block Writers for each compression type
+	LRCS/src/Wrappers: contains datasources, blocks, encoders, and decoders for each compression type
+	LRCS/src/common: contains some source code used by all parts of C-Store
