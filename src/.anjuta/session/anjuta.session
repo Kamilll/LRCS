@@ -1,0 +1,30 @@
+[Anjuta]
+Geometry=1144x662+103+106
+
+[Project Manager]
+Expand=src%%%src//Wrappers%%%src//Wrappers//Util
+
+[File Loader]
+Files=../../Wrappers/MultiBlock.h#80%%%../../Wrappers/MultiBlock.cpp#287%%%../../common/DataSource.cpp#187%%%../../common/DataSource.h#123%%%../../Wrappers/StringDataSource.h#42%%%../../Wrappers/Decoder/PosDecoder.cpp#83%%%../../Wrappers/Decoder/PosDecoder.h#1%%%../../Wrappers/Decoder/StringDecoder.cpp#102%%%../../AM/PagePlacer.h#32%%%../../AM/PagePlacer.cpp#231%%%../../UnitTests/Query1S.cpp#94%%%../../Wrappers/StringDataSource.cpp#44%%%../../common/Block.cpp#38%%%../../common/StringValPos.cpp#40%%%../../Operators/BlockPrinter.cpp#82%%%../../common/MultiPosFilterBlock.cpp#206%%%../../Wrappers/Util/StringReader.cpp#6%%%../../Wrappers/Decoder/StringDecoder.h#39%%%../../Wrappers/Util/StringReader.h#54%%%../../Wrappers/Decoder/Decoder.h#58%%%../../Wrappers/Decoder/Decoder.cpp#1%%%../../common/PosFilterBlock.cpp#334
+
+[Document Manager]
+bookmarks=<?xml version="1.0" encoding="UTF-8"?>\n<bookmarks/>\n
+
+[Execution]
+Program arguments=0 1 Query1S%%%0 1 2
+Program uri=../../cstoreqptest
+Run in terminal=2
+Working directories=../../../src
+
+[Build]
+Configuration list=1:Default:%%%1:Debug:Debug%%%1:Profiling:Profiling%%%1:Optimized:Optimized
+Selected Configuration=Default
+BuildArgs/Default=--enable-maintainer-mode
+BuildArgs/Debug=--enable-maintainer-mode 'CFLAGS=-g -O0' 'CXXFLAGS=-g -O0' 'JFLAGS=-g -O0' 'FFLAGS=-g -O0'
+BuildArgs/Profiling=--enable-maintainer-mode 'CFLAGS=-g -pg' 'CXXFLAGS=-g -pg' 'JFLAGS=-g -pg' 'FFLAGS=-g -pg'
+BuildArgs/Optimized=--enable-maintainer-mode 'CFLAGS=-O2' 'CXXFLAGS=-O2' 'JFLAGS=-O2' 'FFLAGS=-O2'
+
+[Debugger]
+Watch=\snextPos%%%currPos
+Breakpoint=1:../../Wrappers/MultiBlock.cpp:278:0:
+Stop at beginning=2
