@@ -80,7 +80,7 @@ Block* PosDecoder::getNextBlock() {
   int _numInts;
   byte* buffer;
   if (!(buffer=reader.getBuffer(_numInts))) return NULL;
-  outBlock->setBuffer(currPos, _numInts, buffer);
+  outBlock->setBuffer(currPos, _numInts, sizeof(int),buffer);
   currPos+=_numInts;
   return outBlock;
 	
@@ -90,7 +90,7 @@ Block* PosDecoder::getNextBlockSingle() {
   if (!initialized) return NULL; 
   int value;
   if (!(reader.readInt(value))) return NULL;
-  outBlock->setBuffer(currPos, 1, (byte*)&value);;
+  outBlock->setBuffer(currPos, 1, sizeof(int),(byte*)&value);;
   currPos++;
   return outBlock;
 	

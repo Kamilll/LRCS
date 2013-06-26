@@ -7,8 +7,6 @@ Wrappers/Encoder/StringEncoder.d Wrappers/Encoder/StringEncoder.o: ../src/Wrappe
  ../src/Wrappers/Encoder/../../common/UnimplementedException.h \
  ../src/Wrappers/Encoder/../../common/../Operators/Operator.h \
  ../src/Wrappers/Encoder/../../common/../Operators/../common/Constants.h \
- ../src/Wrappers/Encoder/../../common/../Operators/../common/SBlock.h \
- ../src/Wrappers/Encoder/../../common/../Operators/../common/SPair.h \
  ../src/Wrappers/Encoder/../../common/../Operators/../common/UnimplementedException.h \
  ../src/Wrappers/Encoder/../../common/../AM/AccessException.h \
  ../src/Wrappers/Encoder/../../common/../AM/../common/Exception.h \
@@ -46,10 +44,13 @@ Wrappers/Encoder/StringEncoder.d Wrappers/Encoder/StringEncoder.o: ../src/Wrappe
  ../src/Wrappers/Encoder/../../common/../Wrappers/BasicBlock.h \
  ../src/Wrappers/Encoder/../../common/../Wrappers/CodingException.h \
  ../src/Wrappers/Encoder/../../common/../Wrappers/../common/Exception.h \
- ../src/Wrappers/Encoder/../../common/Pair.h \
- ../src/Wrappers/Encoder/../../common/PosBlock.h \
- ../src/Wrappers/Encoder/../../common/PosPair.h \
  ../src/Wrappers/Encoder/../Util/StringWriter.h \
  ../src/Wrappers/Encoder/../Util/../../common/Util.h \
- ../src/Wrappers/Encoder/../SBasicBlock.h \
- ../src/Wrappers/Encoder/../CodingException.h
+ ../src/Wrappers/Encoder/../MultiBlock.h \
+ ../src/Wrappers/Encoder/../CodingException.h \
+ ../src/Wrappers/Encoder/../../common/MultiPosFilterBlock.h \
+ ../src/Wrappers/Encoder/../../common/PosFilterBlock.h \
+ ../src/Wrappers/Encoder/../../common/../Util/BitUtil.h \
+ ../src/Wrappers/Encoder/../../common/../Wrappers/RLETriple.h \
+ ../src/Wrappers/Encoder/../../common/../Wrappers/../common/ValPos.h \
+ ../src/Wrappers/Encoder/../Util/StringWriter.h

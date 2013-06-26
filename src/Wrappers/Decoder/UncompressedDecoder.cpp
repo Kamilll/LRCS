@@ -75,7 +75,7 @@ void UncompressedDecoder::setBuffer(byte* buffer_) {
       outPair=outBlock->vp;
     }
     else {
-      StringValPos* svp = new StringValPos(0,*(unsigned short*)ssizePtr);
+      StringValPos* svp = new StringValPos(*(unsigned short*)ssizePtr);
       outBlock=new MultiBlock(valSorted, true, true, svp);
       outPair=outBlock->vp;
       delete svp;
@@ -106,7 +106,7 @@ Block* UncompressedDecoder::getNextBlock() {
 	outPair->position=currPos;
 	outBlock->currPos=-1;*/
   //	outBlock->setValue(value, currPos);
-  outBlock->setBuffer(currPos, numVals, buffer);
+  outBlock->setBuffer(currPos, numVals,*ssizePtr,buffer);
   currPos+=numVals;
   // Log::writeToLog("UncompressedDecoder", 0, "getNext returning pair value", value);
   return outBlock;
@@ -117,7 +117,7 @@ Block* UncompressedDecoder::getNextBlockSingle() {
   if (!initialized) return NULL; 
   char* value = new char[*ssizePtr];
   if (!(reader.readString(value))) return NULL;
-  outBlock->setBuffer(currPos, 1, (byte*)&value);
+  outBlock->setBuffer(currPos, 1, *ssizePtr, (byte*)&value);
   currPos++;
   return outBlock;
 }

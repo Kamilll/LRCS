@@ -1,13 +1,11 @@
 CPP_SRCS += \
 ${addprefix $(ROOT)/Wrappers/Decoder/, \
-BitDecoder.cpp \
 Decoder.cpp \
-DeltaPosDecoder.cpp \
 IntDecoder.cpp \
 PosDecoder.cpp \
 StringDecoder.cpp \
-UncompressedDecoder.cpp \
 RLEDecoder.cpp \
+UncompressedDecoder.cpp\
 }
 
 # Each subdirectory must supply rules for building sources it contributes

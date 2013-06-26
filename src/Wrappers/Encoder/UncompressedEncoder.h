@@ -35,7 +35,6 @@
 
 #include "Encoder.h"
 #include "../Util/StringWriter.h"
-#include "../SBasicBlock.h"
 //#include "../../Writers/SBasicBlockWriter.h"
 // UncompressedEncoder encodes a page of strings
 // The first int indicates the number of strings encoded
@@ -54,7 +53,6 @@ protected:
 	int totalNum;
 	int totalLength;
 	StringWriter* writer;
-	//SBasicBlockWriter* blockWriter;
 	byte* buffer;
 	int* lengthPtr;
 	int* startPosPtr;

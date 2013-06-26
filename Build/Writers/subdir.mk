@@ -1,15 +1,7 @@
 CPP_SRCS += \
 ${addprefix $(ROOT)/Writers/, \
 BasicBlockWriter.cpp \
-DeltaPosValue.cpp \
-DeltaPosWriter.cpp \
-Type2Writer.cpp \
-DictWriter.cpp \
-DictByteWriter.cpp \
-DictMultiWriter.cpp \
 NullWriter.cpp \
-PosRLEWriter.cpp \
-PosDeltaWriter.cpp \
 RLEWriter.cpp \
 }
 

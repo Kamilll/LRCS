@@ -6,8 +6,6 @@ Operators/ColumnExtracter.d Operators/ColumnExtracter.o: ../src/Operators/Column
  ../src/Operators/../common/Exception.h \
  ../src/Operators/../common/UnimplementedException.h \
  ../src/Operators/../common/../Operators/Operator.h \
- ../src/Operators/../common/../Operators/../common/SBlock.h \
- ../src/Operators/../common/../Operators/../common/SPair.h \
  ../src/Operators/../common/../Operators/../common/UnimplementedException.h \
  ../src/Operators/../common/../AM/AccessException.h \
  ../src/Operators/../common/../AM/../common/Exception.h \
@@ -44,6 +42,4 @@ Operators/ColumnExtracter.d Operators/ColumnExtracter.o: ../src/Operators/Column
  ../src/Operators/../common/StringValPos.h \
  ../src/Operators/../common/../Wrappers/BasicBlock.h \
  ../src/Operators/../common/../Wrappers/CodingException.h \
- ../src/Operators/../common/../Wrappers/../common/Exception.h \
- ../src/Operators/../common/Pair.h ../src/Operators/../common/PosBlock.h \
- ../src/Operators/../common/PosPair.h
+ ../src/Operators/../common/../Wrappers/../common/Exception.h

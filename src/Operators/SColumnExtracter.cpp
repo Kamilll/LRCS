@@ -34,9 +34,7 @@ using namespace std;
 
 SColumnExtracter::SColumnExtracter(string fileName, int c_index, int stringSize_, bool FORCE_REBUILD)
 {
-  sbb = new SBasicBlock(true, true, true);
-  p = new SPair();
-  svp = new StringValPos(0, (unsigned short)stringSize_);
+  svp = new StringValPos((unsigned short)stringSize_);
   bb = new BasicBlock(true, true, true, svp);
   curPos = 1; 
   stringSize=stringSize_;
@@ -66,9 +64,7 @@ string SColumnExtracter::extractColumn( string fileName, int index, bool FORCE_R
 
 SColumnExtracter::~SColumnExtracter()
 {
-  delete sbb;
   delete infile;
-  delete p;
   delete[] curVal;
   delete svp;
   delete bb;
@@ -83,7 +79,6 @@ Block* SColumnExtracter::getNextValBlock(int colIndex_) {
   size = line.size();
   memset(svp->value+size, 0, stringSize-size);
   memcpy(svp->value, line.c_str(), size );
-  //p->value = curVal;
   svp->position = curPos;
   curPos++;
   bb->setValue(svp);
@@ -91,18 +86,6 @@ Block* SColumnExtracter::getNextValBlock(int colIndex_) {
 
 }
 	
-SBlock* SColumnExtracter::getNextSValBlock(int colIndex_) {
-  if (colIndex_!=0) return NULL;
-  string line;
-  if (!(getline (*infile, line)))
-    return NULL;
-  memcpy(curVal, line.c_str(), stringSize );
-  p->value = curVal;
-  p->position = curPos;
-  curPos++;
-  sbb->setValue(p);
-  return sbb;
-}
 	
 PosBlock* SColumnExtracter::getNextPosBlock(int colIndex_) {
 	if (colIndex_!=0) return NULL;

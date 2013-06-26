@@ -163,7 +163,7 @@ MultiPosFilterBlock* PosOperator::doAndCaculate(MultiPosFilterBlock* posBlock1_,
 	//if(cacuPosBlock)delete cacuPosBlock;
 	bool done = false;
 	bool firstTime = true;
-	cacuPosBlock = new MultiPosFilterBlock();
+	
     PosFilterBlock* tempPosFilterBlock;
 	PosFilterBlock* posFilterBlock1;
 	PosFilterBlock* posFilterBlock2;
@@ -173,6 +173,23 @@ MultiPosFilterBlock* PosOperator::doAndCaculate(MultiPosFilterBlock* posBlock1_,
 	unsigned int int2;
 	unsigned int tempInt;
 
+	if(posBlock1_->isCompleteSet()){
+		delete posBlock1_;
+		return posBlock2_;
+	}else if (posBlock2_->isCompleteSet()){
+		delete posBlock2_;
+		return posBlock1_;
+	}
+
+	if(posBlock1_->isNullSet()){
+		delete posBlock2_;
+		return posBlock1_;
+	}else if (posBlock2_->isNullSet()){
+		delete posBlock1_;
+		return posBlock2_;
+	}
+	
+	cacuPosBlock = new MultiPosFilterBlock();
 	posFilterBlock1 = posBlock1_->getFirstBlock();
 	posFilterBlock2 = posBlock2_->getFirstBlock();
 
@@ -246,7 +263,7 @@ MultiPosFilterBlock* PosOperator::doAndCaculate(MultiPosFilterBlock* posBlock1_,
 MultiPosFilterBlock* PosOperator::doOrCaculate(MultiPosFilterBlock* posBlock1_, MultiPosFilterBlock* posBlock2_){
 	//if(cacuPosBlock)delete cacuPosBlock;
 	bool done = false;
-	cacuPosBlock = new MultiPosFilterBlock();
+	
 	PosFilterBlock* tempPosFilterBlock;
 	PosFilterBlock* posFilterBlock1;
 	PosFilterBlock* posFilterBlock2;
@@ -256,6 +273,23 @@ MultiPosFilterBlock* PosOperator::doOrCaculate(MultiPosFilterBlock* posBlock1_, 
 	unsigned int int2;
 	unsigned int tempInt;
 
+	if(posBlock1_->isCompleteSet()){
+		delete posBlock2_;
+		return posBlock1_;
+	}else if (posBlock2_->isCompleteSet()){
+		delete posBlock1_;
+		return posBlock2_;
+	}
+
+	if(posBlock1_->isNullSet()){
+		delete posBlock1_;
+		return posBlock2_;
+	}else if (posBlock2_->isNullSet()){
+		delete posBlock2_;
+		return posBlock1_;
+	}
+	
+	cacuPosBlock = new MultiPosFilterBlock();
 	posFilterBlock1 = posBlock1_->getFirstBlock();
 	posFilterBlock2 = posBlock2_->getFirstBlock();
 

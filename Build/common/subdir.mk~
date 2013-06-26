@@ -1,16 +1,11 @@
 CPP_SRCS += \
 ${addprefix $(ROOT)/common/, \
 Block.cpp \
-BlockForceContig.cpp \
-BlockPosNonContig.cpp \
 BlockWithPos.cpp \
 DataSource.cpp \
-DatasourceFilters.cpp \
-DataSourcePosFilter.cpp \
 Exception.cpp \
-PosBlock.cpp \
-PosBlockArray.cpp \
-PosPair.cpp \
+PosFilterBlock.cpp \
+MultiPosFilterBlock.cpp \
 Predicate.cpp \
 UnexpectedException.cpp \
 UnimplementedException.cpp \
@@ -22,8 +17,6 @@ LongValPos.cpp \
 FloatValPos.cpp \
 DoubleValPos.cpp \
 StringValPos.cpp \
-SPair.cpp \
-SBlock.cpp \
 }
 #Pair.cpp \
 

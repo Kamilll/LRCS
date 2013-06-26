@@ -43,7 +43,7 @@ PosDecoder::PosDecoder(byte* buffer_, bool valSorted_) : Decoder(buffer_) {
 }
 PosDecoder::PosDecoder(PosDecoder& decoder_) : Decoder(decoder_) { 
 	reader=decoder_.reader;
-	numInts=decoder_.numInts;
+	numIntsPtr=decoder_.numIntsPtr;
 	startPos=decoder_.startPos;
 	outBlock=new MultiBlock(*decoder_.outBlock);
 	outPair=outBlock->vp;
@@ -57,24 +57,22 @@ PosDecoder::~PosDecoder()
 void PosDecoder::setBuffer(byte* buffer_) { 
 	Decoder::setBuffer(buffer_);
 	if (buffer==NULL) throw new CodingException("PosDecoder: Error, buffer passed in is NULL");
- 
-	numInts= sizeof(buffer_)/sizeof(int);
+	numIntsPtr= (unsigned int*)buffer_;
 	startPos=1;
 	currPos=1;
-
-	reader.setBuffer(buffer_, getPageLengthBits());
+	reader.setBuffer(buffer_+sizeof(int), getPageLengthBits());
 }
 
 int PosDecoder::getValueSize(){ 
 	return 8*sizeof(int);
 }
 int PosDecoder::getPageLengthBits() { 
-	return 8*numInts*sizeof(int);
+	return 8*(*numIntsPtr)*sizeof(int);
 }
 
 bool PosDecoder::hasNextBlock() { 
 	if (!initialized) return false;
-	return (currPos-startPos<numInts);
+	return (currPos-startPos<*numIntsPtr);
 }
 
 Block* PosDecoder::getNextBlock() {
@@ -109,7 +107,7 @@ Block* PosDecoder::peekNextBlock() {
 	
 }
 bool PosDecoder::skipToPos(unsigned int blockPos_) { 
-  if (blockPos_>=numInts) return false;//NULL;
+  if (blockPos_>=*numIntsPtr) return false;//NULL;
   if (reader.skipToIntPos(blockPos_)) {
     currPos=startPos+blockPos_;
     return true;
@@ -164,5 +162,5 @@ ValPos* PosDecoder::getEndVal() {
   return utilityPair;
 }
 unsigned int PosDecoder::getEndPos() { 
-	return startPos+numInts-1;
+	return startPos+(*numIntsPtr)-1;
 }

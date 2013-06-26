@@ -7,8 +7,6 @@ Wrappers/Encoder/IntEncoder.d Wrappers/Encoder/IntEncoder.o: ../src/Wrappers/Enc
  ../src/Wrappers/Encoder/../Encoder/../../common/UnimplementedException.h \
  ../src/Wrappers/Encoder/../Encoder/../../common/../Operators/Operator.h \
  ../src/Wrappers/Encoder/../Encoder/../../common/../Operators/../common/Constants.h \
- ../src/Wrappers/Encoder/../Encoder/../../common/../Operators/../common/SBlock.h \
- ../src/Wrappers/Encoder/../Encoder/../../common/../Operators/../common/SPair.h \
  ../src/Wrappers/Encoder/../Encoder/../../common/../Operators/../common/UnimplementedException.h \
  ../src/Wrappers/Encoder/../Encoder/../../common/../AM/AccessException.h \
  ../src/Wrappers/Encoder/../Encoder/../../common/../AM/../common/Exception.h \
@@ -46,7 +44,4 @@ Wrappers/Encoder/IntEncoder.d Wrappers/Encoder/IntEncoder.o: ../src/Wrappers/Enc
  ../src/Wrappers/Encoder/../Encoder/../../common/../Wrappers/BasicBlock.h \
  ../src/Wrappers/Encoder/../Encoder/../../common/../Wrappers/CodingException.h \
  ../src/Wrappers/Encoder/../Encoder/../../common/../Wrappers/../common/Exception.h \
- ../src/Wrappers/Encoder/../Encoder/../../common/Pair.h \
- ../src/Wrappers/Encoder/../Encoder/../../common/PosBlock.h \
- ../src/Wrappers/Encoder/../Encoder/../../common/PosPair.h \
  ../src/Wrappers/Encoder/../Util/IntWriter.h

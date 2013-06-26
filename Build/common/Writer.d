@@ -3,8 +3,6 @@ common/Writer.d common/Writer.o: ../src/common/Writer.cpp ../src/common/Writer.h
  ../src/common/UnexpectedException.h ../src/common/Exception.h \
  ../src/common/UnimplementedException.h \
  ../src/common/../Operators/Operator.h \
- ../src/common/../Operators/../common/SBlock.h \
- ../src/common/../Operators/../common/SPair.h \
  ../src/common/../Operators/../common/UnimplementedException.h \
  ../src/common/../AM/AccessException.h \
  ../src/common/../AM/../common/Exception.h ../src/common/../AM/AM.h \
@@ -31,5 +29,4 @@ common/Writer.d common/Writer.o: ../src/common/Writer.cpp ../src/common/Writer.h
  ../src/common/FloatValPos.h ../src/common/DoubleValPos.h \
  ../src/common/StringValPos.h ../src/common/../Wrappers/BasicBlock.h \
  ../src/common/../Wrappers/CodingException.h \
- ../src/common/../Wrappers/../common/Exception.h ../src/common/Pair.h \
- ../src/common/PosBlock.h ../src/common/PosPair.h
+ ../src/common/../Wrappers/../common/Exception.h

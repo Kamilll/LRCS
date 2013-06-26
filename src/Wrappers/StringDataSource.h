@@ -35,17 +35,11 @@
 #include "../common/DataSource.h"
 #include "Decoder/StringDecoder.h"
 #include "BasicBlock.h"
-#include "../common/BlockWithPos.h"
-#include "PosBasicBlock.h"
-#include "PosMultiBlock.h"
-#include "PosType2Block.h"
 #include "RLETriple.h"
 #include "../common/UnimplementedException.h"
-#include "PosRLEBlock.h"
 #include <vector>
 #include "../Util/StringUtil.h"
 #include "Decoder/PosDecoder.h"
-#include "MultiSBlock.h"
 #include "MultiBlock.h"
 
 class StringDataSource : public DataSource
@@ -60,19 +54,19 @@ public:
 	virtual ~StringDataSource();
 
 	// Gets the next position block (bitstring of positions) from the operator
-	virtual PosBlock* getNextPosBlock(int colIndex_);
+	//virtual PosBlock* getNextPosBlock(int colIndex_);
 
 	//printColumn: print to string instead of stdout
 	//used for testing purpose.
 	virtual void printColumn();
 
 protected:
-	bool getPosBlockDB(ROSAM* am_);
+	//bool getPosBlockDB(ROSAM* am_);
 	// checks the current out block to see if it matches pred and filters
 	bool init;	
 	
-	byte* currPage;
-	MultiSBlock* currBlock;
+	//byte* currPage;
+	//MultiSBlock* currBlock;
 
 	
 private:	

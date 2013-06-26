@@ -50,14 +50,6 @@ StringDataSource::~StringDataSource()
 	if (decoder!=NULL) delete decoder;
 	if (currBlock!=NULL) delete currBlock;
 	if (posOutBlock!=NULL) delete posOutBlock;
-	delete posOutTripleOnPred;
-	delete currBlockWP;
-
-	delete matchedPred;
-	delete matchedPredPos;
-	delete pba;
-	delete currRLETriple;
-	delete theRLEBlock;
 }
 
 

@@ -33,7 +33,6 @@
 
 #include "../common/Constants.h"
 #include "../common/Interfaces.h"
-#include "../Wrappers/SBasicBlock.h"
 #include "Operator.h"
 #include <string>
 #include <fstream>
@@ -52,9 +51,6 @@ class SColumnExtracter : public Operator {
 
   	// Gets the next value block from the operator 
   	Block* getNextValBlock(int colIndex_);	
-
-  	// Gets the next string value block from the operator 
-  	SBlock* getNextSValBlock(int colIndex_);	
   
 	// Gets the next position block (bitstring of positions) from the operator
 	PosBlock* getNextPosBlock(int colIndex_);
@@ -65,9 +61,7 @@ class SColumnExtracter : public Operator {
   	int curPos;
 	int stringSize;
   	char* curVal;
- 	SBasicBlock* sbb;
  	BasicBlock* bb;
-	SPair* p;
 	StringValPos* svp;
 	ifstream* infile;
   

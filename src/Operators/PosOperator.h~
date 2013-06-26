@@ -1,6 +1,6 @@
 #ifndef POSOPERATOR_H
 #define POSOPERATOR_H
-#include "./common/MultiPosFilterBlock.h"
+#include "../common/MultiPosFilterBlock.h"
 #include "assert.h"
 
 struct whereOp

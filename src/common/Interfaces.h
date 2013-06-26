@@ -58,9 +58,6 @@ class PosPair;
 #include "Block.h"
 #include "../Wrappers/BasicBlock.h"
 #include "Predicate.h"
-#include "Pair.h"
-#include "PosBlock.h"
-#include "PosPair.h"
 
 
 #endif //INTERFACES_H

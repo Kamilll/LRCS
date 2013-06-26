@@ -35,7 +35,7 @@
 
 #include "Encoder.h"
 #include "../Util/StringWriter.h"
-#include "../SBasicBlock.h"
+#include "../MultiBlock.h"
 //#include "../../Writers/SBasicBlockWriter.h"
 // StringEncoder encodes a page of strings
 // The first int indicates the number of strings encoded
@@ -49,19 +49,18 @@ public:
 	virtual ~StringEncoder();
 	virtual byte* getPage();
 	virtual void resetPair();
-	//virtual bool writeVal(char* val_, unsigned int pos_);
+
 protected:
 	int totalNum;
 	int totalLength;
 	StringWriter* writer;
-	//SBasicBlockWriter* blockWriter;
 	byte* buffer;
 	int* lengthPtr;
 	int* startPosPtr;
 	int* ssizePtr;
-	SBlock* currBlock;
+	MultiBlock* currBlock;
 	bool init;
-	SPair* currPair;
+	ValPos* currPair;
 };
 
 #endif //_STRINGENCODER_H_

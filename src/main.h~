@@ -33,7 +33,7 @@
 #include <sstream>
 #include "Util/Log.h"
 #include <assert.h>
-#include <UnitTests/Query1S.h>
+#include "UnitTests/Query1S.h"
 
 class main{
 public:

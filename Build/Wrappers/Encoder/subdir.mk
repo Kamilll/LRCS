@@ -1,6 +1,5 @@
 CPP_SRCS += \
 ${addprefix $(ROOT)/Wrappers/Encoder/, \
-DeltaEncoder.cpp \
 Encoder.cpp \
 IntEncoder.cpp \
 StringEncoder.cpp \

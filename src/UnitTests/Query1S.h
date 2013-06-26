@@ -41,6 +41,7 @@
 #include "../Wrappers/CodingException.h"
 #include "../Wrappers/Decoder/StringDecoder.h"
 #include "../Wrappers/StringDataSource.h"
+#include "../common/DataSource.h"
 #include "../Paths.h"
 #include "../Operators/BlockPrinter.h"
 #include "../AM/PagePlacer.h"

@@ -8,8 +8,6 @@ Wrappers/Decoder/RLEDecoder.d Wrappers/Decoder/RLEDecoder.o: ../src/Wrappers/Dec
  ../src/Wrappers/Decoder/../../common/Exception.h \
  ../src/Wrappers/Decoder/../../common/UnimplementedException.h \
  ../src/Wrappers/Decoder/../../common/../Operators/Operator.h \
- ../src/Wrappers/Decoder/../../common/../Operators/../common/SBlock.h \
- ../src/Wrappers/Decoder/../../common/../Operators/../common/SPair.h \
  ../src/Wrappers/Decoder/../../common/../Operators/../common/UnimplementedException.h \
  ../src/Wrappers/Decoder/../../common/../AM/AccessException.h \
  ../src/Wrappers/Decoder/../../common/../AM/../common/Exception.h \
@@ -47,16 +45,12 @@ Wrappers/Decoder/RLEDecoder.d Wrappers/Decoder/RLEDecoder.o: ../src/Wrappers/Dec
  ../src/Wrappers/Decoder/../../common/../Wrappers/BasicBlock.h \
  ../src/Wrappers/Decoder/../../common/../Wrappers/CodingException.h \
  ../src/Wrappers/Decoder/../../common/../Wrappers/../common/Exception.h \
- ../src/Wrappers/Decoder/../../common/Pair.h \
- ../src/Wrappers/Decoder/../../common/PosBlock.h \
- ../src/Wrappers/Decoder/../../common/PosPair.h \
- ../src/Wrappers/Decoder/../SBasicBlock.h \
- ../src/Wrappers/Decoder/../CodingException.h \
  ../src/Wrappers/Decoder/../CodingException.h \
  ../src/Wrappers/Decoder/../Util/BitReader.h \
  ../src/Wrappers/Decoder/../Util/../../common/Util.h \
  ../src/Wrappers/Decoder/../Util/../CodingException.h \
  ../src/Wrappers/Decoder/../RLETriple.h \
+ ../src/Wrappers/Decoder/../CodingException.h \
  ../src/Wrappers/Decoder/../../common/ValPos.h \
  ../src/Wrappers/Decoder/../RLEBlock.h \
  ../src/Wrappers/Decoder/../RLETriple.h

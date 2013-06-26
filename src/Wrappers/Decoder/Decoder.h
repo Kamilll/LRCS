@@ -36,7 +36,6 @@
 
 #include "../../common/Constants.h"
 #include "../../common/Interfaces.h"
-#include "../SBasicBlock.h"
 #include "../CodingException.h"
 
 #define HEADER_SIZE 8
@@ -56,7 +55,6 @@ public:
 	virtual bool hasNextBlock()=0;
 	virtual Block* getNextBlock()=0;
 	virtual Block* getNextBlockSingle() {return getNextBlock();}
-	virtual SBlock* getNextSBlockSingle() {return NULL;}
 	virtual bool skipToPos(unsigned int blockPos_)=0;
 	
 	virtual ValPos* getStartVal()=0;

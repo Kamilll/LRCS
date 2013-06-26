@@ -2,6 +2,7 @@
 #define POSOPERATOR_H
 #include "../common/MultiPosFilterBlock.h"
 #include "assert.h"
+#include <stdlib.h>
 
 struct whereOp
 {

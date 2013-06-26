@@ -32,10 +32,10 @@
 #define _PAGEPLACER_H_
 
 #include "PageWriter.h"
-#include "../Wrappers/Decoder/UncompressedDecoder.h"
 #include "../common/Interfaces.h"
 #include "../common/Util.h"
 #include "../Wrappers/Encoder/UncompressedEncoder.h"
+#include "../Wrappers/Decoder/UncompressedDecoder.h"
 #include <string>
 #include <map>
 #include <cstdlib>

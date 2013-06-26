@@ -53,7 +53,7 @@ class PosPair;
 #include "../AM/AM.h"
 #include "../AM/ROSAM.h"
 //#include "../AM/WOSAM.h"
-#include "../AM/ROSWOSSegment.h"
+//#include "../AM/ROSWOSSegment.h"
 #include "Writer.h"
 #include "Block.h"
 #include "../Wrappers/BasicBlock.h"

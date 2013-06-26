@@ -1,0 +1,117 @@
+#ifndef _TYPE2BLOCK_H_
+#define _TYPE2BLOCK_H_
+
+#include "../common/Block.h"
+#include "CodingException.h"
+#include "../common/UnimplementedException.h"
+#include "CompDataStructs/Type2Header.h"
+
+class Type2Block : public Block
+{
+public:
+	Type2Block(bool valSorted_);
+	//Type2Block(bool valSorted_, short type_);
+	Type2Block(const Type2Block&);
+	virtual ~Type2Block();
+	Block* clone(Block&);
+	virtual void init(bool valSorted_);
+	//virtual void setBuffer(int startpos_, int numValues_, byte* buffer_);
+	virtual void setBufferWithHeader(byte* buffer_);
+	virtual void setBuffer(DeltaPosBlock* dpb);
+	virtual void initEmptyBuffer(unsigned int startpos, ValPos* startVal);
+	//returns the new value of numValues if the position is added
+	virtual int testAddPos(unsigned int pos);
+	virtual void setCurrEndPos(unsigned int pos);
+	virtual void addPosition(unsigned int pos);
+	virtual void finishBufferEditing(unsigned int endpos);
+	//virtual void setValue(ValPos* val_);
+	virtual void resetBlock();
+	// Iterator access to block
+	virtual bool hasNext();
+	virtual bool hasNext(int value_);
+	virtual ValPos* getNext();
+	virtual ValPos* peekNext();
+	virtual ValPos* getValue();
+	virtual unsigned int getStartPosition();
+	virtual unsigned int getEndPosition();
+	virtual unsigned int getPosition();
+	virtual unsigned int getLastPosition();
+	virtual void cutOffEnd(int endPos_);
+	virtual void cutOffStart(int begPos_);
+	void printBits(int bits);
+	void setPosIndex(int v, int* pidx, int& currIndexInVal);
+	byte* getBuffer();
+	virtual int initBitStringIterator(unsigned int pos);
+	virtual int getNextBitString();
+	virtual void setValue(ValPos** valindex);
+
+
+	// Zero indexed, gets the pair at this pos_
+	virtual ValPos* getPairAtLoc(unsigned int loc_);
+	
+	//Like getPairAtLoc except set the regular pair variable rather than 
+	//the utilityPair variable so can be called by getNext(). 
+	virtual ValPos* getPairAtLocNotUtility(unsigned int loc_);
+	virtual int getCurrLoc();
+
+	// return size of block		
+	virtual int getSize();	
+	virtual int getNumValues();
+	virtual int getSizeInBits();
+	virtual ValPos* getStartPair();
+
+	// Stream properties
+	virtual bool isValueSorted();	
+	virtual bool isPosSorted();
+	
+	// Block properties
+	virtual bool isOneValue();
+	virtual bool isPosContiguous();
+	virtual bool isBlockValueSorted();	
+	virtual bool isBlockPosSorted();
+
+	int precomputed16_bitcount (unsigned int n);
+	void compute_bits_in_16bits ();
+	int iterated_bitcount (unsigned int n);
+	int howManyOnBits(byte* buf, int nv, int startind, int endind);
+	void setKeepSame();
+	byte* makeNewBuffer(int value_, int startPos_, int endPos_);
+	
+	ValPos* startPair;
+	int currPos;
+
+protected:
+	bool valSorted;
+	bool posContig;
+	bool posSorted;
+
+	bool pairNewed;
+	byte* bfrWithHeader;
+	byte* buffer;
+	int* bufferPtrAsIntArr;
+	byte* playBuffer;
+	int numValues;
+	int startVal;
+	int startPos;
+	int endPos;
+	unsigned int currEndPos;
+	int* currPosPtr;
+	int* posIndex;
+	int currIndexInVal;
+	char* bits_in_16bits;
+	bool keepSame;
+	bool peeked;
+	bool calculatedSize;
+	int numOnBits;
+	int realStartPos;
+	int lastPos;
+	
+	int GPALlastLoc;
+	int GPALlastIndex;
+
+	bool bitStringInitialized;
+	int* bitStringPtr;
+
+};
+
+#endif //_TYPE2BLOCK_H_

@@ -41,9 +41,9 @@
 #include "../Wrappers/CodingException.h"
 #include "../Wrappers/Decoder/StringDecoder.h"
 #include "../Wrappers/StringDataSource.h"
+#include "../Wrappers/DataSource.h"
 #include "../Paths.h"
 #include "../Operators/BlockPrinter.h"
-#include "../Operators/Count.h"
 #include "../AM/PagePlacer.h"
 #include <ctime>
 #include "UnitTest.h"

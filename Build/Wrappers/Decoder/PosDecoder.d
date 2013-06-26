@@ -6,8 +6,6 @@ Wrappers/Decoder/PosDecoder.d Wrappers/Decoder/PosDecoder.o: ../src/Wrappers/Dec
  ../src/Wrappers/Decoder/../../common/Exception.h \
  ../src/Wrappers/Decoder/../../common/UnimplementedException.h \
  ../src/Wrappers/Decoder/../../common/../Operators/Operator.h \
- ../src/Wrappers/Decoder/../../common/../Operators/../common/SBlock.h \
- ../src/Wrappers/Decoder/../../common/../Operators/../common/SPair.h \
  ../src/Wrappers/Decoder/../../common/../Operators/../common/UnimplementedException.h \
  ../src/Wrappers/Decoder/../../common/../AM/AccessException.h \
  ../src/Wrappers/Decoder/../../common/../AM/../common/Exception.h \
@@ -45,22 +43,16 @@ Wrappers/Decoder/PosDecoder.d Wrappers/Decoder/PosDecoder.o: ../src/Wrappers/Dec
  ../src/Wrappers/Decoder/../../common/../Wrappers/BasicBlock.h \
  ../src/Wrappers/Decoder/../../common/../Wrappers/CodingException.h \
  ../src/Wrappers/Decoder/../../common/../Wrappers/../common/Exception.h \
- ../src/Wrappers/Decoder/../../common/Pair.h \
- ../src/Wrappers/Decoder/../../common/PosBlock.h \
- ../src/Wrappers/Decoder/../../common/PosPair.h \
- ../src/Wrappers/Decoder/../SBasicBlock.h \
- ../src/Wrappers/Decoder/../CodingException.h \
  ../src/Wrappers/Decoder/../CodingException.h \
  ../src/Wrappers/Decoder/../Util/IntReader.h \
  ../src/Wrappers/Decoder/../Util/../../common/Util.h \
  ../src/Wrappers/Decoder/../Util/IntWriter.h \
  ../src/Wrappers/Decoder/../Util/ByteReader.h \
  ../src/Wrappers/Decoder/../MultiBlock.h \
- ../src/Wrappers/Decoder/../Type2Block.h \
- ../src/Wrappers/Decoder/../../common/UnimplementedException.h \
- ../src/Wrappers/Decoder/../DeltaPosBlock.h \
- ../src/Wrappers/Decoder/../Util/BitReader.h \
- ../src/Wrappers/Decoder/../Util/../CodingException.h \
- ../src/Wrappers/Decoder/../CompDataStructs/DeltaPosHeader.h \
- ../src/Wrappers/Decoder/../../common/UnexpectedException.h \
- ../src/Wrappers/Decoder/../CompDataStructs/Type2Header.h
+ ../src/Wrappers/Decoder/../CodingException.h \
+ ../src/Wrappers/Decoder/../../common/MultiPosFilterBlock.h \
+ ../src/Wrappers/Decoder/../../common/PosFilterBlock.h \
+ ../src/Wrappers/Decoder/../../common/../Util/BitUtil.h \
+ ../src/Wrappers/Decoder/../../common/../Wrappers/RLETriple.h \
+ ../src/Wrappers/Decoder/../../common/../Wrappers/../common/ValPos.h \
+ ../src/Wrappers/Decoder/../Util/StringWriter.h

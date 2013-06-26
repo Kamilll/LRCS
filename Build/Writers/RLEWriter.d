@@ -5,8 +5,6 @@ Writers/RLEWriter.d Writers/RLEWriter.o: ../src/Writers/RLEWriter.cpp ../src/Wri
  ../src/Writers/../common/UnimplementedException.h \
  ../src/Writers/../common/../Operators/Operator.h \
  ../src/Writers/../common/../Operators/../common/Constants.h \
- ../src/Writers/../common/../Operators/../common/SBlock.h \
- ../src/Writers/../common/../Operators/../common/SPair.h \
  ../src/Writers/../common/../Operators/../common/UnimplementedException.h \
  ../src/Writers/../common/../AM/AccessException.h \
  ../src/Writers/../common/../AM/../common/Exception.h \
@@ -41,8 +39,6 @@ Writers/RLEWriter.d Writers/RLEWriter.o: ../src/Writers/RLEWriter.cpp ../src/Wri
  ../src/Writers/../common/../Wrappers/BasicBlock.h \
  ../src/Writers/../common/../Wrappers/CodingException.h \
  ../src/Writers/../common/../Wrappers/../common/Exception.h \
- ../src/Writers/../common/Pair.h ../src/Writers/../common/PosBlock.h \
- ../src/Writers/../common/PosPair.h \
  ../src/Writers/../Wrappers/RLETriple.h \
  ../src/Writers/../Wrappers/CodingException.h \
  ../src/Writers/../Wrappers/../common/ValPos.h \

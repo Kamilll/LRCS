@@ -46,6 +46,8 @@ public:
 	virtual void setCurrStartPosition();//Set current start position after filtered a DB page
 	virtual unsigned int getCurrIntStartPos();//Get current Int's first bit's position
 	virtual unsigned int getCurrIntRealStartPos();//Get current Int's first '1'bit's position
+    virtual unsigned int getMaxNumPos();
+	virtual void setRangePos(unsigned int length);
 	virtual void caculateEndInt();
 	virtual void printBlock();
 

@@ -69,9 +69,9 @@ public:
 	virtual ValPos* getEndVal();
 	virtual unsigned int getEndPos();
 	
-	virtual unsigned int getSize() { return numInts; }
+	virtual unsigned int getSize() { return *numIntsPtr; }
 protected:
-	unsigned int numInts;
+	unsigned int* numIntsPtr;
 	unsigned int startPos;
 	IntReader reader;
 	MultiBlock* outBlock;

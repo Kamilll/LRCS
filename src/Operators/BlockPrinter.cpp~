@@ -30,7 +30,7 @@
  */
 #include "BlockPrinter.h"
 
-BlockPrinter::BlockPrinter(Operator* dataSrc_[], int numCols_[], int numSrcs_, char* fileName_)
+BlockPrinter::BlockPrinter(DataSource* dataSrc_[], int numCols_[], int numSrcs_, char* fileName_)
 {
 	using namespace std;
 	dataSrc=dataSrc_;
@@ -60,8 +60,9 @@ void BlockPrinter::printColumns(bool skip_output) {
   int totalNumCols=0;
   int currCol;
   bool success=true;
-  PosBlock* posB;
-  Operator* PosFilter;
+  //PosBlock* posB;
+  //Operator* PosFilter;
+  MultiPosFilterBlock* posFilter;
   
   for (int i=0; i<numSrcs; i++) {
     totalNumCols+=numCols[i];
@@ -70,11 +71,18 @@ void BlockPrinter::printColumns(bool skip_output) {
   for (int i=0;i<totalNumCols;i++)
     blks[i]=NULL;
 
+  PosOperator* posOperator = new PosOperator();
   for(int i=0; i<numSrcs; i++){
-	 posB = dataSrc[i]->getPosOnPred();
-	 PosFilter = addPosBitMap(posB); 
-     dataSrc[i]->setPositionFilter(PosFilter, 0);
+	 //zklee: Currently only consider AND situtation
+	 posOperator->addPosBlock(dataSrc[i]->getPosOnPred());
+	 posOperator->addWhereOp('&'); 
   }
+  posOperator->finishWhereOp();
+	
+  posFilter = posOperator->getPosFilter();
+  posFilter->getNumValuesR();
+  for(int i=0; i<numSrcs; i++)
+	dataSrc[i]->setPositionFilter(posFilter, 0);
   
   while (success) {
     currCol=0;
@@ -95,7 +103,7 @@ void BlockPrinter::printColumnsWithPosition() {
   }  
 }
 
- bool BlockPrinter::printEntryForColumn(Operator* dataSrc_, int currCol, int currTotalCol, bool isLast, bool skip_output) {
+ bool BlockPrinter::printEntryForColumn(DataSource* dataSrc_, int currCol, int currTotalCol, bool isLast, bool skip_output) {
   using namespace std;
   if (dataSrc_==NULL) return false;
   if ((blks[currTotalCol] == NULL) || (!blks[currTotalCol]->hasNext())) {
@@ -130,7 +138,7 @@ void BlockPrinter::printColumnsWithPosition() {
   return true;
 
  }
-void BlockPrinter::printColumnsForSrc(Operator* dataSrc_, int numCols_) {
+void BlockPrinter::printColumnsForSrc(DataSource* dataSrc_, int numCols_) {
   using namespace std;
   
   if (dataSrc_==NULL) return;
@@ -181,7 +189,7 @@ void BlockPrinter::printColumnsForSrc(Operator* dataSrc_, int numCols_) {
   //cout << " Found " << totalPrint << " Seconds for printing itself " << endl << " VS COUNT " << count << endl;
 }
 
-void BlockPrinter::printColumnsWithPositionForSrc(Operator* dataSrc_, int numCols_) {
+void BlockPrinter::printColumnsWithPositionForSrc(DataSource* dataSrc_, int numCols_) {
   using namespace std;
 
   if (dataSrc_==NULL) return;

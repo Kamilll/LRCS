@@ -180,6 +180,13 @@ bool PosFilterBlock::addPosition(unsigned int pos) {
 	}
 }
 
+void PosFilterBlock::setRangePos(unsigned int length){
+   assert(length<=getMaxNumPos());
+   memset(bufferPtrAsIntArr+sizeof(int), 1, length);
+   *endPos = *startPos + length - 1;
+   numValues = length;
+}
+
 bool PosFilterBlock::setCurrInt(unsigned int currInt_){
 	if(currInt_ > endInt)return false;
 	currInt = currInt_;
@@ -317,6 +324,9 @@ unsigned int PosFilterBlock::getNumValuesR() {
 	return *numValues;
 }
 
+unsigned int PosFilterBlock::getMaxNumPos(){
+   return maxInt*sizeof(int)*8;
+};
 
 unsigned int PosFilterBlock::getCurrPosition() {
    return currPos;

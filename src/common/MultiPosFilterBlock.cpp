@@ -10,6 +10,8 @@ void MultiPosFilterBlock::init( ){
 	currBlock = NULL;
 	currBlockNum = 0;
 	numValues = 0;
+	setCompleteSet(false);
+	setFilterFinished(false);
 }
 
 MultiPosFilterBlock::~MultiPosFilterBlock( ){
@@ -21,9 +23,13 @@ MultiPosFilterBlock::~MultiPosFilterBlock( ){
 MultiPosFilterBlock* MultiPosFilterBlock::clone( ){
 	//delete posFilterBlockVec;
 	MultiPosFilterBlock* newBlock = new MultiPosFilterBlock();
-	for(int i = 0; i<getNumBlocks();i++)
-		newBlock->addPosFilterBlock(posFilterBlockVec.at(i)->clone());	
-	newBlock->setCurrBlock(0);
+	if(isCompleteSet () || isNullSet()){
+		newBlock->setCompleteSet(true);
+	}else{
+		for(int i = 0; i<getNumBlocks();i++)
+			newBlock->addPosFilterBlock(posFilterBlockVec.at(i)->clone());	
+		newBlock->setCurrBlock(0);
+	}
 	return newBlock;
 }
 
@@ -207,6 +213,7 @@ bool MultiPosFilterBlock::setCurrBlock( int i ){
 	currBlockNum = i;
     currBlock->setCurrInt(1);
 	currBlock->setCurrPosition(currBlock->getStartPosition());
+	currBlock->setCurrStartPosition();
 	return true;
 }
 
@@ -226,8 +233,10 @@ unsigned int MultiPosFilterBlock::getNext( ){
 			_currBlockNum = currBlockNum + 1;
 			if(setCurrBlock(_currBlockNum))
 				retPos = currBlock->getCurrPosition();
-			else
-				retPos = 0;//run out of all blocks
+			else{
+				retPos = 0;
+				setCurrBlock(0);
+			}//run out of all blocks
 		}
 	}
 	return retPos;
@@ -303,4 +312,46 @@ void MultiPosFilterBlock::printBlocks( ) {
 		<<"#numValues:" <<numValues<<endl;
   for(int i = 0; i<getNumBlocks();i++)
 	posFilterBlockVec.at(i)->printBlock();
+}
+
+bool MultiPosFilterBlock::isNullSet( ){
+  return posFilterBlockVec.empty();
+}
+
+bool MultiPosFilterBlock::isCompleteSet( ){
+   return completeSet;
+}
+
+void MultiPosFilterBlock::setCompleteSet(bool flag_){
+  completeSet=flag_;
+}
+
+bool MultiPosFilterBlock::isFilterFinished( ){
+   return filterFinished;
+}
+
+void MultiPosFilterBlock::setFilterFinished(bool flag_){
+  filterFinished=flag_;
+}
+
+void MultiPosFilterBlock::setTriple(RLETriple* triple_){
+	assert(isNullSet());//Current multi position filter block must be empty!  
+	unsigned int maxReps = currBlock->getMaxNumPos();
+	unsigned int reps = triple_->reps;
+	unsigned int startPos = triple_->startPos;
+	int n = reps/maxReps;
+	int mod = reps%maxReps;
+	for (int i=0; i<n; i++){
+		currBlock = new PosFilterBlock();
+		currBlock->initEmptyBuffer(startPos);    
+		currBlock->setRangePos(maxReps);
+		startPos+=maxReps;
+		addPosFilterBlock(currBlock);
+	}
+	if(mod>0){
+		currBlock = new PosFilterBlock();
+		currBlock->initEmptyBuffer(startPos);    
+		currBlock->setRangePos(mod);
+		addPosFilterBlock(currBlock);
+	}
 }

@@ -1,22 +1,11 @@
 CPP_SRCS += \
 ${addprefix $(ROOT)/Wrappers/, \
 BasicBlock.cpp \
-MultiBlock.cpp \
-MultiSBlock.cpp \
-PosMultiBlock.cpp \
 BitBlock.cpp \
-Type2Block.cpp \
-PosType2Block.cpp \
 CodingException.cpp \
-DeltaPosBlock.cpp \
+MultiBlock.cpp \
 StringDataSource.cpp \
-PosBasicBlock.cpp \
-PosDeltaBlock.cpp \
-PosRLEBlock.cpp \
 RLEBlock.cpp \
-PosArrayBlock.cpp\
-SBasicBlock.cpp \
-SMultiBlock.cpp \
 }
 
 # Each subdirectory must supply rules for building sources it contributes

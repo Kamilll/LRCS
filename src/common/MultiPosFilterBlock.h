@@ -4,6 +4,7 @@
 #include <vector>
 #include "assert.h"
 #include "UnexpectedException.h"
+#include "../Wrappers/RLETriple.h"
 
 using namespace std;
 
@@ -36,6 +37,13 @@ public:
 	virtual unsigned int getNumValuesR();
 	virtual unsigned int getCurrStartPosition();//Get current start position after filtered a DB page
 	virtual void setCurrStartPosition();//Set current start position after filtered a DB page
+
+    virtual bool isFilterFinished();
+	virtual bool isNullSet();
+	virtual bool isCompleteSet();
+	virtual void setCompleteSet(bool flag_);
+    virtual void setFilterFinished(bool flag_);
+	virtual void setTriple(RLETriple* triple_);
 	virtual void printBlocks();
 
 protected:
@@ -46,6 +54,9 @@ protected:
     unsigned int currBlockNum;
 	unsigned int numValues;
 	PosFilterBlock* currBlock;
+
+	bool completeSet;
+	bool filterFinished;
 
 	virtual void init( );
 	virtual bool removePrecedingZero(PosFilterBlock* &posFilterBlock_);

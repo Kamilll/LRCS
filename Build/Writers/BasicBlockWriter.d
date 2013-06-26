@@ -6,8 +6,6 @@ Writers/BasicBlockWriter.d Writers/BasicBlockWriter.o: ../src/Writers/BasicBlock
  ../src/Writers/../common/Exception.h \
  ../src/Writers/../common/UnimplementedException.h \
  ../src/Writers/../common/../Operators/Operator.h \
- ../src/Writers/../common/../Operators/../common/SBlock.h \
- ../src/Writers/../common/../Operators/../common/SPair.h \
  ../src/Writers/../common/../Operators/../common/UnimplementedException.h \
  ../src/Writers/../common/../AM/AccessException.h \
  ../src/Writers/../common/../AM/../common/Exception.h \
@@ -42,6 +40,4 @@ Writers/BasicBlockWriter.d Writers/BasicBlockWriter.o: ../src/Writers/BasicBlock
  ../src/Writers/../common/../Wrappers/BasicBlock.h \
  ../src/Writers/../common/../Wrappers/CodingException.h \
  ../src/Writers/../common/../Wrappers/../common/Exception.h \
- ../src/Writers/../common/Pair.h ../src/Writers/../common/PosBlock.h \
- ../src/Writers/../common/PosPair.h \
  ../src/Writers/../Wrappers/BasicBlock.h
