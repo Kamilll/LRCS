@@ -54,6 +54,8 @@ Wrappers/Decoder/StringDecoder.d Wrappers/Decoder/StringDecoder.o: ../src/Wrappe
  ../src/Wrappers/Decoder/../../common/MultiPosFilterBlock.h \
  ../src/Wrappers/Decoder/../../common/PosFilterBlock.h \
  ../src/Wrappers/Decoder/../../common/../Util/BitUtil.h \
+ ../src/Wrappers/Decoder/../../common/../Operators/PosFilterCursor.h \
+ ../src/Wrappers/Decoder/../../common/../Operators/Cursor.h \
  ../src/Wrappers/Decoder/../../common/../Wrappers/RLETriple.h \
  ../src/Wrappers/Decoder/../../common/../Wrappers/../common/ValPos.h \
  ../src/Wrappers/Decoder/../Util/StringWriter.h

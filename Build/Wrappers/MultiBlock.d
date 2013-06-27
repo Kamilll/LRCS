@@ -14,6 +14,8 @@ Wrappers/MultiBlock.d Wrappers/MultiBlock.o: ../src/Wrappers/MultiBlock.cpp ../s
  ../src/Wrappers/../common/MultiPosFilterBlock.h \
  ../src/Wrappers/../common/PosFilterBlock.h \
  ../src/Wrappers/../common/../Util/BitUtil.h \
+ ../src/Wrappers/../common/../Operators/PosFilterCursor.h \
+ ../src/Wrappers/../common/../Operators/Cursor.h \
  ../src/Wrappers/../common/../Wrappers/RLETriple.h \
  ../src/Wrappers/../common/../Wrappers/CodingException.h \
  ../src/Wrappers/../common/../Wrappers/../common/ValPos.h \

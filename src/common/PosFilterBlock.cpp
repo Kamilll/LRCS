@@ -5,18 +5,25 @@ PosFilterBlock::PosFilterBlock()
 	init();
 }
 
-void PosFilterBlock::init(){
-    currInt = 0;
-    endInt = 0;
-	posIndex = new int[8*sizeof(int)+1];
-	assert(BLOCK_SIZE >= 5*sizeof(int));
-	maxInt = (BLOCK_SIZE - 4*sizeof(int))/sizeof(int);
+PosFilterBlock::PosFilterBlock(byte* buffer_)
+{
+	init();
+	setBuffer(buffer_);
 }
 
 
+void PosFilterBlock::init(){
+    currInt = 0;
+    endInt = 0;
+	isBufferSet = false;
+	posIndex = new int[8*sizeof(int)+1];
+	assert(BLOCK_SIZE >= 5*sizeof(int));
+	//MAX_INT = (BLOCK_SIZE - 4*sizeof(int))/sizeof(int);
+}
+
 PosFilterBlock::~PosFilterBlock( )
 {
-  if(bfrWithHeader)delete[] bfrWithHeader;
+  if(!isBufferSet && bfrWithHeader)delete[] bfrWithHeader;
   delete[] posIndex;
 }
 
@@ -48,8 +55,8 @@ PosFilterBlock*  PosFilterBlock::cutGetRightAtPos(unsigned int pos_){
   endInt = leftInt;
   leftMove(moveBit);
   caculateEndInt();
-  if(maxInt>endInt)//set all the left ints to zero
-    memset(buffer+(endInt+1)*sizeof(int),0,(maxInt-endInt)*sizeof(int));
+  if(MAX_INT>endInt)//set all the left ints to zero
+    memset(buffer+(endInt+1)*sizeof(int),0,(MAX_INT-endInt)*sizeof(int));
   setCurrInt(1);
   return this;
 }
@@ -62,8 +69,8 @@ PosFilterBlock*  PosFilterBlock::cutGetLeftAtPos(unsigned int pos_){
 	*numValues = 0; //number of values has no use in this case, so just ignore it.
 	caculateEndInt();
 	cutTail();
-	if(maxInt>endInt)//set all the left ints to zero
-		memset(buffer+(endInt+1)*sizeof(int),0,(maxInt-endInt)*sizeof(int));
+	if(MAX_INT>endInt)//set all the left ints to zero
+		memset(buffer+(endInt+1)*sizeof(int),0,(MAX_INT-endInt)*sizeof(int));
 	setCurrInt(1);
     return this;
 }
@@ -115,6 +122,31 @@ void PosFilterBlock::initEmptyBuffer(unsigned int startPos_) {
   bufferPtrAsIntArr[currInt] = bufferPtrAsIntArr[currInt] | (1 << 31);
 }
 
+void PosFilterBlock::setBuffer(byte* buffer_){
+	assert(buffer_ != NULL && sizeof(buffer_) == BLOCK_SIZE);
+	isBufferSet = true;
+	bfrWithHeader = buffer_;
+	startPos=(unsigned int*)bfrWithHeader;
+	endPos=(unsigned int*) (bfrWithHeader+sizeof(int));
+	numValues=(unsigned int*) (bfrWithHeader+2*sizeof(int));	
+
+	buffer = bfrWithHeader + (3*sizeof(int));
+	bufferPtrAsIntArr = (unsigned int*)buffer; 
+	currInt = 0;
+	currPos = 0;
+	currStartPos = 0;
+	caculateEndInt();
+}
+
+byte* PosFilterBlock::getBuffer() {
+   return bfrWithHeader;
+}
+
+PosFilterCursor* PosFilterBlock::getCursor() {
+   PosFilterCursor* newPFC = new PosFilterCursor(this);
+   return newPFC;
+}
+
 bool PosFilterBlock::addPosition(unsigned int pos) {
 	unsigned int movBit;
 	unsigned int valToOr;
@@ -124,7 +156,7 @@ bool PosFilterBlock::addPosition(unsigned int pos) {
 
 	if(pos < *startPos){
 		newEndInt = (*endPos-pos)/32+1;	  	
-		if (newEndInt > maxInt) return false;//Block is full
+		if (newEndInt > MAX_INT) return false;//Block is full
 		unsigned int avaBits = 31 - (*endPos - *startPos)%32;
 		int gap = newEndInt - endInt;
 		endInt = newEndInt;
@@ -169,7 +201,7 @@ bool PosFilterBlock::addPosition(unsigned int pos) {
 	}else if(pos == *endPos)return true;
 	else{
 		newEndInt = (pos-*startPos)/32+1;	  	
-		if (newEndInt > maxInt) return false;//Block is full
+		if (newEndInt > MAX_INT) return false;//Block is full
 		currInt = newEndInt;
 		endInt = newEndInt;
 		*endPos = pos;
@@ -184,7 +216,7 @@ void PosFilterBlock::setRangePos(unsigned int length){
    assert(length<=getMaxNumPos());
    memset(bufferPtrAsIntArr+sizeof(int), 1, length);
    *endPos = *startPos + length - 1;
-   numValues = length;
+   *numValues = length;
 }
 
 bool PosFilterBlock::setCurrInt(unsigned int currInt_){
@@ -233,9 +265,10 @@ unsigned int PosFilterBlock::getNext() {
 			}
 		}
 	}
-	else
+	else{
+		currInt = 0;
 		return 0;
-
+	}
 	return currPos;
 }
 
@@ -255,7 +288,7 @@ unsigned int PosFilterBlock::getCurrIntValue() {
 
 //Append a new int 
 bool PosFilterBlock::addInt(unsigned int Int_) {
-	if(currInt == maxInt)return false;//block is full
+	if(currInt == MAX_INT)return false;//block is full
 	
 	bufferPtrAsIntArr[++currInt] = Int_;
 	if(getIntEndPos(Int_) != 0)
@@ -325,17 +358,18 @@ unsigned int PosFilterBlock::getNumValuesR() {
 }
 
 unsigned int PosFilterBlock::getMaxNumPos(){
-   return maxInt*sizeof(int)*8;
+   return MAX_INT*sizeof(int)*8;
 };
 
 unsigned int PosFilterBlock::getCurrPosition() {
    return currPos;
 }
-bool PosFilterBlock::setCurrPosition(unsigned int pos_) {
+
+/*bool PosFilterBlock::setCurrPosition(unsigned int pos_) {
 	if(pos_ > *endPos)return false;
 	currPos = pos_;
 	return true;
-}
+}*/
 
 unsigned int PosFilterBlock::getCurrStartPosition() {
    return currStartPos;

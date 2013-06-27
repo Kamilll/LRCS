@@ -60,5 +60,8 @@ protected:
 
 	virtual void init( );
 	virtual bool removePrecedingZero(PosFilterBlock* &posFilterBlock_);
+	
+private:
+	bool isBufferSet;
 };
 #endif // POSFILTERBLOCK_H

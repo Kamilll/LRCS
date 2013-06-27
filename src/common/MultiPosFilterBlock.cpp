@@ -4,18 +4,34 @@ MultiPosFilterBlock::MultiPosFilterBlock( ){
    init();
 }
 
+MultiPosFilterBlock::MultiPosFilterBlock(MultiPosFilterBlock*  MPFB_){
+	init();
+	isBufferSet = true;
+	if (MPFB_->isCompleteSet())
+		setCompleteSet(true);
+	else if(!MPFB_->isNullSet()){
+		int i = 0;
+		while(MPFB_->setCurrBlock(i)){
+			addPosFilterBlock(MPFB_->getCurrBlock());	
+			i++;
+		}
+	}
+}
+
 void MultiPosFilterBlock::init( ){
 	startPos = 0;
 	endPos = 0;
 	currBlock = NULL;
 	currBlockNum = 0;
 	numValues = 0;
+	isBufferSet = false;
 	setCompleteSet(false);
-	setFilterFinished(false);
+	//setFilterFinished(false);
 }
 
 MultiPosFilterBlock::~MultiPosFilterBlock( ){
 	//delete posFilterBlockVec;
+	if(!isBufferSet)
 	for(int i = 0; i<getNumBlocks();i++)
         delete posFilterBlockVec.at(i);
 }
@@ -23,9 +39,9 @@ MultiPosFilterBlock::~MultiPosFilterBlock( ){
 MultiPosFilterBlock* MultiPosFilterBlock::clone( ){
 	//delete posFilterBlockVec;
 	MultiPosFilterBlock* newBlock = new MultiPosFilterBlock();
-	if(isCompleteSet () || isNullSet()){
+	if(isCompleteSet ()){
 		newBlock->setCompleteSet(true);
-	}else{
+	}else if (!isNullSet()){
 		for(int i = 0; i<getNumBlocks();i++)
 			newBlock->addPosFilterBlock(posFilterBlockVec.at(i)->clone());	
 		newBlock->setCurrBlock(0);
@@ -212,13 +228,12 @@ bool MultiPosFilterBlock::setCurrBlock( int i ){
 	}
 	currBlockNum = i;
     currBlock->setCurrInt(1);
-	currBlock->setCurrPosition(currBlock->getStartPosition());
-	currBlock->setCurrStartPosition();
 	return true;
 }
 
 bool MultiPosFilterBlock::hasNext( ){
-	return (currBlock->getCurrPosition() < endPos);
+	if(currBlock == NULL)return true;//Start from beginning
+	else return (currBlock->getCurrPosition() < endPos);
 }
 
 unsigned int MultiPosFilterBlock::getNext( ){
@@ -226,13 +241,13 @@ unsigned int MultiPosFilterBlock::getNext( ){
 	unsigned int _currBlockNum;
 	if (currBlock == NULL){
 		if(setCurrBlock( 0 ) )
-			retPos = currBlock->getCurrPosition(); //Start from beginning
+			retPos = currBlock->getNext(); //Start from beginning
 	}else{
 		retPos = currBlock->getNext();
 		if (retPos == 0){ //if run out of a block,iterate to next block
 			_currBlockNum = currBlockNum + 1;
 			if(setCurrBlock(_currBlockNum))
-				retPos = currBlock->getCurrPosition();
+				retPos = currBlock->getNext();
 			else{
 				retPos = 0;
 				setCurrBlock(0);

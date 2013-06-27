@@ -38,6 +38,8 @@ common/DataSource.d common/DataSource.o: ../src/common/DataSource.cpp ../src/com
  ../src/common/../Wrappers/../common/PosFilterBlock.h \
  ../src/common/../Wrappers/../common/../Util/BitUtil.h \
  ../src/common/../Wrappers/../common/UnexpectedException.h \
+ ../src/common/../Wrappers/../common/../Operators/PosFilterCursor.h \
+ ../src/common/../Wrappers/../common/../Operators/Cursor.h \
  ../src/common/../Wrappers/../common/../Wrappers/RLETriple.h \
  ../src/common/../Wrappers/../common/../Wrappers/CodingException.h \
  ../src/common/../Wrappers/../common/../Wrappers/../common/ValPos.h \

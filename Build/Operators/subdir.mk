@@ -2,6 +2,9 @@ CPP_SRCS += \
 ${addprefix $(ROOT)/Operators/, \
 BlockPrinter.cpp \
 ColumnExtracter.cpp \
+Cursor.cpp\
+PosFilterCursor.cpp\
+MultiPosFilterCursor.cpp\
 SColumnExtracter.cpp \
 PosOperator.cpp \
 Operator.cpp \

@@ -57,6 +57,8 @@ main.d ./main.o: ../src/main.cpp ../src/main.h ../src/Util/Log.h \
  ../src/UnitTests/../Wrappers/Encoder/../../common/PosFilterBlock.h \
  ../src/UnitTests/../Wrappers/Encoder/../../common/../Util/BitUtil.h \
  ../src/UnitTests/../Wrappers/Encoder/../../common/UnexpectedException.h \
+ ../src/UnitTests/../Wrappers/Encoder/../../common/../Operators/PosFilterCursor.h \
+ ../src/UnitTests/../Wrappers/Encoder/../../common/../Operators/Cursor.h \
  ../src/UnitTests/../Wrappers/Encoder/../../common/../Wrappers/RLETriple.h \
  ../src/UnitTests/../Wrappers/Encoder/../../common/../Wrappers/CodingException.h \
  ../src/UnitTests/../Wrappers/Encoder/../../common/../Wrappers/../common/ValPos.h \

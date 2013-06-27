@@ -50,6 +50,8 @@ AM/PagePlacer.d AM/PagePlacer.o: ../src/AM/PagePlacer.cpp ../src/AM/PagePlacer.h
  ../src/AM/../Wrappers/Decoder/../../common/PosFilterBlock.h \
  ../src/AM/../Wrappers/Decoder/../../common/../Util/BitUtil.h \
  ../src/AM/../Wrappers/Decoder/../../common/UnexpectedException.h \
+ ../src/AM/../Wrappers/Decoder/../../common/../Operators/PosFilterCursor.h \
+ ../src/AM/../Wrappers/Decoder/../../common/../Operators/Cursor.h \
  ../src/AM/../Wrappers/Decoder/../../common/../Wrappers/RLETriple.h \
  ../src/AM/../Wrappers/Decoder/../../common/../Wrappers/CodingException.h \
  ../src/AM/../Wrappers/Decoder/../../common/../Wrappers/../common/ValPos.h \

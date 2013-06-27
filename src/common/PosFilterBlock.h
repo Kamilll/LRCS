@@ -4,11 +4,9 @@
 #include <cstring>
 #include <iostream>
 #include "../Util/BitUtil.h"
+#include "Constants.h"
 #include "UnexpectedException.h"
-
-typedef unsigned char byte;
-static const int BLOCK_SIZE=6000;
-//static const int BLOCK_SIZE=28;
+#include "../Operators/PosFilterCursor.h"
 
 class PosFilterBlock
 {
@@ -16,6 +14,7 @@ public:
 	void *parentMultiBlock;
 
 	PosFilterBlock( );
+	PosFilterBlock(byte* buffer_);
 	virtual ~PosFilterBlock();
 
 	virtual void init( );
@@ -41,7 +40,7 @@ public:
 	virtual unsigned int getNumValues();
 	virtual unsigned int getNumValuesR(); //Re-caculate number of values;
 	virtual unsigned int getCurrPosition();
-	virtual bool setCurrPosition(unsigned int pos_);
+	//virtual bool setCurrPosition(unsigned int pos_);
 	virtual unsigned int getCurrStartPosition();//Get current start position after filtered a DB page
 	virtual void setCurrStartPosition();//Set current start position after filtered a DB page
 	virtual unsigned int getCurrIntStartPos();//Get current Int's first bit's position
@@ -49,6 +48,8 @@ public:
     virtual unsigned int getMaxNumPos();
 	virtual void setRangePos(unsigned int length);
 	virtual void caculateEndInt();
+	virtual byte* getBuffer();
+	virtual PosFilterCursor* getCursor();
 	virtual void printBlock();
 
 protected:
@@ -65,12 +66,16 @@ protected:
     unsigned int currInt;
 	unsigned int currPos;
     unsigned int endInt;
-	unsigned int maxInt;
+	//unsigned int maxInt;
 
-    virtual void setPosIndex(int v, int* pidx, int& currIndexInVal);
+    virtual void setPosIndex(int v, int* pidx, int& currIndexInVal);	
 	static unsigned int getIntStartPos( unsigned int Int_ );
 	static unsigned int getIntEndPos( unsigned int Int_ );
 	virtual void printBits(int bits);
+	
+private:
+	bool isBufferSet;
+	virtual void setBuffer(byte* buffer_);
 
 };
 #endif // POSFILTERBLOCK_H
