@@ -6,8 +6,6 @@ Operators/PosOperator.d Operators/PosOperator.o: ../src/Operators/PosOperator.cp
  ../src/Operators/../common/Constants.h \
  ../src/Operators/../common/UnexpectedException.h \
  ../src/Operators/../common/Exception.h \
- ../src/Operators/../common/../Operators/PosFilterCursor.h \
- ../src/Operators/../common/../Operators/Cursor.h \
  ../src/Operators/../common/../Wrappers/RLETriple.h \
  ../src/Operators/../common/../Wrappers/CodingException.h \
  ../src/Operators/../common/../Wrappers/../common/Exception.h \

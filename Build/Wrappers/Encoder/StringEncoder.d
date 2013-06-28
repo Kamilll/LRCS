@@ -51,8 +51,6 @@ Wrappers/Encoder/StringEncoder.d Wrappers/Encoder/StringEncoder.o: ../src/Wrappe
  ../src/Wrappers/Encoder/../../common/MultiPosFilterBlock.h \
  ../src/Wrappers/Encoder/../../common/PosFilterBlock.h \
  ../src/Wrappers/Encoder/../../common/../Util/BitUtil.h \
- ../src/Wrappers/Encoder/../../common/../Operators/PosFilterCursor.h \
- ../src/Wrappers/Encoder/../../common/../Operators/Cursor.h \
  ../src/Wrappers/Encoder/../../common/../Wrappers/RLETriple.h \
  ../src/Wrappers/Encoder/../../common/../Wrappers/../common/ValPos.h \
  ../src/Wrappers/Encoder/../Util/StringWriter.h

@@ -6,7 +6,7 @@
 #include "../Util/BitUtil.h"
 #include "Constants.h"
 #include "UnexpectedException.h"
-#include "../Operators/PosFilterCursor.h"
+class PosFilterCursor;
 
 class PosFilterBlock
 {
@@ -49,7 +49,7 @@ public:
 	virtual void setRangePos(unsigned int length);
 	virtual void caculateEndInt();
 	virtual byte* getBuffer();
-	virtual PosFilterCursor* getCursor();
+  	virtual PosFilterCursor* getCursor();
 	virtual void printBlock();
 
 protected:

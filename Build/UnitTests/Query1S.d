@@ -57,8 +57,6 @@ UnitTests/Query1S.d UnitTests/Query1S.o: ../src/UnitTests/Query1S.cpp ../src/Uni
  ../src/UnitTests/../Wrappers/Encoder/../../common/PosFilterBlock.h \
  ../src/UnitTests/../Wrappers/Encoder/../../common/../Util/BitUtil.h \
  ../src/UnitTests/../Wrappers/Encoder/../../common/UnexpectedException.h \
- ../src/UnitTests/../Wrappers/Encoder/../../common/../Operators/PosFilterCursor.h \
- ../src/UnitTests/../Wrappers/Encoder/../../common/../Operators/Cursor.h \
  ../src/UnitTests/../Wrappers/Encoder/../../common/../Wrappers/RLETriple.h \
  ../src/UnitTests/../Wrappers/Encoder/../../common/../Wrappers/CodingException.h \
  ../src/UnitTests/../Wrappers/Encoder/../../common/../Wrappers/../common/ValPos.h \

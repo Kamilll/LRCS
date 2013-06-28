@@ -8,4 +8,8 @@ common/MultiPosFilterBlock.d common/MultiPosFilterBlock.o: ../src/common/MultiPo
  ../src/common/../Wrappers/../common/ValPos.h \
  ../src/common/../Wrappers/../common/UnexpectedException.h \
  ../src/common/../Wrappers/../common/UnimplementedException.h \
- ../src/common/../Wrappers/../common/Exception.h
+ ../src/common/../Wrappers/../common/Exception.h \
+ ../src/common/../Operators/MultiPosFilterCursor.h \
+ ../src/common/../Operators/Cursor.h \
+ ../src/common/../Operators/../common/MultiPosFilterBlock.h \
+ ../src/common/../Operators/PosFilterCursor.h

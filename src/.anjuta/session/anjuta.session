@@ -1,11 +1,12 @@
 [Anjuta]
-Geometry=1144x662+103+106
+Maximized=1
+Geometry=1280x741+0+27
 
 [Project Manager]
-Expand=src%%%src//Wrappers%%%src//Wrappers//Util
+Expand=src%%%src//Operators%%%src//common
 
 [File Loader]
-Files=../../Wrappers/MultiBlock.h#80%%%../../Wrappers/MultiBlock.cpp#287%%%../../common/DataSource.cpp#187%%%../../common/DataSource.h#123%%%../../Wrappers/StringDataSource.h#42%%%../../Wrappers/Decoder/PosDecoder.cpp#83%%%../../Wrappers/Decoder/PosDecoder.h#1%%%../../Wrappers/Decoder/StringDecoder.cpp#102%%%../../AM/PagePlacer.h#32%%%../../AM/PagePlacer.cpp#231%%%../../UnitTests/Query1S.cpp#94%%%../../Wrappers/StringDataSource.cpp#44%%%../../common/Block.cpp#38%%%../../common/StringValPos.cpp#40%%%../../Operators/BlockPrinter.cpp#82%%%../../common/MultiPosFilterBlock.cpp#206%%%../../Wrappers/Util/StringReader.cpp#6%%%../../Wrappers/Decoder/StringDecoder.h#39%%%../../Wrappers/Util/StringReader.h#54%%%../../Wrappers/Decoder/Decoder.h#58%%%../../Wrappers/Decoder/Decoder.cpp#1%%%../../common/PosFilterBlock.cpp#334
+Files=../../Wrappers/MultiBlock.h#80%%%../../Wrappers/MultiBlock.cpp#287%%%../../common/DataSource.cpp#187%%%../../common/DataSource.h#123%%%../../Wrappers/StringDataSource.h#42%%%../../Wrappers/Decoder/PosDecoder.cpp#83%%%../../Wrappers/Decoder/PosDecoder.h#1%%%../../Wrappers/Decoder/StringDecoder.cpp#102%%%../../AM/PagePlacer.h#32%%%../../AM/PagePlacer.cpp#231%%%../../UnitTests/Query1S.cpp#94%%%../../Wrappers/StringDataSource.cpp#44%%%../../common/Block.cpp#38%%%../../common/StringValPos.cpp#40%%%../../Operators/BlockPrinter.cpp#82%%%../../common/MultiPosFilterBlock.cpp#305%%%../../Wrappers/Util/StringReader.cpp#6%%%../../Wrappers/Decoder/StringDecoder.h#39%%%../../Wrappers/Util/StringReader.h#54%%%../../Wrappers/Decoder/Decoder.cpp#1%%%../../common/PosFilterBlock.cpp#3%%%../../common/MultiPosFilterBlock.h#9%%%../../Operators/MultiPosFilterCursor.cpp#10%%%../../Operators/MultiPosFilterCursor.h#4%%%../../common/PosFilterBlock.h#9%%%../../Operators/PosFilterCursor.cpp#3%%%../../Operators/PosFilterCursor.h#7
 
 [Document Manager]
 bookmarks=<?xml version="1.0" encoding="UTF-8"?>\n<bookmarks/>\n

@@ -1,21 +1,8 @@
 #include "MultiPosFilterBlock.h"
+#include "../Operators/MultiPosFilterCursor.h"
 
 MultiPosFilterBlock::MultiPosFilterBlock( ){
    init();
-}
-
-MultiPosFilterBlock::MultiPosFilterBlock(MultiPosFilterBlock*  MPFB_){
-	init();
-	isBufferSet = true;
-	if (MPFB_->isCompleteSet())
-		setCompleteSet(true);
-	else if(!MPFB_->isNullSet()){
-		int i = 0;
-		while(MPFB_->setCurrBlock(i)){
-			addPosFilterBlock(MPFB_->getCurrBlock());	
-			i++;
-		}
-	}
 }
 
 void MultiPosFilterBlock::init( ){
@@ -311,6 +298,11 @@ unsigned int MultiPosFilterBlock::getNumBlocks() {
 unsigned int MultiPosFilterBlock::getCurrStartPosition() {
    assert(currBlock != NULL);
    return currBlock->getCurrStartPosition();
+}
+
+MultiPosFilterCursor* MultiPosFilterBlock::getCursor(){
+   //MultiPosFilterCursor* newCursor = new MultiPosFilterCursor(this);
+   //return newCursor;
 }
 
 void MultiPosFilterBlock::setCurrStartPosition( ) {

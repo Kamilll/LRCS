@@ -50,8 +50,6 @@ Wrappers/StringDataSource.d Wrappers/StringDataSource.o: ../src/Wrappers/StringD
  ../src/Wrappers/../common/../Wrappers/../common/PosFilterBlock.h \
  ../src/Wrappers/../common/../Wrappers/../common/../Util/BitUtil.h \
  ../src/Wrappers/../common/../Wrappers/../common/UnexpectedException.h \
- ../src/Wrappers/../common/../Wrappers/../common/../Operators/PosFilterCursor.h \
- ../src/Wrappers/../common/../Wrappers/../common/../Operators/Cursor.h \
  ../src/Wrappers/../common/../Wrappers/../common/../Wrappers/RLETriple.h \
  ../src/Wrappers/../common/../Wrappers/../common/../Wrappers/CodingException.h \
  ../src/Wrappers/../common/../Wrappers/../common/../Wrappers/../common/ValPos.h \

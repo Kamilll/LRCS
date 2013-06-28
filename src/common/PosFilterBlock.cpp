@@ -1,4 +1,6 @@
 #include "PosFilterBlock.h"
+#include "../Operators/PosFilterCursor.h"
+
 using namespace std;
 PosFilterBlock::PosFilterBlock()
 {
@@ -63,7 +65,7 @@ PosFilterBlock*  PosFilterBlock::cutGetRightAtPos(unsigned int pos_){
 
 PosFilterBlock*  PosFilterBlock::cutGetLeftAtPos(unsigned int pos_){
 	if ((int)(pos_ - *startPos) <= 0)return NULL;
-	int cutInt = (pos_-*startPos)/(8*sizeof(int));
+	unsigned int cutInt = (pos_-*startPos)/(8*sizeof(int));
 	if(cutInt>endInt)return NULL;
 	*endPos = pos_;
 	*numValues = 0; //number of values has no use in this case, so just ignore it.
@@ -139,7 +141,7 @@ void PosFilterBlock::setBuffer(byte* buffer_){
 }
 
 byte* PosFilterBlock::getBuffer() {
-   return bfrWithHeader;
+   return buffer;
 }
 
 PosFilterCursor* PosFilterBlock::getCursor() {
@@ -266,6 +268,7 @@ unsigned int PosFilterBlock::getNext() {
 		}
 	}
 	else{
+		currPos = 0;
 		currInt = 0;
 		return 0;
 	}
