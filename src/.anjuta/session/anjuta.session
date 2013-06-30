@@ -1,15 +1,14 @@
 [Anjuta]
-Maximized=1
-Geometry=1280x741+0+27
-
-[Project Manager]
-Expand=src%%%src//Operators%%%src//common
+Geometry=790x585+354+422
 
 [File Loader]
-Files=../../Wrappers/MultiBlock.h#80%%%../../Wrappers/MultiBlock.cpp#287%%%../../common/DataSource.cpp#187%%%../../common/DataSource.h#123%%%../../Wrappers/StringDataSource.h#42%%%../../Wrappers/Decoder/PosDecoder.cpp#83%%%../../Wrappers/Decoder/PosDecoder.h#1%%%../../Wrappers/Decoder/StringDecoder.cpp#102%%%../../AM/PagePlacer.h#32%%%../../AM/PagePlacer.cpp#231%%%../../UnitTests/Query1S.cpp#94%%%../../Wrappers/StringDataSource.cpp#44%%%../../common/Block.cpp#38%%%../../common/StringValPos.cpp#40%%%../../Operators/BlockPrinter.cpp#82%%%../../common/MultiPosFilterBlock.cpp#305%%%../../Wrappers/Util/StringReader.cpp#6%%%../../Wrappers/Decoder/StringDecoder.h#39%%%../../Wrappers/Util/StringReader.h#54%%%../../Wrappers/Decoder/Decoder.cpp#1%%%../../common/PosFilterBlock.cpp#3%%%../../common/MultiPosFilterBlock.h#9%%%../../Operators/MultiPosFilterCursor.cpp#40%%%../../Operators/MultiPosFilterCursor.h#7%%%../../common/PosFilterBlock.h#9%%%../../Operators/PosFilterCursor.cpp#42%%%../../Operators/PosFilterCursor.h#10
+Files=../../Wrappers/MultiBlock.h#80%%%../../Wrappers/MultiBlock.cpp#120%%%../../common/DataSource.cpp#378%%%../../common/DataSource.h#114%%%../../Wrappers/StringDataSource.h#42%%%../../Wrappers/Decoder/PosDecoder.cpp#83%%%../../Wrappers/Decoder/PosDecoder.h#1%%%../../Wrappers/Decoder/StringDecoder.cpp#92%%%../../AM/PagePlacer.h#32%%%../../AM/PagePlacer.cpp#231%%%../../UnitTests/Query1S.cpp#79%%%../../Wrappers/StringDataSource.cpp#44%%%../../common/Block.cpp#38%%%../../common/StringValPos.cpp#40%%%../../Operators/BlockPrinter.cpp#115%%%../../common/MultiPosFilterBlock.cpp#283%%%../../Wrappers/Util/StringReader.cpp#6%%%../../Wrappers/Decoder/StringDecoder.h#39%%%../../Wrappers/Util/StringReader.h#54%%%../../Wrappers/Decoder/Decoder.cpp#27%%%../../common/PosFilterBlock.cpp#3%%%../../common/MultiPosFilterBlock.h#9%%%../../Operators/MultiPosFilterCursor.cpp#40%%%../../Operators/MultiPosFilterCursor.h#7%%%../../common/PosFilterBlock.h#9%%%../../Operators/PosFilterCursor.cpp#42%%%../../Operators/PosFilterCursor.h#14%%%../../AM/ROSAM.cpp#973%%%../../Wrappers/Util/IntReader.cpp#60%%%../../Operators/PosOperator.cpp#90
 
 [Document Manager]
 bookmarks=<?xml version="1.0" encoding="UTF-8"?>\n<bookmarks/>\n
+
+[Project Manager]
+Expand=src%%%src//Operators%%%src//common
 
 [Execution]
 Program arguments=0 1 Query1S%%%0 1 2
@@ -26,6 +25,6 @@ BuildArgs/Profiling=--enable-maintainer-mode 'CFLAGS=-g -pg' 'CXXFLAGS=-g -pg' '
 BuildArgs/Optimized=--enable-maintainer-mode 'CFLAGS=-O2' 'CXXFLAGS=-O2' 'JFLAGS=-O2' 'FFLAGS=-O2'
 
 [Debugger]
-Watch=\snextPos%%%currPos
-Breakpoint=1:../../Wrappers/MultiBlock.cpp:278:0:
+Watch=\sposFilter
+Breakpoint=1:../../common/DataSource.cpp:329:0:
 Stop at beginning=2
