@@ -46,11 +46,14 @@ AM/PagePlacer.d AM/PagePlacer.o: ../src/AM/PagePlacer.cpp ../src/AM/PagePlacer.h
  ../src/AM/../Wrappers/Decoder/../Util/ByteReader.h \
  ../src/AM/../Wrappers/Decoder/../MultiBlock.h \
  ../src/AM/../Wrappers/Decoder/../CodingException.h \
- ../src/AM/../Wrappers/Decoder/../../common/MultiPosFilterBlock.h \
- ../src/AM/../Wrappers/Decoder/../../common/PosFilterBlock.h \
- ../src/AM/../Wrappers/Decoder/../../common/../Util/BitUtil.h \
- ../src/AM/../Wrappers/Decoder/../../common/UnexpectedException.h \
- ../src/AM/../Wrappers/Decoder/../../common/../Wrappers/RLETriple.h \
- ../src/AM/../Wrappers/Decoder/../../common/../Wrappers/CodingException.h \
- ../src/AM/../Wrappers/Decoder/../../common/../Wrappers/../common/ValPos.h \
+ ../src/AM/../Wrappers/Decoder/../../Operators/MultiPosFilterCursor.h \
+ ../src/AM/../Wrappers/Decoder/../../Operators/Cursor.h \
+ ../src/AM/../Wrappers/Decoder/../../Operators/../common/MultiPosFilterBlock.h \
+ ../src/AM/../Wrappers/Decoder/../../Operators/../common/PosFilterBlock.h \
+ ../src/AM/../Wrappers/Decoder/../../Operators/../common/../Util/BitUtil.h \
+ ../src/AM/../Wrappers/Decoder/../../Operators/../common/UnexpectedException.h \
+ ../src/AM/../Wrappers/Decoder/../../Operators/../common/../Wrappers/RLETriple.h \
+ ../src/AM/../Wrappers/Decoder/../../Operators/../common/../Wrappers/CodingException.h \
+ ../src/AM/../Wrappers/Decoder/../../Operators/../common/../Wrappers/../common/ValPos.h \
+ ../src/AM/../Wrappers/Decoder/../../Operators/PosFilterCursor.h \
  ../src/AM/../Wrappers/Decoder/../Util/StringWriter.h

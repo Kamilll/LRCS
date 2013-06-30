@@ -79,7 +79,7 @@ void MultiBlock::setBuffer(int startpos_, int numValues_, short valsize_, byte* 
   memcpy(buffer, buffer_, numValues_*valsize);
   currPosPtr=buffer;
   numValues=numValues_;
-  vp->set(startpos_, currPosPtr);
+  vp->set(startpos_, currPosPtr, valsize);
   bufferdirect = false; 
 }
 
@@ -87,13 +87,13 @@ void MultiBlock::setBuffer(int startpos_, int numValues_, short valsize_, byte* 
 void MultiBlock::setBufferDirect(int startpos_, int numValues_,short valsize_, byte* buffer_) {
 	currPos = -1;
 	startPos = startpos_;
-	valsize = valsize_;
-	bufferdirect = true;
+	valsize = valsize_;	
 	buffer = buffer_;
 	buffer_size = numValues_ * valsize;
 	currPosPtr = buffer;
 	numValues = numValues_;
-	vp->set(startPos, currPosPtr);
+	vp->set(startPos, currPosPtr, valsize);
+	bufferdirect = true;
 }
 
 byte* MultiBlock::getBuffer() {
@@ -102,11 +102,11 @@ byte* MultiBlock::getBuffer() {
 	
 // Iterator access to block
 bool MultiBlock::hasNext() {
-	return (currPos<(numValues));
+	return (currPos<(int)(numValues));
 }
 bool MultiBlock::hasNext(int value_) {
   //assume for now that MultiBlock stores integers only
-  return ((currPos<(numValues)) && ((*((int*)currPosPtr)) == value_));
+  return ((currPos<(int)(numValues)) && ((*((int*)currPosPtr)) == value_));
 }
 
 ValPos* MultiBlock::getNext() {
@@ -271,19 +271,18 @@ MultiBlock* MultiBlock::copySubset(int fromPos, int untilPos) {
   return temp;
 }
 
-void MultiBlock::filterWithPos(MultiPosFilterBlock* posFilter){
+void MultiBlock::filterWithPos(MultiPosFilterCursor* filterCursor){
 	unsigned int nextPos = 0;
 	unsigned int nextFilterPos;
 	StringWriter* swriter = new StringWriter(valsize, numValues*valsize*8);
-	while((nextPos+1)<=numValues){
-	   swriter->writeString((char*)(currPosPtr+nextPos*valsize));
-	   nextFilterPos = posFilter->getNext();
-	   if (nextFilterPos == 0){
-		   posFilter->setFilterFinished(true);
+	do{
+        nextFilterPos = filterCursor->getNext();
+		if (nextFilterPos == 0)
 		   break;
-	   }else nextPos = nextFilterPos-posFilter->getCurrStartPosition();
-	}
+		nextPos = nextFilterPos-filterCursor->getCurrStartPosition();
+		swriter->writeString((char*)(currPosPtr+nextPos*valsize));
+	}while((nextPos+1)<numValues);
 	delete[] buffer;
-	setBufferDirect(currPos,swriter->getNumValuesWritten(),valsize,swriter->getBuffer());
-	posFilter->setCurrStartPosition();//Record current start position.
+	setBufferDirect(filterCursor->getCurrStartPosition(),swriter->getNumValuesWritten(),valsize,swriter->getBuffer());
+	filterCursor->setCurrStartPosition();//Record current start position.
 }

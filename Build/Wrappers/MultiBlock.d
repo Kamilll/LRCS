@@ -11,12 +11,16 @@ Wrappers/MultiBlock.d Wrappers/MultiBlock.o: ../src/Wrappers/MultiBlock.cpp ../s
  ../src/Wrappers/../common/DoubleValPos.h \
  ../src/Wrappers/../common/StringValPos.h \
  ../src/Wrappers/CodingException.h ../src/Wrappers/../common/Exception.h \
- ../src/Wrappers/../common/MultiPosFilterBlock.h \
- ../src/Wrappers/../common/PosFilterBlock.h \
- ../src/Wrappers/../common/../Util/BitUtil.h \
- ../src/Wrappers/../common/../Wrappers/RLETriple.h \
- ../src/Wrappers/../common/../Wrappers/CodingException.h \
- ../src/Wrappers/../common/../Wrappers/../common/ValPos.h \
+ ../src/Wrappers/../Operators/MultiPosFilterCursor.h \
+ ../src/Wrappers/../Operators/Cursor.h \
+ ../src/Wrappers/../Operators/../common/MultiPosFilterBlock.h \
+ ../src/Wrappers/../Operators/../common/PosFilterBlock.h \
+ ../src/Wrappers/../Operators/../common/../Util/BitUtil.h \
+ ../src/Wrappers/../Operators/../common/UnexpectedException.h \
+ ../src/Wrappers/../Operators/../common/../Wrappers/RLETriple.h \
+ ../src/Wrappers/../Operators/../common/../Wrappers/CodingException.h \
+ ../src/Wrappers/../Operators/../common/../Wrappers/../common/ValPos.h \
+ ../src/Wrappers/../Operators/PosFilterCursor.h \
  ../src/Wrappers/Util/StringWriter.h \
  ../src/Wrappers/Util/../../common/Util.h \
  ../src/Wrappers/Util/../../common/../Util/Log.h \

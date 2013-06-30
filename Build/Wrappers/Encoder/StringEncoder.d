@@ -48,9 +48,14 @@ Wrappers/Encoder/StringEncoder.d Wrappers/Encoder/StringEncoder.o: ../src/Wrappe
  ../src/Wrappers/Encoder/../Util/../../common/Util.h \
  ../src/Wrappers/Encoder/../MultiBlock.h \
  ../src/Wrappers/Encoder/../CodingException.h \
- ../src/Wrappers/Encoder/../../common/MultiPosFilterBlock.h \
- ../src/Wrappers/Encoder/../../common/PosFilterBlock.h \
- ../src/Wrappers/Encoder/../../common/../Util/BitUtil.h \
- ../src/Wrappers/Encoder/../../common/../Wrappers/RLETriple.h \
- ../src/Wrappers/Encoder/../../common/../Wrappers/../common/ValPos.h \
+ ../src/Wrappers/Encoder/../../Operators/MultiPosFilterCursor.h \
+ ../src/Wrappers/Encoder/../../Operators/Cursor.h \
+ ../src/Wrappers/Encoder/../../Operators/../common/MultiPosFilterBlock.h \
+ ../src/Wrappers/Encoder/../../Operators/../common/PosFilterBlock.h \
+ ../src/Wrappers/Encoder/../../Operators/../common/../Util/BitUtil.h \
+ ../src/Wrappers/Encoder/../../Operators/../common/UnexpectedException.h \
+ ../src/Wrappers/Encoder/../../Operators/../common/../Wrappers/RLETriple.h \
+ ../src/Wrappers/Encoder/../../Operators/../common/../Wrappers/CodingException.h \
+ ../src/Wrappers/Encoder/../../Operators/../common/../Wrappers/../common/ValPos.h \
+ ../src/Wrappers/Encoder/../../Operators/PosFilterCursor.h \
  ../src/Wrappers/Encoder/../Util/StringWriter.h

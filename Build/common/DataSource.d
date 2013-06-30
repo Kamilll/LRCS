@@ -34,13 +34,16 @@ common/DataSource.d common/DataSource.o: ../src/common/DataSource.cpp ../src/com
  ../src/common/../Wrappers/Decoder/../../common/Interfaces.h \
  ../src/common/../Wrappers/Decoder/../CodingException.h \
  ../src/common/../Wrappers/MultiBlock.h \
- ../src/common/../Wrappers/../common/MultiPosFilterBlock.h \
- ../src/common/../Wrappers/../common/PosFilterBlock.h \
- ../src/common/../Wrappers/../common/../Util/BitUtil.h \
- ../src/common/../Wrappers/../common/UnexpectedException.h \
- ../src/common/../Wrappers/../common/../Wrappers/RLETriple.h \
- ../src/common/../Wrappers/../common/../Wrappers/CodingException.h \
- ../src/common/../Wrappers/../common/../Wrappers/../common/ValPos.h \
+ ../src/common/../Wrappers/../Operators/MultiPosFilterCursor.h \
+ ../src/common/../Wrappers/../Operators/Cursor.h \
+ ../src/common/../Wrappers/../Operators/../common/MultiPosFilterBlock.h \
+ ../src/common/../Wrappers/../Operators/../common/PosFilterBlock.h \
+ ../src/common/../Wrappers/../Operators/../common/../Util/BitUtil.h \
+ ../src/common/../Wrappers/../Operators/../common/UnexpectedException.h \
+ ../src/common/../Wrappers/../Operators/../common/../Wrappers/RLETriple.h \
+ ../src/common/../Wrappers/../Operators/../common/../Wrappers/CodingException.h \
+ ../src/common/../Wrappers/../Operators/../common/../Wrappers/../common/ValPos.h \
+ ../src/common/../Wrappers/../Operators/PosFilterCursor.h \
  ../src/common/../Wrappers/Util/StringWriter.h \
  ../src/common/../Wrappers/Util/../../common/Util.h \
  ../src/common/../Util/StringUtil.h \
@@ -54,4 +57,5 @@ common/DataSource.d common/DataSource.o: ../src/common/DataSource.cpp ../src/com
  ../src/common/../Wrappers/Decoder/StringDecoder.h \
  ../src/common/../Wrappers/Decoder/../Util/StringReader.h \
  ../src/common/../Wrappers/Decoder/../Util/../../common/StringValPos.h \
- ../src/common/MultiPosFilterBlock.h
+ ../src/common/MultiPosFilterBlock.h \
+ ../src/common/../Operators/MultiPosFilterCursor.h

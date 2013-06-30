@@ -4,7 +4,7 @@
 #include "../common/Block.h"
 #include "CodingException.h"
 #include <iostream>
-#include "../common/MultiPosFilterBlock.h"
+#include "../Operators/MultiPosFilterCursor.h"
 #include "Util/StringWriter.h"
 
 using namespace std;
@@ -36,7 +36,7 @@ class MultiBlock : public Block
 		virtual void cutOffEnd(int endPos);
 		virtual byte* getBuffer();
 		MultiBlock* copySubset(int fromPos, int untilPos);
-		virtual void filterWithPos(MultiPosFilterBlock* posFilter);
+		virtual void filterWithPos(MultiPosFilterCursor* filterCursor);
 
 		// Zero indexed, gets the pair at this pos_
 		virtual ValPos* getPairAtLoc(unsigned int loc_);

@@ -51,7 +51,10 @@ Operators/BlockPrinter.d Operators/BlockPrinter.o: ../src/Operators/BlockPrinter
  ../src/Operators/../common/../Wrappers/Decoder/../../common/Interfaces.h \
  ../src/Operators/../common/../Wrappers/Decoder/../CodingException.h \
  ../src/Operators/../common/../Wrappers/MultiBlock.h \
- ../src/Operators/../common/../Wrappers/../common/MultiPosFilterBlock.h \
+ ../src/Operators/../common/../Wrappers/../Operators/MultiPosFilterCursor.h \
+ ../src/Operators/../common/../Wrappers/../Operators/Cursor.h \
+ ../src/Operators/../common/../Wrappers/../Operators/../common/MultiPosFilterBlock.h \
+ ../src/Operators/../common/../Wrappers/../Operators/PosFilterCursor.h \
  ../src/Operators/../common/../Wrappers/Util/StringWriter.h \
  ../src/Operators/../common/../Wrappers/Util/../../common/Util.h \
  ../src/Operators/../common/../Util/StringUtil.h \
@@ -66,4 +69,5 @@ Operators/BlockPrinter.d Operators/BlockPrinter.o: ../src/Operators/BlockPrinter
  ../src/Operators/../common/../Wrappers/Decoder/../Util/StringReader.h \
  ../src/Operators/../common/../Wrappers/Decoder/../Util/../../common/StringValPos.h \
  ../src/Operators/../common/MultiPosFilterBlock.h \
+ ../src/Operators/../common/../Operators/MultiPosFilterCursor.h \
  ../src/Operators/PosOperator.h

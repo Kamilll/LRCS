@@ -46,13 +46,16 @@ Wrappers/StringDataSource.d Wrappers/StringDataSource.o: ../src/Wrappers/StringD
  ../src/Wrappers/../common/../Wrappers/Decoder/../../common/Interfaces.h \
  ../src/Wrappers/../common/../Wrappers/Decoder/../CodingException.h \
  ../src/Wrappers/../common/../Wrappers/MultiBlock.h \
- ../src/Wrappers/../common/../Wrappers/../common/MultiPosFilterBlock.h \
- ../src/Wrappers/../common/../Wrappers/../common/PosFilterBlock.h \
- ../src/Wrappers/../common/../Wrappers/../common/../Util/BitUtil.h \
- ../src/Wrappers/../common/../Wrappers/../common/UnexpectedException.h \
- ../src/Wrappers/../common/../Wrappers/../common/../Wrappers/RLETriple.h \
- ../src/Wrappers/../common/../Wrappers/../common/../Wrappers/CodingException.h \
- ../src/Wrappers/../common/../Wrappers/../common/../Wrappers/../common/ValPos.h \
+ ../src/Wrappers/../common/../Wrappers/../Operators/MultiPosFilterCursor.h \
+ ../src/Wrappers/../common/../Wrappers/../Operators/Cursor.h \
+ ../src/Wrappers/../common/../Wrappers/../Operators/../common/MultiPosFilterBlock.h \
+ ../src/Wrappers/../common/../Wrappers/../Operators/../common/PosFilterBlock.h \
+ ../src/Wrappers/../common/../Wrappers/../Operators/../common/../Util/BitUtil.h \
+ ../src/Wrappers/../common/../Wrappers/../Operators/../common/UnexpectedException.h \
+ ../src/Wrappers/../common/../Wrappers/../Operators/../common/../Wrappers/RLETriple.h \
+ ../src/Wrappers/../common/../Wrappers/../Operators/../common/../Wrappers/CodingException.h \
+ ../src/Wrappers/../common/../Wrappers/../Operators/../common/../Wrappers/../common/ValPos.h \
+ ../src/Wrappers/../common/../Wrappers/../Operators/PosFilterCursor.h \
  ../src/Wrappers/../common/../Wrappers/Util/StringWriter.h \
  ../src/Wrappers/../common/../Wrappers/Util/../../common/Util.h \
  ../src/Wrappers/../common/../Util/StringUtil.h \
@@ -67,6 +70,7 @@ Wrappers/StringDataSource.d Wrappers/StringDataSource.o: ../src/Wrappers/StringD
  ../src/Wrappers/../common/../Wrappers/Decoder/../Util/StringReader.h \
  ../src/Wrappers/../common/../Wrappers/Decoder/../Util/../../common/StringValPos.h \
  ../src/Wrappers/../common/MultiPosFilterBlock.h \
+ ../src/Wrappers/../common/../Operators/MultiPosFilterCursor.h \
  ../src/Wrappers/Decoder/StringDecoder.h ../src/Wrappers/BasicBlock.h \
  ../src/Wrappers/RLETriple.h \
  ../src/Wrappers/../common/UnimplementedException.h \

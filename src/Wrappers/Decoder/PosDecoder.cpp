@@ -51,7 +51,7 @@ PosDecoder::PosDecoder(PosDecoder& decoder_) : Decoder(decoder_) {
 
 PosDecoder::~PosDecoder()
 {
-  delete outBlock;
+  if(outBlock)delete outBlock;
 }
 	
 void PosDecoder::setBuffer(byte* buffer_) { 

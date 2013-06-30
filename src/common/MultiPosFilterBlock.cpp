@@ -301,8 +301,8 @@ unsigned int MultiPosFilterBlock::getCurrStartPosition() {
 }
 
 MultiPosFilterCursor* MultiPosFilterBlock::getCursor(){
-   //MultiPosFilterCursor* newCursor = new MultiPosFilterCursor(this);
-   //return newCursor;
+   MultiPosFilterCursor* newCursor = new MultiPosFilterCursor(this);
+   return newCursor;
 }
 
 void MultiPosFilterBlock::setCurrStartPosition( ) {
@@ -331,14 +331,6 @@ bool MultiPosFilterBlock::isCompleteSet( ){
 
 void MultiPosFilterBlock::setCompleteSet(bool flag_){
   completeSet=flag_;
-}
-
-bool MultiPosFilterBlock::isFilterFinished( ){
-   return filterFinished;
-}
-
-void MultiPosFilterBlock::setFilterFinished(bool flag_){
-  filterFinished=flag_;
 }
 
 void MultiPosFilterBlock::setTriple(RLETriple* triple_){

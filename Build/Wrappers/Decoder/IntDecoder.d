@@ -49,9 +49,14 @@ Wrappers/Decoder/IntDecoder.d Wrappers/Decoder/IntDecoder.o: ../src/Wrappers/Dec
  ../src/Wrappers/Decoder/../Util/ByteReader.h \
  ../src/Wrappers/Decoder/../MultiBlock.h \
  ../src/Wrappers/Decoder/../CodingException.h \
- ../src/Wrappers/Decoder/../../common/MultiPosFilterBlock.h \
- ../src/Wrappers/Decoder/../../common/PosFilterBlock.h \
- ../src/Wrappers/Decoder/../../common/../Util/BitUtil.h \
- ../src/Wrappers/Decoder/../../common/../Wrappers/RLETriple.h \
- ../src/Wrappers/Decoder/../../common/../Wrappers/../common/ValPos.h \
+ ../src/Wrappers/Decoder/../../Operators/MultiPosFilterCursor.h \
+ ../src/Wrappers/Decoder/../../Operators/Cursor.h \
+ ../src/Wrappers/Decoder/../../Operators/../common/MultiPosFilterBlock.h \
+ ../src/Wrappers/Decoder/../../Operators/../common/PosFilterBlock.h \
+ ../src/Wrappers/Decoder/../../Operators/../common/../Util/BitUtil.h \
+ ../src/Wrappers/Decoder/../../Operators/../common/UnexpectedException.h \
+ ../src/Wrappers/Decoder/../../Operators/../common/../Wrappers/RLETriple.h \
+ ../src/Wrappers/Decoder/../../Operators/../common/../Wrappers/CodingException.h \
+ ../src/Wrappers/Decoder/../../Operators/../common/../Wrappers/../common/ValPos.h \
+ ../src/Wrappers/Decoder/../../Operators/PosFilterCursor.h \
  ../src/Wrappers/Decoder/../Util/StringWriter.h

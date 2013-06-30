@@ -53,13 +53,16 @@ UnitTests/Query1S.d UnitTests/Query1S.o: ../src/UnitTests/Query1S.cpp ../src/Uni
  ../src/UnitTests/../Wrappers/Encoder/../Util/../../common/Util.h \
  ../src/UnitTests/../Wrappers/Encoder/../MultiBlock.h \
  ../src/UnitTests/../Wrappers/Encoder/../CodingException.h \
- ../src/UnitTests/../Wrappers/Encoder/../../common/MultiPosFilterBlock.h \
- ../src/UnitTests/../Wrappers/Encoder/../../common/PosFilterBlock.h \
- ../src/UnitTests/../Wrappers/Encoder/../../common/../Util/BitUtil.h \
- ../src/UnitTests/../Wrappers/Encoder/../../common/UnexpectedException.h \
- ../src/UnitTests/../Wrappers/Encoder/../../common/../Wrappers/RLETriple.h \
- ../src/UnitTests/../Wrappers/Encoder/../../common/../Wrappers/CodingException.h \
- ../src/UnitTests/../Wrappers/Encoder/../../common/../Wrappers/../common/ValPos.h \
+ ../src/UnitTests/../Wrappers/Encoder/../../Operators/MultiPosFilterCursor.h \
+ ../src/UnitTests/../Wrappers/Encoder/../../Operators/Cursor.h \
+ ../src/UnitTests/../Wrappers/Encoder/../../Operators/../common/MultiPosFilterBlock.h \
+ ../src/UnitTests/../Wrappers/Encoder/../../Operators/../common/PosFilterBlock.h \
+ ../src/UnitTests/../Wrappers/Encoder/../../Operators/../common/../Util/BitUtil.h \
+ ../src/UnitTests/../Wrappers/Encoder/../../Operators/../common/UnexpectedException.h \
+ ../src/UnitTests/../Wrappers/Encoder/../../Operators/../common/../Wrappers/RLETriple.h \
+ ../src/UnitTests/../Wrappers/Encoder/../../Operators/../common/../Wrappers/CodingException.h \
+ ../src/UnitTests/../Wrappers/Encoder/../../Operators/../common/../Wrappers/../common/ValPos.h \
+ ../src/UnitTests/../Wrappers/Encoder/../../Operators/PosFilterCursor.h \
  ../src/UnitTests/../Wrappers/Encoder/../Util/StringWriter.h \
  ../src/UnitTests/../AM/PageWriter.h ../src/UnitTests/../common/Util.h \
  ../src/UnitTests/../Wrappers/CodingException.h \
@@ -88,6 +91,7 @@ UnitTests/Query1S.d UnitTests/Query1S.o: ../src/UnitTests/Query1S.cpp ../src/Uni
  ../src/UnitTests/../Wrappers/../common/../Wrappers/Decoder/../MultiBlock.h \
  ../src/UnitTests/../Wrappers/../common/../Wrappers/Decoder/StringDecoder.h \
  ../src/UnitTests/../Wrappers/../common/MultiPosFilterBlock.h \
+ ../src/UnitTests/../Wrappers/../common/../Operators/MultiPosFilterCursor.h \
  ../src/UnitTests/../Wrappers/Decoder/StringDecoder.h \
  ../src/UnitTests/../Wrappers/BasicBlock.h \
  ../src/UnitTests/../Wrappers/RLETriple.h \

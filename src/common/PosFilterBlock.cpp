@@ -141,7 +141,7 @@ void PosFilterBlock::setBuffer(byte* buffer_){
 }
 
 byte* PosFilterBlock::getBuffer() {
-   return buffer;
+   return bfrWithHeader;
 }
 
 PosFilterCursor* PosFilterBlock::getCursor() {

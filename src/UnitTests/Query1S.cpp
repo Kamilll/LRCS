@@ -76,7 +76,7 @@ bool Query1S::run() {
   ds2->setPredicate(pred);
   ValPos* rhs = new StringValPos(11);
   //char* RHSVal = "Cstore00004";
-  char* RHSVal = "Cstore99997";
+  char* RHSVal = "Cstore99949";
   rhs->set(RHSVal);
   ds2->changeRHSBinding(rhs);
   

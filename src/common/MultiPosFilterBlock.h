@@ -37,11 +37,9 @@ class MultiPosFilterBlock{
 		virtual unsigned int getCurrStartPosition();//Get current start position after filtered a DB page
 		virtual void setCurrStartPosition();//Set current start position after filtered a DB page
 
-		virtual bool isFilterFinished();
 		virtual bool isNullSet();
 		virtual bool isCompleteSet();
 		virtual void setCompleteSet(bool flag_);
-		virtual void setFilterFinished(bool flag_);
 		virtual void setTriple(RLETriple* triple_);
 		MultiPosFilterCursor* getCursor();
 		virtual void printBlocks();

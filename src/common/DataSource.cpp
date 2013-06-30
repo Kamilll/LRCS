@@ -123,17 +123,16 @@ Block* DataSource::getDecodedBlock() {
 Block* DataSource::getNextValBlock(int colIndex_) {
 //zklee: Each page is converted to a multiblock, no loop required anymore!
 	if (colIndex_ < 0)return NULL;
-	if(posFilter->isFilterFinished())return NULL;
 
 	byte* page=getRightPage( );
 	if (page==NULL) return NULL;
 	decoder->setBuffer(page);
-	unsigned int currStartPos = posFilter->getCurrStartPosition();
+	unsigned int currStartPos = filterCursor->getCurrStartPosition();
 	skipToRightPosOnPage(currStartPos);
 	currBlock=(MultiBlock*) getDecodedBlock();
 	if (currBlock == NULL) return NULL;
 
-	currBlock->filterWithPos(posFilter);
+	currBlock->filterWithPos(filterCursor);
 
 	return currBlock;
 }
@@ -165,40 +164,22 @@ byte* DataSource::getPage() {
 	return (byte*) getNextPageValue();
 }
 
-//zklee: This method could be deleted somehow!
-byte* DataSource::getPageOnPred(bool valSorted_) {
-	if (valSorted_) {
-		Log::writeToLog("DataSource", 0, "getPageOnPred(), valSorted");		
-
-		byte* value;
-		if (pred!=NULL) {
-			predChanged=false; 	
-		    ValPos* vp = pred->getRHS();
-			value=(char*)vp->value;
-		}
-		byte* page=((byte*) skipToPageValue(value));
-		return page;
-	}
-	else {//Sequential Reading
-	   return getPage();
-	}
-}
-
 byte* DataSource::getPageOnPos() {
 	unsigned int filterStart;
 	unsigned int filterEnd;
 	unsigned int pageEnd;
 
 	assert(posFilter != NULL);
+	if(filterCursor == NULL)filterCursor = posFilter->getCursor();
 	byte* page;
-	if (!filterFinished){
-		filterStart = posFilter->getCurrStartPosition();
-		filterEnd = posFilter->getEndPosition();
+	if (!filterCursor->isFilterFinished()){
+		filterStart = filterCursor->getCurrStartPosition();
+		//filterEnd = posFilter->getEndPosition();
 		am->initCursors();
 		page=(byte*) skipToPagePosition(filterStart);
-		decoder->setBuffer(page);
-		pageEnd = decoder->getEndPos();
-		if(pageEnd>filterEnd) filterFinished = true;
+		//decoder->setBuffer(page);
+		//pageEnd = decoder->getEndPos();
+		//if(pageEnd>filterEnd) filterFinished = true;
 		return page;
 	}else return NULL;
 }
@@ -395,6 +376,8 @@ bool DataSource::getPosOnPredValueUnsorted(ROSAM* am_,ValPos* rhsvp_, ValPos* te
 		firstCall = false;
     }
 
+	delete posdecoder;
+	
 	//06. Check whether matchedPredPos is empty or not
 	if(matchedPredPos->isNullSet())return false;
 	else return true;	

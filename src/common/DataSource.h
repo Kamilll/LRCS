@@ -13,6 +13,7 @@
 #include "../Wrappers/Decoder/PosDecoder.h"
 #include "../Wrappers/Decoder/StringDecoder.h"
 #include "MultiPosFilterBlock.h"
+#include "../Operators/MultiPosFilterCursor.h"
 
 // Abstract class that:
 //	-Gets data from the AM
@@ -129,11 +130,11 @@ class DataSource : public Operator {
 		Decoder* decoder;
 		MultiBlock* currBlock;
 		RLETriple* posOutTripleOnPred;
+		MultiPosFilterCursor* filterCursor;
 		
 
 	private:
 		virtual byte* getPage();
-		virtual byte* getPageOnPred(bool valSorted_);
 		virtual byte* getPageOnPos();
 		virtual bool getPosOnPredValueSorted(ValPos* rhsvp_, ValPos* tempVP_);
 		virtual bool getPosOnPredValueUnsorted(ROSAM* am_,ValPos* rhsvp_, ValPos* tempVP_);
