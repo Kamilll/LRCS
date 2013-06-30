@@ -5,60 +5,63 @@
 #include "assert.h"
 #include "UnexpectedException.h"
 #include "../Wrappers/RLETriple.h"
-
 using namespace std;
 
-class MultiPosFilterBlock
-{
-public:
-	MultiPosFilterBlock( );
-	virtual ~MultiPosFilterBlock();
-    
-	
-	virtual void addPosFilterBlock(PosFilterBlock* posFilterBlock_);
-	virtual void addPosition(unsigned int pos);	
-	virtual void addInt(unsigned int int_);
-    virtual void optimize( );
-	virtual void resetBlock();
-	virtual MultiPosFilterBlock* clone();
+class MultiPosFilterCursor;
 
-	// Iterator access to blocks
-	virtual bool hasNext();
-	virtual unsigned int getNext();
-	virtual PosFilterBlock* getNextBlock();
-	virtual PosFilterBlock* getFirstBlock();
-	virtual unsigned int getStartPosition();
-	virtual unsigned int getEndPosition();
-	virtual PosFilterBlock* getCurrBlock();
-	virtual bool setCurrBlock(int i);
-	virtual unsigned int getCurrPosition();
-	virtual unsigned int getNumBlocks();
-	virtual unsigned int getNumValues();
-	virtual unsigned int getNumValuesR();
-	virtual unsigned int getCurrStartPosition();//Get current start position after filtered a DB page
-	virtual void setCurrStartPosition();//Set current start position after filtered a DB page
+class MultiPosFilterBlock{
+	public:
+		MultiPosFilterBlock( );
+		virtual ~MultiPosFilterBlock();  
 
-    virtual bool isFilterFinished();
-	virtual bool isNullSet();
-	virtual bool isCompleteSet();
-	virtual void setCompleteSet(bool flag_);
-    virtual void setFilterFinished(bool flag_);
-	virtual void setTriple(RLETriple* triple_);
-	virtual void printBlocks();
+		virtual void addPosFilterBlock(PosFilterBlock* posFilterBlock_);
+		virtual void addPosition(unsigned int pos);	
+		virtual void addInt(unsigned int int_);
+		virtual void optimize( );
+		virtual void resetBlock();
+		virtual MultiPosFilterBlock* clone();
 
-protected:
-	vector<PosFilterBlock*> posFilterBlockVec;
+		// Iterator access to blocks
+		virtual bool hasNext();
+		virtual unsigned int getNext();
+		virtual PosFilterBlock* getNextBlock();
+		virtual PosFilterBlock* getFirstBlock();
+		virtual unsigned int getStartPosition();
+		virtual unsigned int getEndPosition();
+		virtual PosFilterBlock* getCurrBlock();
+		virtual bool setCurrBlock(int i);
+		virtual unsigned int getCurrPosition();
+		virtual unsigned int getNumBlocks();
+		virtual unsigned int getNumValues();
+		virtual unsigned int getNumValuesR();
+		virtual unsigned int getCurrStartPosition();//Get current start position after filtered a DB page
+		virtual void setCurrStartPosition();//Set current start position after filtered a DB page
 
-	unsigned int startPos;
-	unsigned int endPos;
-    unsigned int currBlockNum;
-	unsigned int numValues;
-	PosFilterBlock* currBlock;
+		virtual bool isFilterFinished();
+		virtual bool isNullSet();
+		virtual bool isCompleteSet();
+		virtual void setCompleteSet(bool flag_);
+		virtual void setFilterFinished(bool flag_);
+		virtual void setTriple(RLETriple* triple_);
+		MultiPosFilterCursor* getCursor();
+		virtual void printBlocks();
 
-	bool completeSet;
-	bool filterFinished;
+	protected:
+		vector<PosFilterBlock*> posFilterBlockVec;
 
-	virtual void init( );
-	virtual bool removePrecedingZero(PosFilterBlock* &posFilterBlock_);
+		unsigned int startPos;
+		unsigned int endPos;
+		unsigned int currBlockNum;
+		unsigned int numValues;
+		PosFilterBlock* currBlock;
+
+		bool completeSet;
+		bool filterFinished;
+
+		virtual void init( );
+		virtual bool removePrecedingZero(PosFilterBlock* &posFilterBlock_);
+
+	private:
+		bool isBufferSet;
 };
 #endif // POSFILTERBLOCK_H

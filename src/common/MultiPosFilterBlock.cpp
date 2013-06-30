@@ -1,4 +1,5 @@
 #include "MultiPosFilterBlock.h"
+#include "../Operators/MultiPosFilterCursor.h"
 
 MultiPosFilterBlock::MultiPosFilterBlock( ){
    init();
@@ -10,12 +11,14 @@ void MultiPosFilterBlock::init( ){
 	currBlock = NULL;
 	currBlockNum = 0;
 	numValues = 0;
+	isBufferSet = false;
 	setCompleteSet(false);
-	setFilterFinished(false);
+	//setFilterFinished(false);
 }
 
 MultiPosFilterBlock::~MultiPosFilterBlock( ){
 	//delete posFilterBlockVec;
+	if(!isBufferSet)
 	for(int i = 0; i<getNumBlocks();i++)
         delete posFilterBlockVec.at(i);
 }
@@ -23,9 +26,9 @@ MultiPosFilterBlock::~MultiPosFilterBlock( ){
 MultiPosFilterBlock* MultiPosFilterBlock::clone( ){
 	//delete posFilterBlockVec;
 	MultiPosFilterBlock* newBlock = new MultiPosFilterBlock();
-	if(isCompleteSet () || isNullSet()){
+	if(isCompleteSet ()){
 		newBlock->setCompleteSet(true);
-	}else{
+	}else if (!isNullSet()){
 		for(int i = 0; i<getNumBlocks();i++)
 			newBlock->addPosFilterBlock(posFilterBlockVec.at(i)->clone());	
 		newBlock->setCurrBlock(0);
@@ -212,13 +215,12 @@ bool MultiPosFilterBlock::setCurrBlock( int i ){
 	}
 	currBlockNum = i;
     currBlock->setCurrInt(1);
-	currBlock->setCurrPosition(currBlock->getStartPosition());
-	currBlock->setCurrStartPosition();
 	return true;
 }
 
 bool MultiPosFilterBlock::hasNext( ){
-	return (currBlock->getCurrPosition() < endPos);
+	if(currBlock == NULL)return true;//Start from beginning
+	else return (currBlock->getCurrPosition() < endPos);
 }
 
 unsigned int MultiPosFilterBlock::getNext( ){
@@ -226,13 +228,13 @@ unsigned int MultiPosFilterBlock::getNext( ){
 	unsigned int _currBlockNum;
 	if (currBlock == NULL){
 		if(setCurrBlock( 0 ) )
-			retPos = currBlock->getCurrPosition(); //Start from beginning
+			retPos = currBlock->getNext(); //Start from beginning
 	}else{
 		retPos = currBlock->getNext();
 		if (retPos == 0){ //if run out of a block,iterate to next block
 			_currBlockNum = currBlockNum + 1;
 			if(setCurrBlock(_currBlockNum))
-				retPos = currBlock->getCurrPosition();
+				retPos = currBlock->getNext();
 			else{
 				retPos = 0;
 				setCurrBlock(0);
@@ -296,6 +298,11 @@ unsigned int MultiPosFilterBlock::getNumBlocks() {
 unsigned int MultiPosFilterBlock::getCurrStartPosition() {
    assert(currBlock != NULL);
    return currBlock->getCurrStartPosition();
+}
+
+MultiPosFilterCursor* MultiPosFilterBlock::getCursor(){
+   //MultiPosFilterCursor* newCursor = new MultiPosFilterCursor(this);
+   //return newCursor;
 }
 
 void MultiPosFilterBlock::setCurrStartPosition( ) {
