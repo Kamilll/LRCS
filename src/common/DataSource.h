@@ -56,8 +56,6 @@ class DataSource : public Operator {
 		virtual byte* getRightPage();
 		virtual bool skipToRightPosOnPage(unsigned int pos_);
 
-
-
 		// Skips to the first block with this value
 		// Returns NULL if the value is outside the range of the column
 		virtual Block* skipToValBlock(int colIndex_, int val_){return NULL;}
@@ -86,6 +84,8 @@ class DataSource : public Operator {
 		void init(AM* am_, bool isROS_);
 
 		Block* getDecodedBlock();
+
+		Block* getDecodedBlock(Decoder* decoder_);
 
 
 		// Access method used to get values

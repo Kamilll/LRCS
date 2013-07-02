@@ -92,7 +92,7 @@ void MultiBlock::setBufferDirect(int startpos_, int numValues_,short valsize_, b
 	buffer_size = numValues_ * valsize;
 	currPosPtr = buffer;
 	numValues = numValues_;
-	vp->set(startPos, currPosPtr.valsize);
+	vp->set(startPos, currPosPtr, valsize);
 	bufferdirect = true;
 }
 
@@ -275,13 +275,13 @@ void MultiBlock::filterWithPos(MultiPosFilterCursor* filterCursor){
 	unsigned int nextPos = 0;
 	unsigned int nextFilterPos;
 	StringWriter* swriter = new StringWriter(valsize, numValues*valsize*8);
-	do{
+	while((nextPos+1) < numValues){//block is running out
+		swriter->writeString((char*)(currPosPtr+nextPos*valsize));
         nextFilterPos = filterCursor->getNext();
 		if (nextFilterPos == 0)
-		   break;
+		   break; //filter is finished
 		nextPos = nextFilterPos-filterCursor->getCurrStartPosition();
-		swriter->writeString((char*)(currPosPtr+nextPos*valsize));
-	}while((nextPos+1)<numValues);
+	}
 	delete[] buffer;
 	setBufferDirect(filterCursor->getCurrStartPosition(),swriter->getNumValuesWritten(),valsize,swriter->getBuffer());
 	filterCursor->setCurrStartPosition();//Record current start position.

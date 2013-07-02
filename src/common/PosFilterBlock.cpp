@@ -215,10 +215,19 @@ bool PosFilterBlock::addPosition(unsigned int pos) {
 }
 
 void PosFilterBlock::setRangePos(unsigned int length){
-   assert(length<=getMaxNumPos());
-   memset(bufferPtrAsIntArr+sizeof(int), 1, length);
-   *endPos = *startPos + length - 1;
-   *numValues = length;
+	unsigned int _maxNumPos = getMaxNumPos();
+	assert(length<=_maxNumPos);
+	int _numInts = length / (8*sizeof(int));
+	int _numBitsMod = length % (8*sizeof(int));
+	for(int x=1; x<=_numInts; x++)
+		bufferPtrAsIntArr[x] = 0xFFFFFFFFu;
+	if(_numBitsMod > 0){
+		bufferPtrAsIntArr[(_numInts+1)] = 0;
+		for (int y=1; y<=_numBitsMod; y++)
+			bufferPtrAsIntArr[(_numInts+1)] |= (1<<(32-y));
+	}
+	*endPos = *startPos + length - 1;
+	*numValues = length;
 }
 
 bool PosFilterBlock::setCurrInt(unsigned int currInt_){

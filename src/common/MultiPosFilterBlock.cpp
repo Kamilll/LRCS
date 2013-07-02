@@ -335,7 +335,7 @@ void MultiPosFilterBlock::setCompleteSet(bool flag_){
 
 void MultiPosFilterBlock::setTriple(RLETriple* triple_){
 	assert(isNullSet());//Current multi position filter block must be empty!  
-	unsigned int maxReps = currBlock->getMaxNumPos();
+	unsigned int maxReps = BLOCK_MAX_BITS;
 	unsigned int reps = triple_->reps;
 	unsigned int startPos = triple_->startPos;
 	int n = reps/maxReps;

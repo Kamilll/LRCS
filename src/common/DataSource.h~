@@ -135,7 +135,6 @@ class DataSource : public Operator {
 
 	private:
 		virtual byte* getPage();
-		virtual byte* getPageOnPred(bool valSorted_);
 		virtual byte* getPageOnPos();
 		virtual bool getPosOnPredValueSorted(ValPos* rhsvp_, ValPos* tempVP_);
 		virtual bool getPosOnPredValueUnsorted(ROSAM* am_,ValPos* rhsvp_, ValPos* tempVP_);

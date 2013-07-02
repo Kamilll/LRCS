@@ -141,7 +141,7 @@ void PosFilterBlock::setBuffer(byte* buffer_){
 }
 
 byte* PosFilterBlock::getBuffer() {
-   return buffer;
+   return bfrWithHeader;
 }
 
 PosFilterCursor* PosFilterBlock::getCursor() {
@@ -215,10 +215,19 @@ bool PosFilterBlock::addPosition(unsigned int pos) {
 }
 
 void PosFilterBlock::setRangePos(unsigned int length){
-   assert(length<=getMaxNumPos());
-   memset(bufferPtrAsIntArr+sizeof(int), 1, length);
-   *endPos = *startPos + length - 1;
-   *numValues = length;
+	unsigned int _maxNumPos = getMaxNumPos();
+	assert(length<=_maxNumPos);
+	int _numInts = length / (8*sizeof(int));
+	int _numBitsMod = length % (8*sizeof(int));
+	for(int x=1; x++; x<=_numInts)
+		bufferPtrAsIntArr[x] = 0xFFFFFFFFu;
+	if(_numBitsMod > 0){
+		bufferPtrAsIntArr[(_numInts+1)] = 0;
+		for (int y=1; y++; y<=_numBitsMod)
+			bufferPtrAsIntArr[(_numInts+1)] |= (1<<(32-y));
+	}
+	*endPos = *startPos + length - 1;
+	*numValues = length;
 }
 
 bool PosFilterBlock::setCurrInt(unsigned int currInt_){

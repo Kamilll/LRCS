@@ -92,39 +92,20 @@ bool StringDecoder::skipToPos(unsigned int blockPos_) {
 }
 
 bool StringDecoder::skipToBlockOnValue(ValPos* rhs_) {
-	//throw new UnimplementedException("Not done yet");
-/*Zklee: This method need re-implemented considering other situations,
-	 like non sorted blocks*/
-	//Log::writeToLog("StringDecoder", 0, "skipToBlockOnValue() called, val", value_);
-		
 	reader.resetPos();
 	char* value = new char[*ssizePtr];
 		
-	while (reader.readString(value)) {
-		currPos++;
+	while (reader.readString(value)) {		
 		ValPos* lhs = new StringValPos(*ssizePtr);
 		lhs->set(value);
 		
-		if (*lhs!=rhs_) {
-			if (outMultiBlock->isValueSorted()) {
-				
-				if (*lhs>rhs_) {
-					//Log::writeToLog("StringDecoder", 0, "Did not find value, returning false, val", value_);
-					return false;
-				}
-				//getNextBlock();
-			}
-			//else {
-			//getNextBlock();
-			//}
-		}
-		else {
-			//Log::writeToLog("StringDecoder", 0, "skipToBlockOnValue() found value", value_);
-			skipToPos(currPos-*startPosPtr -1);
+		if (*lhs!=rhs_){
+			currPos++;
+			if (valSorted && *lhs>rhs_)return false;
+		}else {
 			return true;
 		}
 	}
-	//Log::writeToLog("StringDecoder", 0, "Did not find value, returning false, val", value_);
 	return false;
 }
 

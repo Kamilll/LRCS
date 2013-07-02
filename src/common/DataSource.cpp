@@ -119,6 +119,9 @@ Block* DataSource::getDecodedBlock() {
     return decoder->getNextBlock();
 }
 
+Block* DataSource::getDecodedBlock(Decoder* decoder_) {
+    return decoder_->getNextBlock();
+}
 // Gets the next value block from the operator 
 Block* DataSource::getNextValBlock(int colIndex_) {
 //zklee: Each page is converted to a multiblock, no loop required anymore!
@@ -170,7 +173,11 @@ byte* DataSource::getPageOnPos() {
 	unsigned int pageEnd;
 
 	assert(posFilter != NULL);
-	if(filterCursor == NULL)filterCursor = posFilter->getCursor();
+	if(filterCursor == NULL){
+		filterCursor = posFilter->getCursor();
+		filterCursor->getNext();//Move to the start position
+		filterCursor->setCurrStartPosition(); //Record current start position
+	}
 	byte* page;
 	if (!filterCursor->isFilterFinished()){
 		filterStart = filterCursor->getCurrStartPosition();
@@ -231,14 +238,14 @@ bool DataSource::getPosOnPredValueSorted(ValPos* rhsvp_, ValPos* tempVP_){
 	char* rhsval = (char*)rhsvp_->value;
 	char* temp = (char*)tempVP_->value;
 
-	StringDecoder* decoder=new StringDecoder(true);
+	StringDecoder* _decoder=new StringDecoder(true);
 	switch	(pred->getPredType()) {
 		case Predicate::OP_GREATER_THAN:
 			page=(byte*) skipToPageValue(temp);
 			if (page!=NULL) {
-				decoder->setBuffer(page);
-				if (decoder->skipToBlockOnValue(tempVP_))
-					position=((MultiBlock*) getDecodedBlock())->getPosition();
+				_decoder->setBuffer(page);
+				if (_decoder->skipToBlockOnValue(tempVP_))
+					position=((MultiBlock*)getDecodedBlock(_decoder))->getPosition();
 			}else return false;
 			if (position==0) posOutTripleOnPred->setTriple(NULL, minPos, maxPos-minPos+1);
 			if (position==maxPos)return false;
@@ -248,9 +255,9 @@ bool DataSource::getPosOnPredValueSorted(ValPos* rhsvp_, ValPos* tempVP_){
 		case Predicate::OP_GREATER_THAN_OR_EQUAL: 	
 			page=(byte*) skipToPageValue(rhsval);
 			if (page!=NULL) {
-				decoder->setBuffer(page);
-				if (decoder->skipToBlockOnValue(rhsvp_))
-					position=((MultiBlock*) getDecodedBlock())->getPosition();
+				_decoder->setBuffer(page);
+				if (_decoder->skipToBlockOnValue(rhsvp_))
+					position=((MultiBlock*)getDecodedBlock(_decoder))->getPosition();
 			}
 			if (position==0) matchedPredPos->setCompleteSet(true);
 			if (position==maxPos)return false;
@@ -259,17 +266,17 @@ bool DataSource::getPosOnPredValueSorted(ValPos* rhsvp_, ValPos* tempVP_){
 		case Predicate::OP_EQUAL: 	
 			page=(byte*) skipToPageValue(rhsval);
 			if (page!=NULL) {
-				decoder->setBuffer(page);
-				if (decoder->skipToBlockOnValue(rhsvp_))
-					position=((MultiBlock*) getDecodedBlock())->getPosition();
+				_decoder->setBuffer(page);
+				if (_decoder->skipToBlockOnValue(rhsvp_))
+					position=((MultiBlock*)getDecodedBlock(_decoder))->getPosition();
 			}
 			if (position==0)return false;
 			unsigned int end;
 			page=(byte*) skipToPageValue(temp);
 			if (page!=NULL) {
-				decoder->setBuffer(page);
-				if (decoder->skipToBlockOnValue(tempVP_))
-					end=((MultiBlock*) getDecodedBlock())->getPosition()-1;
+				_decoder->setBuffer(page);
+				if (_decoder->skipToBlockOnValue(tempVP_))
+					end=((MultiBlock*)getDecodedBlock(_decoder))->getPosition()-1;
 			}
 			else end=0;
 
@@ -280,9 +287,9 @@ bool DataSource::getPosOnPredValueSorted(ValPos* rhsvp_, ValPos* tempVP_){
 			if (position==minPos) return false;
 			page=(byte*) skipToPageValue(rhsval);
 			if (page!=NULL) {
-				decoder->setBuffer(page);
-				if (decoder->skipToBlockOnValue(rhsvp_))
-					position=((MultiBlock*) getDecodedBlock())->getPosition();
+				_decoder->setBuffer(page);
+				if (_decoder->skipToBlockOnValue(rhsvp_))
+					position=((MultiBlock*)getDecodedBlock(_decoder))->getPosition();
 			}
 			else ;
 			position--;
@@ -294,9 +301,9 @@ bool DataSource::getPosOnPredValueSorted(ValPos* rhsvp_, ValPos* tempVP_){
 			if (position==minPos)return false;
 			page=(byte*) skipToPageValue(temp);
 			if (page!=NULL) {
-				decoder->setBuffer(page);
-				if (decoder->skipToBlockOnValue(tempVP_))
-					position=((MultiBlock*) getDecodedBlock())->getPosition();
+				_decoder->setBuffer(page);
+				if (_decoder->skipToBlockOnValue(tempVP_))
+					position=((MultiBlock*)getDecodedBlock(_decoder))->getPosition();
 			}
 			else matchedPredPos->setCompleteSet(true);
 			position--;

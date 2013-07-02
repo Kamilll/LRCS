@@ -11,7 +11,7 @@ PosFilterCursor::PosFilterCursor(PosFilterBlock* SPFB_){
 	bufferPtrAsIntArr = (unsigned int*)buffer; 
 	currInt = 1;
 	currPos = 0;
-	currStartPos = currPos;
+	currStartPos = *startPos;
 	endInt = (*endPos-*startPos)/(8*sizeof(int))+1;
 
 	posIndex = new int[8*sizeof(int)+1];

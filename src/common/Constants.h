@@ -72,6 +72,7 @@ static const int PAGE_SIZE=65000;
 
 #define BLOCK_SIZE 6000
 #define MAX_INT (BLOCK_SIZE - 4*sizeof(int))/sizeof(int)
+#define BLOCK_MAX_BITS (BLOCK_SIZE - 4*sizeof(int))*8
 
 #endif // CONSTANTS_H
 
