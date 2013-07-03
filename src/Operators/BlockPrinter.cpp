@@ -82,7 +82,7 @@ void BlockPrinter::printColumns(bool skip_output) {
   posFilter = posOperator->getPosFilter();
   posFilter->getNumValuesR();
   for(int i=0; i<numSrcs; i++)
-	dataSrc[i]->setPositionFilter(posFilter, 0);
+	dataSrc[i]->setPositionFilter(posFilter);
   
   while (success) {
     currCol=0;

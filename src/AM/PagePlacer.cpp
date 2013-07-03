@@ -234,7 +234,7 @@ void PagePlacer::placeColumn(string name_, bool splitOnValue_, bool valSorted_) 
 		  //for (map<int, string>::iterator pos=nameMap.begin();
 		  //   pos!=nameMap.end();
 		  //   ++pos) {
-		  ROSAM* am = new ROSAM(nm, 1);
+		  ROSAM* am = new ROSAM(nm, 1, sizeof(int), sizeof(int), ValPos::INTTYPE, ValPos::INTTYPE);
 		  while ((page = (byte*)am->getNextPagePrimary()))
 		    writePage(newWriter, page, false, 2);
 		  delete am;

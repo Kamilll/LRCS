@@ -96,34 +96,19 @@ bool IntDecoder::skipToPos(unsigned int blockPos_) {
   }
 }
 
-bool IntDecoder::skipToBlockOnValue(int value_) {
-  Log::writeToLog("IntDecoder", 0, "skipToBlockOnValue() called, val", value_);
-  // currently scan down, however can do binary search when sorted in future
-  reader.resetPos();
-  int value;
-  while (reader.readInt(value)) {
-    currPos++;
-    //int value=((MultiBlock*) peekNextBlock())->getValue();
-    if (value!=value_) {
-      if (outBlock->isValueSorted()) {
-	if (value>value_) {
-	  Log::writeToLog("IntDecoder", 0, "Did not find value, returning false, val", value_);
-	  return false;
+bool IntDecoder::skipToBlockOnValue(ValPos* rhs_) {
+	reader.resetPos();
+	int value;
+	while (reader.readInt(value)) {
+		ValPos* lhs = new IntValPos();
+		lhs->set(value);
+		if (*lhs!=rhs_) {
+			currPos++;
+			if (valSorted && *lhs>rhs_)return false;
+		}
+		else return true;
 	}
-	//getNextBlock();
-      }
-      //else {
-      //getNextBlock();
-      //}
-    }
-    else {
-      Log::writeToLog("IntDecoder", 0, "skipToBlockOnValue() found value", value_);
-      skipToPos(currPos-*startPosPtr -1);
-      return true;
-    }
-  }
-  Log::writeToLog("IntDecoder", 0, "Did not find value, returning false, val", value_);
-  return false;
+	return false;
 }
 
 	

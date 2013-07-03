@@ -23,13 +23,6 @@ Operators/BlockPrinter.d Operators/BlockPrinter.o: ../src/Operators/BlockPrinter
  ../src/Operators/../common/../Wrappers/../common/Exception.h \
  ../src/Operators/../common/../Wrappers/../common/ValPos.h \
  ../src/Operators/../common/DataSource.h \
- ../src/Operators/../common/Util.h \
- ../src/Operators/../common/../Util/Log.h \
- ../src/Operators/../common/../Util/StopWatch.h \
- ../src/Operators/../common/../Util/HashMap.h \
- ../src/Operators/../common/../Util/HashFunction.h \
- ../src/Operators/../common/../Util/../common/IntValPos.h \
- ../src/Operators/../common/../Util/../common/UnexpectedException.h \
  ../src/Operators/../common/Interfaces.h \
  ../src/Operators/../common/../Operators/Operator.h \
  ../src/Operators/../common/../AM/AccessException.h \
@@ -39,6 +32,12 @@ Operators/BlockPrinter.d Operators/BlockPrinter.o: ../src/Operators/BlockPrinter
  /usr/local/BerkeleyDB.4.2/include/db.h \
  ../src/Operators/../common/../AM/AccessException.h \
  ../src/Operators/../common/../AM/../common/Util.h \
+ ../src/Operators/../common/../AM/../common/../Util/Log.h \
+ ../src/Operators/../common/../AM/../common/../Util/StopWatch.h \
+ ../src/Operators/../common/../AM/../common/../Util/HashMap.h \
+ ../src/Operators/../common/../AM/../common/../Util/HashFunction.h \
+ ../src/Operators/../common/../AM/../common/../Util/../common/IntValPos.h \
+ ../src/Operators/../common/../AM/../common/../Util/../common/UnexpectedException.h \
  ../src/Operators/../common/../AM/ROSAM.h \
  ../src/Operators/../common/../AM/AM.h \
  ../src/Operators/../common/../AM/PageWriter.h \
@@ -47,9 +46,8 @@ Operators/BlockPrinter.d Operators/BlockPrinter.o: ../src/Operators/BlockPrinter
  ../src/Operators/../common/../AM/../Wrappers/Util/../../common/Util.h \
  ../src/Operators/../common/Writer.h \
  ../src/Operators/../common/../Wrappers/BasicBlock.h \
- ../src/Operators/../common/../Wrappers/Decoder/Decoder.h \
- ../src/Operators/../common/../Wrappers/Decoder/../../common/Interfaces.h \
- ../src/Operators/../common/../Wrappers/Decoder/../CodingException.h \
+ ../src/Operators/../common/MultiPosFilterBlock.h \
+ ../src/Operators/../common/../Util/StringUtil.h \
  ../src/Operators/../common/../Wrappers/MultiBlock.h \
  ../src/Operators/../common/../Wrappers/../Operators/MultiPosFilterCursor.h \
  ../src/Operators/../common/../Wrappers/../Operators/Cursor.h \
@@ -57,7 +55,9 @@ Operators/BlockPrinter.d Operators/BlockPrinter.o: ../src/Operators/BlockPrinter
  ../src/Operators/../common/../Wrappers/../Operators/PosFilterCursor.h \
  ../src/Operators/../common/../Wrappers/Util/StringWriter.h \
  ../src/Operators/../common/../Wrappers/Util/../../common/Util.h \
- ../src/Operators/../common/../Util/StringUtil.h \
+ ../src/Operators/../common/../Wrappers/Decoder/Decoder.h \
+ ../src/Operators/../common/../Wrappers/Decoder/../../common/Interfaces.h \
+ ../src/Operators/../common/../Wrappers/Decoder/../CodingException.h \
  ../src/Operators/../common/../Wrappers/Decoder/PosDecoder.h \
  ../src/Operators/../common/../Wrappers/Decoder/Decoder.h \
  ../src/Operators/../common/../Wrappers/Decoder/../Util/IntReader.h \
@@ -68,6 +68,5 @@ Operators/BlockPrinter.d Operators/BlockPrinter.o: ../src/Operators/BlockPrinter
  ../src/Operators/../common/../Wrappers/Decoder/StringDecoder.h \
  ../src/Operators/../common/../Wrappers/Decoder/../Util/StringReader.h \
  ../src/Operators/../common/../Wrappers/Decoder/../Util/../../common/StringValPos.h \
- ../src/Operators/../common/MultiPosFilterBlock.h \
  ../src/Operators/../common/../Operators/MultiPosFilterCursor.h \
  ../src/Operators/PosOperator.h

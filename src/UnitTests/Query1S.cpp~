@@ -68,7 +68,7 @@ bool Query1S::run() {
 
 	ROSAM* am1 = new ROSAM( "StringTest03.ID" , 2 ,sizeof(int), 10, ValPos::INTTYPE, ValPos::STRINGTYPE);
 	ROSAM* am2 = new ROSAM( "StringTest03.DESC" , 2, sizeof(int), 11, ValPos::INTTYPE, ValPos::STRINGTYPE);
-	Predicate* pred1=new Predicate(Predicate::OP_GREATER_THAN);
+	Predicate* pred1=new Predicate(Predicate::OP_LESS_THAN);
 	Predicate* pred2=new Predicate(Predicate::OP_LESS_THAN);
 	StringDataSource* ds1=new StringDataSource(am1,true,true);
 	StringDataSource* ds2=new StringDataSource(am2,false,true);

@@ -1,14 +1,15 @@
 [Anjuta]
-Geometry=790x585+354+422
+Maximized=1
+Geometry=1280x741+0+27
+
+[Project Manager]
+Expand=src%%%src//AM
 
 [File Loader]
-Files=../../Wrappers/MultiBlock.h#80%%%../../Wrappers/MultiBlock.cpp#120%%%../../common/DataSource.cpp#378%%%../../common/DataSource.h#114%%%../../Wrappers/StringDataSource.h#42%%%../../Wrappers/Decoder/PosDecoder.cpp#83%%%../../Wrappers/Decoder/PosDecoder.h#1%%%../../Wrappers/Decoder/StringDecoder.cpp#92%%%../../AM/PagePlacer.h#32%%%../../AM/PagePlacer.cpp#231%%%../../UnitTests/Query1S.cpp#79%%%../../Wrappers/StringDataSource.cpp#44%%%../../common/Block.cpp#38%%%../../common/StringValPos.cpp#40%%%../../Operators/BlockPrinter.cpp#115%%%../../common/MultiPosFilterBlock.cpp#283%%%../../Wrappers/Util/StringReader.cpp#6%%%../../Wrappers/Decoder/StringDecoder.h#39%%%../../Wrappers/Util/StringReader.h#54%%%../../Wrappers/Decoder/Decoder.cpp#27%%%../../common/PosFilterBlock.cpp#3%%%../../common/MultiPosFilterBlock.h#9%%%../../Operators/MultiPosFilterCursor.cpp#40%%%../../Operators/MultiPosFilterCursor.h#7%%%../../common/PosFilterBlock.h#9%%%../../Operators/PosFilterCursor.cpp#42%%%../../Operators/PosFilterCursor.h#14%%%../../AM/ROSAM.cpp#973%%%../../Wrappers/Util/IntReader.cpp#60%%%../../Operators/PosOperator.cpp#90
+Files=../../UnitTests/Query1S.cpp#83%%%../../Operators/BlockPrinter.cpp#90%%%../../common/DataSource.cpp#99%%%../../AM/ROSAM.cpp#276%%%../../Wrappers/Decoder/StringDecoder.cpp#92%%%../../Wrappers/Decoder/StringDecoder.h#48%%%../../common/StringValPos.cpp#121%%%../../Wrappers/Decoder/Decoder.cpp#27%%%../../common/DataSource.h#88%%%../../common/MultiPosFilterBlock.cpp#354%%%../../common/MultiPosFilterBlock.h#7%%%../../common/PosFilterBlock.h#11%%%../../common/Constants.h#75%%%../../common/PosFilterBlock.cpp#229%%%../../Operators/PosOperator.cpp#90%%%../../Wrappers/MultiBlock.cpp#288%%%../../Operators/MultiPosFilterCursor.cpp#32%%%../../Operators/PosFilterCursor.cpp#43%%%../../Wrappers/Util/StringReader.cpp#24%%%../../AM/ROSAM.h#49%%%../../AM/PagePlacer.cpp#237%%%../../AM/AM.h#71
 
 [Document Manager]
 bookmarks=<?xml version="1.0" encoding="UTF-8"?>\n<bookmarks/>\n
-
-[Project Manager]
-Expand=src%%%src//Operators%%%src//common
 
 [Execution]
 Program arguments=0 1 Query1S%%%0 1 2
@@ -25,6 +26,6 @@ BuildArgs/Profiling=--enable-maintainer-mode 'CFLAGS=-g -pg' 'CXXFLAGS=-g -pg' '
 BuildArgs/Optimized=--enable-maintainer-mode 'CFLAGS=-O2' 'CXXFLAGS=-O2' 'JFLAGS=-O2' 'FFLAGS=-O2'
 
 [Debugger]
-Watch=\sposFilter
-Breakpoint=1:../../common/DataSource.cpp:329:0:
+Watch=lhs->value%%%value%%%bufferPtrAsIntArr[1]%%%pair
+Breakpoint=1:../../Operators/BlockPrinter.cpp:67:0:
 Stop at beginning=2

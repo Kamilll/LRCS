@@ -26,8 +26,8 @@ public:
 	virtual Block* getNextBlock();
 	virtual Block* getNextBlockSingle();
 	virtual bool skipToPos(unsigned int blockLoc_);
-
-	virtual bool skipToBlockOnValue(int value_);
+    virtual bool skipToBlockOnValue(ValPos* rhs_);
+	//virtual bool skipToBlockOnValue(int value_);
 
 
 

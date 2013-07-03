@@ -58,6 +58,7 @@ public:
 	virtual bool skipToPos(unsigned int blockLoc_);
 
 	virtual bool skipToBlockOnValue(int value_);
+	virtual bool skipToBlockOnValue(ValPos* rhs_){throw new UnimplementedException("");}
 
 
 

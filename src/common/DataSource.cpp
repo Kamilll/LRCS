@@ -1,17 +1,16 @@
 #include "DataSource.h"
+
 using namespace std;
 
 DataSource::DataSource(AM* am_, bool isROS_) {
 	init(am_, isROS_);
-	//currBlockWP=NULL;
 }
 
 DataSource::DataSource(AM* am_, bool isROS_, bool valSorted_, Decoder* decoder_) {
 	init(am_, isROS_);
 	valSorted=valSorted_;
 	decoder = decoder_;
-	currBlock=NULL;
-	useWP=false;	
+	currBlock=NULL;;	
 }
 
 void DataSource::init(AM* am_, bool isROS_) {
@@ -29,25 +28,12 @@ void DataSource::init(AM* am_, bool isROS_) {
 	am->initCursors();
 	posFilterChanged=true;
 	predChanged=true;
-	predLookup=true;
-
-	posFilterInit=true;
-	posFilter=NULL;
 	pred=NULL;
 
-	getBlocksCurrPage=NULL;
-	getBlocksCurrAM=NULL;
-	getBlocksCurrDecoder=NULL;
-
-	currPosBlock=NULL;
-	havePosBlock=false;
-	posFilterStart=0;
-	posFilterEnd=0;
-	posSkippedTo=0;	
-	getNextNextTime = true;
-	RLEAlways=false;
+	posFilter=NULL;
 	matchedPredPos = new MultiPosFilterBlock ();
 	posOutTripleOnPred=new RLETriple();
+	firstCall = true;
 }
 
 DataSource::~DataSource() {	
@@ -72,25 +58,20 @@ void DataSource::setPredicate(Predicate* pred_) {
 }		
 
 // Sets a filter for postions
-void DataSource::setPositionFilter(MultiPosFilterBlock* bitstringDataSource_, int colIndx_) {
+void DataSource::setPositionFilter(MultiPosFilterBlock* bitstringDataSource_) {
 	posFilterChanged=true;
 	posFilter=bitstringDataSource_;
-	posColIndex=colIndx_;
 }
 
 
 //getLastPosition returns the last position in the data source (column)
 int DataSource::getLastPosition() {
 	if (posPrimaryIndex)
-		return *(int*)am->getLastIndexValuePrimary();
-	else
-		return *(int*)am->getLastIndexValueSecondary();
+		return *(int*)am->getLastIndexValuePrimary();	
 }
 
 const void* DataSource::getNextPageValue() {
 	if (posPrimaryIndex)
-		return am->getNextPageSecondary();
-	else
 		return am->getNextPagePrimary();
 }
 
@@ -101,18 +82,9 @@ const void* DataSource::skipToPageValue(char* key) {
 		return am->skipToPagePrimary(key);
 }
 
-const void* DataSource::getNextPagePosition() {
-	if (posPrimaryIndex)
-		return am->getNextPagePrimary();
-	else
-		return am->getNextPageSecondary();
-}
-
 const void* DataSource::skipToPagePosition(int key) {
 	if (posPrimaryIndex)
 		return am->skipToPagePrimary((char*)&key);
-	else
-		return am->skipToPageSecondary((char*)&key);
 }
 
 Block* DataSource::getDecodedBlock() {
@@ -148,8 +120,6 @@ byte* DataSource::getRightPage() {
 		am->initCursors();
 		posFilterChanged=false;
 		predChanged=false;
-		predLookup=true;
-		posSkippedTo=0;
 	}
 
 	if(posFilter != NULL)
@@ -167,27 +137,16 @@ byte* DataSource::getPage() {
 	return (byte*) getNextPageValue();
 }
 
-byte* DataSource::getPageOnPos() {
-	unsigned int filterStart;
-	unsigned int filterEnd;
-	unsigned int pageEnd;
-
+byte* DataSource::getPageOnPos() {	
 	assert(posFilter != NULL);
 	if(filterCursor == NULL){
 		filterCursor = posFilter->getCursor();
 		filterCursor->getNext();//Move to the start position
 		filterCursor->setCurrStartPosition(); //Record current start position
 	}
-	byte* page;
 	if (!filterCursor->isFilterFinished()){
-		filterStart = filterCursor->getCurrStartPosition();
-		//filterEnd = posFilter->getEndPosition();
 		am->initCursors();
-		page=(byte*) skipToPagePosition(filterStart);
-		//decoder->setBuffer(page);
-		//pageEnd = decoder->getEndPos();
-		//if(pageEnd>filterEnd) filterFinished = true;
-		return page;
+		return (byte*)skipToPagePosition(filterCursor->getCurrStartPosition());
 	}else return NULL;
 }
 
@@ -201,6 +160,11 @@ bool DataSource::skipToRightPosOnPage(unsigned int pos_) {
 
 //Get the position block on predicaiton
 MultiPosFilterBlock* DataSource::getPosOnPred(){
+/*
+	 * This method should be rewritten in children class
+	 * For the reason of different value types.
+	 * The default here is string.
+*/
 	if(pred==NULL)matchedPredPos->setCompleteSet(true);
 	else{
 		predChanged=false;//Reset predChanged
@@ -213,14 +177,14 @@ MultiPosFilterBlock* DataSource::getPosOnPred(){
 		if (pred->getRHS()->type == ValPos::STRINGTYPE){
 			temp = StringUtil::getSmallestLargerValue(rhsval,valsize);
 			tempVP->set(temp);
-		}else{//To be implemented
-			tempVP->set(1);
+		}else{//Default is string type column.
+			return NULL;
 		}
 
 		if (valSorted) {					
 			getPosOnPredValueSorted(rhsvp, tempVP);
 		}else {// The column is not value sorted
-			getPosOnPredValueUnsorted(am, rhsvp, tempVP);
+			getPosOnPredValueUnsorted((ROSAM*)am, rhsvp, tempVP);
 		}	
 	}
 	return matchedPredPos;
@@ -238,14 +202,13 @@ bool DataSource::getPosOnPredValueSorted(ValPos* rhsvp_, ValPos* tempVP_){
 	char* rhsval = (char*)rhsvp_->value;
 	char* temp = (char*)tempVP_->value;
 
-	StringDecoder* _decoder=new StringDecoder(true);
 	switch	(pred->getPredType()) {
 		case Predicate::OP_GREATER_THAN:
 			page=(byte*) skipToPageValue(temp);
 			if (page!=NULL) {
-				_decoder->setBuffer(page);
-				if (_decoder->skipToBlockOnValue(tempVP_))
-					position=((MultiBlock*)getDecodedBlock(_decoder))->getPosition();
+				decoder->setBuffer(page);
+				if (decoder->skipToBlockOnValue(tempVP_))
+					position=((MultiBlock*)getDecodedBlock(decoder))->getPosition();
 			}else return false;
 			if (position==0) posOutTripleOnPred->setTriple(NULL, minPos, maxPos-minPos+1);
 			if (position==maxPos)return false;
@@ -255,9 +218,9 @@ bool DataSource::getPosOnPredValueSorted(ValPos* rhsvp_, ValPos* tempVP_){
 		case Predicate::OP_GREATER_THAN_OR_EQUAL: 	
 			page=(byte*) skipToPageValue(rhsval);
 			if (page!=NULL) {
-				_decoder->setBuffer(page);
-				if (_decoder->skipToBlockOnValue(rhsvp_))
-					position=((MultiBlock*)getDecodedBlock(_decoder))->getPosition();
+				decoder->setBuffer(page);
+				if (decoder->skipToBlockOnValue(rhsvp_))
+					position=((MultiBlock*)getDecodedBlock(decoder))->getPosition();
 			}
 			if (position==0) matchedPredPos->setCompleteSet(true);
 			if (position==maxPos)return false;
@@ -266,17 +229,17 @@ bool DataSource::getPosOnPredValueSorted(ValPos* rhsvp_, ValPos* tempVP_){
 		case Predicate::OP_EQUAL: 	
 			page=(byte*) skipToPageValue(rhsval);
 			if (page!=NULL) {
-				_decoder->setBuffer(page);
-				if (_decoder->skipToBlockOnValue(rhsvp_))
-					position=((MultiBlock*)getDecodedBlock(_decoder))->getPosition();
+				decoder->setBuffer(page);
+				if (decoder->skipToBlockOnValue(rhsvp_))
+					position=((MultiBlock*)getDecodedBlock(decoder))->getPosition();
 			}
 			if (position==0)return false;
 			unsigned int end;
 			page=(byte*) skipToPageValue(temp);
 			if (page!=NULL) {
-				_decoder->setBuffer(page);
-				if (_decoder->skipToBlockOnValue(tempVP_))
-					end=((MultiBlock*)getDecodedBlock(_decoder))->getPosition()-1;
+				decoder->setBuffer(page);
+				if (decoder->skipToBlockOnValue(tempVP_))
+					end=((MultiBlock*)getDecodedBlock(decoder))->getPosition()-1;
 			}
 			else end=0;
 
@@ -287,9 +250,9 @@ bool DataSource::getPosOnPredValueSorted(ValPos* rhsvp_, ValPos* tempVP_){
 			if (position==minPos) return false;
 			page=(byte*) skipToPageValue(rhsval);
 			if (page!=NULL) {
-				_decoder->setBuffer(page);
-				if (_decoder->skipToBlockOnValue(rhsvp_))
-					position=((MultiBlock*)getDecodedBlock(_decoder))->getPosition();
+				decoder->setBuffer(page);
+				if (decoder->skipToBlockOnValue(rhsvp_))
+					position=((MultiBlock*)getDecodedBlock(decoder))->getPosition();
 			}
 			else ;
 			position--;
@@ -297,13 +260,12 @@ bool DataSource::getPosOnPredValueSorted(ValPos* rhsvp_, ValPos* tempVP_){
 			else posOutTripleOnPred->setTriple(NULL, minPos, position-minPos+1);
 			break;
 		case Predicate::OP_LESS_THAN_OR_EQUAL:
-			//zklee:should be reconsiderated.
 			if (position==minPos)return false;
 			page=(byte*) skipToPageValue(temp);
 			if (page!=NULL) {
-				_decoder->setBuffer(page);
-				if (_decoder->skipToBlockOnValue(tempVP_))
-					position=((MultiBlock*)getDecodedBlock(_decoder))->getPosition();
+				decoder->setBuffer(page);
+				if (decoder->skipToBlockOnValue(tempVP_))
+					position=((MultiBlock*)getDecodedBlock(decoder))->getPosition();
 			}
 			else matchedPredPos->setCompleteSet(true);
 			position--;
@@ -314,6 +276,7 @@ bool DataSource::getPosOnPredValueSorted(ValPos* rhsvp_, ValPos* tempVP_){
 			 return false;
 			break;
 	}
+
 	if(!matchedPredPos->isCompleteSet())
        matchedPredPos->setTriple(posOutTripleOnPred);
 	return true;
@@ -324,7 +287,6 @@ bool DataSource::getPosOnPredValueUnsorted(ROSAM* am_,ValPos* rhsvp_, ValPos* te
 	byte* page=NULL;
 	PosDecoder* posdecoder = new PosDecoder(false);
 	bool done = false;
-	int currEndPos = 0;
 	ValPos* pair;
 	
 	assert(pred!=NULL);	

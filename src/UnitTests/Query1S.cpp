@@ -1,9 +1,9 @@
 /**
  * Query1S:
  * SELECT *
- * FROM StringTest01
+ * FROM StringTest03
  *
- * Projections: (StringTest01.ID| StringTest01.DESC)
+ * Projections: (StringTest03.ID| StringTest03.DESC)
  *
  * Strategy:
  */

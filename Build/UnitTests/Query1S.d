@@ -77,11 +77,11 @@ UnitTests/Query1S.d UnitTests/Query1S.o: ../src/UnitTests/Query1S.cpp ../src/Uni
  ../src/UnitTests/../Wrappers/Decoder/../MultiBlock.h \
  ../src/UnitTests/../Wrappers/StringDataSource.h \
  ../src/UnitTests/../Wrappers/../common/DataSource.h \
- ../src/UnitTests/../Wrappers/../common/Util.h \
  ../src/UnitTests/../Wrappers/../common/Interfaces.h \
- ../src/UnitTests/../Wrappers/../common/../Wrappers/Decoder/Decoder.h \
- ../src/UnitTests/../Wrappers/../common/../Wrappers/MultiBlock.h \
+ ../src/UnitTests/../Wrappers/../common/MultiPosFilterBlock.h \
  ../src/UnitTests/../Wrappers/../common/../Util/StringUtil.h \
+ ../src/UnitTests/../Wrappers/../common/../Wrappers/MultiBlock.h \
+ ../src/UnitTests/../Wrappers/../common/../Wrappers/Decoder/Decoder.h \
  ../src/UnitTests/../Wrappers/../common/../Wrappers/Decoder/PosDecoder.h \
  ../src/UnitTests/../Wrappers/../common/../Wrappers/Decoder/Decoder.h \
  ../src/UnitTests/../Wrappers/../common/../Wrappers/Decoder/../Util/IntReader.h \
@@ -90,15 +90,7 @@ UnitTests/Query1S.d UnitTests/Query1S.o: ../src/UnitTests/Query1S.cpp ../src/Uni
  ../src/UnitTests/../Wrappers/../common/../Wrappers/Decoder/../Util/ByteReader.h \
  ../src/UnitTests/../Wrappers/../common/../Wrappers/Decoder/../MultiBlock.h \
  ../src/UnitTests/../Wrappers/../common/../Wrappers/Decoder/StringDecoder.h \
- ../src/UnitTests/../Wrappers/../common/MultiPosFilterBlock.h \
  ../src/UnitTests/../Wrappers/../common/../Operators/MultiPosFilterCursor.h \
- ../src/UnitTests/../Wrappers/Decoder/StringDecoder.h \
- ../src/UnitTests/../Wrappers/BasicBlock.h \
- ../src/UnitTests/../Wrappers/RLETriple.h \
- ../src/UnitTests/../Wrappers/../common/UnimplementedException.h \
- ../src/UnitTests/../Wrappers/../Util/StringUtil.h \
- ../src/UnitTests/../Wrappers/Decoder/PosDecoder.h \
- ../src/UnitTests/../Wrappers/MultiBlock.h \
  ../src/UnitTests/../common/DataSource.h ../src/UnitTests/../Paths.h \
  ../src/UnitTests/../Operators/BlockPrinter.h \
  ../src/UnitTests/../Operators/../Util/StopWatch.h \

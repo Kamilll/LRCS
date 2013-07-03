@@ -58,6 +58,7 @@ public:
 	virtual Block* getBlock(unsigned int blockPos_);
 
 	virtual bool skipToBlockOnValue(int value_);
+	virtual bool skipToBlockOnValue(ValPos* rhs_){throw new UnimplementedException("");}
 	virtual bool skipToBlockOnPos(unsigned int pos);
 	
 	
@@ -75,8 +76,7 @@ protected:
 	
 	virtual bool skipToTriple(unsigned int triplePos_);
 	virtual RLETriple* getTriple(unsigned int triplePos_);
-	
-	bool valSorted;
+
 	BitReader* reader;
 	RLETriple* result;
 	RLEBlock* block;

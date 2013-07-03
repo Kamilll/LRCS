@@ -1,21 +1,16 @@
 #ifndef DATASOURCE_H
 #define DATASOURCE_H
 
-#include "Util.h"
-#include "Constants.h"
 #include "Interfaces.h"
-#include "../Wrappers/Decoder/Decoder.h"
-#include "../Wrappers/MultiBlock.h"
-#include <map>
-#include <sstream>
-
+#include "MultiPosFilterBlock.h"
 #include "../Util/StringUtil.h"
+#include "../Wrappers/MultiBlock.h"
+#include "../Wrappers/Decoder/Decoder.h"
 #include "../Wrappers/Decoder/PosDecoder.h"
 #include "../Wrappers/Decoder/StringDecoder.h"
-#include "MultiPosFilterBlock.h"
 #include "../Operators/MultiPosFilterCursor.h"
 
-// Abstract class that:
+// Super class that:
 //	-Gets data from the AM
 //	-Holds data in memory
 // 	-Provides filtering of a column on a bitstring
@@ -29,7 +24,7 @@ class DataSource : public Operator {
 
 		// Destructor
 		virtual ~DataSource();
-		
+
 		// Changes the RHS binding for this datasource
 		virtual void changeRHSBinding(ValPos* rhs_);
 
@@ -37,7 +32,7 @@ class DataSource : public Operator {
 		virtual void setPredicate(Predicate* pred_);
 
 		// Sets a filter for postions
-		virtual void setPositionFilter(MultiPosFilterBlock* bitstringDataSource_, int colIndx_);
+		virtual void setPositionFilter(MultiPosFilterBlock* bitstringDataSource_);
 
 		// Gets the next value block from the operator 
 		virtual	Block* getNextValBlock(int colIndex_);
@@ -47,27 +42,33 @@ class DataSource : public Operator {
 
 		// Gets the Posiotion block on the predication 
 		virtual	MultiPosFilterBlock* getPosOnPred();
-		
+
 		// Gets the maximum position in the data source
 		virtual int getLastPosition();
 
 	protected:
+		AM* am;	
+		Predicate* pred;
+		Decoder* decoder;
+		MultiBlock* currBlock;
+
+		bool posPrimaryIndex;
+		bool isROS;
+		bool valSorted;	
+		bool posFilterChanged;
+		bool predChanged;
+
+		// Filter streams
+		MultiPosFilterBlock* posFilter;
+		MultiPosFilterBlock* matchedPredPos;
+		RLETriple* posOutTripleOnPred;
+		MultiPosFilterCursor* filterCursor;
+
 		// Main method to get a page given the predicates and filters
 		virtual byte* getRightPage();
+
+		//Skips to the right position on a page that buffered
 		virtual bool skipToRightPosOnPage(unsigned int pos_);
-
-		// Skips to the first block with this value
-		// Returns NULL if the value is outside the range of the column
-		virtual Block* skipToValBlock(int colIndex_, int val_){return NULL;}
-
-		// Skips to the first block with this position
-		// Returns NULL if the value is outside the range of the column
-		virtual PosBlock* skipToPosBlock(int colIndex_, int pos_){return NULL;}
-
-
-		//printColumn, but print to string instead of stdout
-		//used for testing purpose.
-		virtual void printColumn(stringstream& ss){ss << "DATASOURCE PRINT" << endl;};
 
 		//skips to page along the value index
 		virtual const void* skipToPageValue(char* key);
@@ -78,69 +79,17 @@ class DataSource : public Operator {
 		//gets the next page along value index	
 		virtual const void* getNextPageValue( );
 
-		//gets the next page along position index
-		virtual const void* getNextPagePosition( );
-
-		void init(AM* am_, bool isROS_);
-
+		//Decode the page get from BDB
 		Block* getDecodedBlock();
-
 		Block* getDecodedBlock(Decoder* decoder_);
-
-
-		// Access method used to get values
-		AM* am;	
-		AM* getBlocksCurrAM;	
-		Decoder* getBlocksCurrDecoder;
-		byte* getBlocksCurrPage;
-
-		// Have we altered filters or predicates?
-		bool posFilterChanged;
-		bool predChanged;
-		bool predLookup;
-
-		bool posPrimaryIndex;
-
-		// Filter streams
-		MultiPosFilterBlock* posFilter;
-		MultiPosFilterBlock* matchedPredPos;
-		unsigned int posColIndex;
-
-		Predicate* pred;
-
-		// Position Filter flags		
-		bool posFilterInit;
-		bool posFilterPosSorted;
-		bool posFilterCurrBlockPosSorted;
-		bool posFilterCurrBlockPosContig;
-
-		// Current Position Block
-		PosBlock* currPosBlock;
-		bool havePosBlock;
-		// Current range for position filtering
-		unsigned int posFilterStart;
-		unsigned int posFilterEnd;
-		unsigned int posSkippedTo; // last position looked up in position index
-
-		bool isROS;
-		bool getNextNextTime;
-		bool RLEAlways;
-		bool valSorted;
-		bool useWP;
-		Decoder* decoder;
-		MultiBlock* currBlock;
-		RLETriple* posOutTripleOnPred;
-		MultiPosFilterCursor* filterCursor;
-		
-
-	private:
 		virtual byte* getPage();
 		virtual byte* getPageOnPos();
 		virtual bool getPosOnPredValueSorted(ValPos* rhsvp_, ValPos* tempVP_);
 		virtual bool getPosOnPredValueUnsorted(ROSAM* am_,ValPos* rhsvp_, ValPos* tempVP_);
 
-		bool firstCall = true;
-		bool filterFinished = false;
+	private:
+		void init(AM* am_, bool isROS_);
+		bool firstCall;
 };
 
 #endif // DATASOURCE_H

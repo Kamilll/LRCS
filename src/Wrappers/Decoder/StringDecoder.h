@@ -25,10 +25,7 @@ public:
 	virtual Block* getNextBlock();
 	virtual Block* getNextBlockSingle();
 	virtual bool skipToPos(unsigned int blockPos_);
-
-	virtual bool skipToBlockOnValue(ValPos* vp_);
-
-
+	virtual bool skipToBlockOnValue(ValPos* rhs_);
 
 	virtual ValPos* getStartVal();
 	virtual unsigned int getStartPos();
@@ -45,7 +42,6 @@ protected:
 	MultiBlock* outMultiBlock;
 	ValPos* outPair;
 	unsigned int currPos;
-	bool valSorted;
 };
 
 #endif //_STRINGDECODER_H_
