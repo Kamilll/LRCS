@@ -10,6 +10,7 @@ main::~main()
 }
 
 void runTest(string, char*, char*);
+void initAllTestSuites(map<string, UnitTest*> &testSuites);
 
 int main(int argc, char *argv[]) {
 	using namespace std;
@@ -18,8 +19,6 @@ int main(int argc, char *argv[]) {
 	bool useOwn = true;
 	char* arg1 = NULL;
 	char* arg2 = NULL;
-
-    testName = "Query1S";
 	
 	if(argc >=2){  
 		useOwn = (!(argv[1][0] == '0'));
@@ -50,16 +49,23 @@ int main(int argc, char *argv[]) {
 
 void runTest(string testName, char* arg1, char* arg2){
 	bool success = true;
-
-	cout << testName << endl;
-
-    UnitTest* query1s = new Query1S();
+	map<string, UnitTest*> testSuites;
+    initAllTestSuites(testSuites);
 	
-	query1s->run();
+	cout << testName << endl;
+	if(testSuites[testName] != NULL)
+	    success &= testSuites[testName]->run();
 	
 	if (success) 
 		cout << endl << "SUCCESSFULL ON ALL SUITES" << endl;
 	else
 		cout << endl << "FAILED SOME SUITES" << endl;
+
+	for (map<string, UnitTest*>::iterator iterPos=testSuites.begin(); iterPos !=testSuites.end(); ++iterPos)
+		delete iterPos->second;
 }
 
+void initAllTestSuites(map<string, UnitTest*> &testSuites){
+   testSuites["Query1S"] = new Query1S();
+   testSuites["Query2S"] = new Query2S();
+}

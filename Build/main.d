@@ -108,4 +108,4 @@ main.d ./main.o: ../src/main.cpp ../src/main.h ../src/Util/Log.h \
  ../src/UnitTests/../AM/../Wrappers/Decoder/../Util/StringReader.h \
  ../src/UnitTests/../AM/../Wrappers/Decoder/../Util/ByteReader.h \
  ../src/UnitTests/../AM/../Wrappers/Decoder/../MultiBlock.h \
- ../src/UnitTests/UnitTest.h
+ ../src/UnitTests/UnitTest.h ../src/UnitTests/Query2S.h

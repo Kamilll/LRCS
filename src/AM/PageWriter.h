@@ -86,8 +86,8 @@ class PageWriter
 
     void closeDB();
 
-    void placePage(char* page, char* primkey, char* seckey);
-    void placePage(char* page, char* primkey);
+    void placePage(char* page, char* primkey, char* seckey, int page_size=PAGE_SIZE);
+    void placePage(char* page, char* primkey,  int page_size=PAGE_SIZE);
     void placeUnsortedRecord(char* seckey_, char* position_);
 	void placeUnsortedKey(char* key_, char* val_, int valsize_);
     static int dup_compare(Db *dbp, const Dbt *a, const Dbt *b);

@@ -51,7 +51,7 @@ public:
 	void placeColumn(string name_, bool splitOnValue_, bool valSorted_);
 	
 protected:
-	void writePage(PageWriter* writer_, byte* page_, bool posPrimary_, int numIndexes_);
+	void writePage(PageWriter* writer_, byte* page_, int page_size, bool posPrimary_, int numIndexes_);
 	Encoder* encoder;
 	Decoder* decoder;
 	int numIndexes;

@@ -2,6 +2,7 @@ CPP_SRCS += \
 ${addprefix $(ROOT)/Wrappers/Encoder/, \
 Encoder.cpp \
 IntEncoder.cpp \
+LZEncoder.cpp \
 StringEncoder.cpp \
 UncompressedEncoder.cpp \
 }

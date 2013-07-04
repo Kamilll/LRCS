@@ -1,37 +1,5 @@
-/* Copyright (c) 2005, Regents of Massachusetts Institute of Technology, 
- * Brandeis University, Brown University, and University of Massachusetts 
- * Boston. All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without 
- * modification, are permitted provided that the following conditions are met:
- *
- *   - Redistributions of source code must retain the above copyright notice, 
- *     this list of conditions and the following disclaimer.
- *   - Redistributions in binary form must reproduce the above copyright 
- *     notice, this list of conditions and the following disclaimer in the 
- *     documentation and/or other materials provided with the distribution.
- *   - Neither the name of Massachusetts Institute of Technology, 
- *     Brandeis University, Brown University, or University of 
- *     Massachusetts Boston nor the names of its contributors may be used 
- *     to endorse or promote products derived from this software without 
- *     specific prior written permission.
-
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED 
- * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR 
- * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR 
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
- * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF 
- * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING 
- * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS 
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
 #include "PagePlacer.h"
-/*Zklee: This PagePlacer only copes with value sorted case!!!!
- * Pitty!
- */
+
 PagePlacer::PagePlacer(Encoder* src_, Decoder* decoder_, int numIndexes_, bool posPrimary_)
 {
 	setSrc(src_, decoder_, numIndexes_, posPrimary_);
@@ -62,11 +30,13 @@ void PagePlacer::setSrc(Encoder* src_, Decoder* decoder_, int numIndexes_, bool 
 
 void PagePlacer::placeColumn(string name_, bool splitOnValue_, bool valSorted_) {
     valSorted = valSorted_;
+	int page_size;
 	if (!splitOnValue_) {
 		Log::writeToLog("PagePlacer", 2, "NOT Spliting on Value");
 		PageWriter* pageWriter=NULL;
 		byte* page=encoder->getPage();
 		while (page!=NULL) {
+			page_size = encoder->getPageSize();
 			decoder->setBuffer(page);
 			if (!pageWriter) {
 			  int primkeysize=sizeof(int);
@@ -82,9 +52,9 @@ void PagePlacer::placeColumn(string name_, bool splitOnValue_, bool valSorted_) 
 			    seckeytype=decoder->getStartVal()->type;
 			  }
 			  pageWriter = new PageWriter(numIndexes, primkeysize, seckeysize, primkeytype, seckeytype);
-			  pageWriter->initDB(name_, !valSorted_);
+			  pageWriter->initDB(name_, (valSorted?false:true));
 			}	
-			writePage(pageWriter, page, posPrimary, numIndexes);
+			writePage(pageWriter, page, page_size, posPrimary, numIndexes);
 			page=encoder->getPage();
 		}
 		pageWriter->closeDB();
@@ -102,6 +72,7 @@ void PagePlacer::placeColumn(string name_, bool splitOnValue_, bool valSorted_) 
 		ValPos* value=NULL;
 		char* buffer;
 		while (page!=NULL) {
+			page_size = encoder->getPageSize();
 			PageWriter* pageWriter=NULL;
 			decoder->setBuffer(page);
 			value=decoder->getStartVal();
@@ -128,7 +99,7 @@ void PagePlacer::placeColumn(string name_, bool splitOnValue_, bool valSorted_) 
 				}*/
 			
 			// write the page with corresponding indexes
-			writePage(pageWriter, page, true, 1);
+			writePage(pageWriter, page,page_size, true, 1);
 	  		
 	  		// get the next page
 			page=encoder->getPage();
@@ -236,7 +207,7 @@ void PagePlacer::placeColumn(string name_, bool splitOnValue_, bool valSorted_) 
 		  //   ++pos) {
 		  ROSAM* am = new ROSAM(nm, 1, sizeof(int), sizeof(int), ValPos::INTTYPE, ValPos::INTTYPE);
 		  while ((page = (byte*)am->getNextPagePrimary()))
-		    writePage(newWriter, page, false, 2);
+		    writePage(newWriter, page,page_size, false, 2);
 		  delete am;
 		  delete[] nm;
 		}
@@ -250,7 +221,7 @@ void PagePlacer::placeColumn(string name_, bool splitOnValue_, bool valSorted_) 
 	}
 }
 
-void PagePlacer::writePage(PageWriter* writer_, byte* page_, bool posPrimary_, int numIndexes_) {
+void PagePlacer::writePage(PageWriter* writer_, byte* page_, int page_size, bool posPrimary_, int numIndexes_) {
 	bool useSecondary;
 	decoder->setBuffer(page_);
 
@@ -260,11 +231,11 @@ void PagePlacer::writePage(PageWriter* writer_, byte* page_, bool posPrimary_, i
 	if (numIndexes_==1) {
 		if (posPrimary_) {
 			temppos = decoder->getEndPos();
-			writer_->placePage((char*) page_, (char*)&temppos);
+			writer_->placePage((char*) page_, (char*)&temppos,page_size);
 		}
 		else {	
 			assert(valSorted);
-			writer_->placePage((char*) page_, (char*)decoder->getEndVal()->value);
+			writer_->placePage((char*) page_, (char*)decoder->getEndVal()->value,page_size);
 		}
 
 	}	
@@ -275,43 +246,33 @@ void PagePlacer::writePage(PageWriter* writer_, byte* page_, bool posPrimary_, i
 					lastSecondaryValueSet = true;
 					lastSecondaryValue = decoder->getEndVal()->clone();
 					useSecondary=true;
-				}
-				else {
+				}else {
 					ValPos* newSecVal = decoder->getEndVal();
 					if (*newSecVal != lastSecondaryValue) {
 						delete lastSecondaryValue;
 						lastSecondaryValue = newSecVal->clone();
 						useSecondary=true;
-					}
-					else
+					}else
 						useSecondary=false;
 				}
+
+				
 				if (useSecondary) {
 					temppos = decoder->getEndPos();
-					writer_->placePage((char*) page_, (char*)&(temppos), (char*)lastSecondaryValue->value);
-					//cout << "First key: " << temppos;
-					//cout << " Second key: ";
-					//lastSecondaryValue->printVal(&cout);
-					//cout << endl;
-					//Log::writeToLog("PagePlacer", 2, "Placing page with primIndex:", decoder->getEndPos()) ;
-					//Log::writeToLog("PagePlacer", 2, "Placing page with secondIndex:", lastSecondaryValue) ;
-				}
-				else {
+					writer_->placePage((char*) page_, (char*)&(temppos), (char*)lastSecondaryValue->value,page_size);
+				}else {
 					temppos = decoder->getEndPos();
-					writer_->placePage((char*) page_, (char*)&(temppos));
-					//Log::writeToLog("PagePlacer", 2, "Placing page with primIndex:", decoder->getEndPos()) ;
+					writer_->placePage((char*) page_, (char*)&(temppos),page_size);
 				}
-			}
-			else {
+				
+			}else {
 				temppos = decoder->getEndPos();
-				writer_->placePage((char*) page_, (char*)decoder->getEndVal()->value,(char*)&(temppos));
-				//Log::writeToLog("PagePlacer", 2, "Placing page with primIndex:", decoder->getEndInt()) ;
-				//Log::writeToLog("PagePlacer", 2, "Placing page with secIndex:", decoder->getEndPos()) ;
+				writer_->placePage((char*) page_, (char*)decoder->getEndVal()->value,(char*)&(temppos), page_size);
 			}
 		}else{//Value is unsorted:Create Position Primary and Value secondary
 			//Postion priamry Index
 			temppos = decoder->getEndPos();
-			writer_->placePage((char*) page_, (char*)&temppos);
+			writer_->placePage((char*) page_, (char*)&temppos, page_size);
 			//Value secondary Index
 			while(decoder->hasNextBlock()){
 				Block* outBlock = decoder->getNextBlock();

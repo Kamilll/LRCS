@@ -9,6 +9,7 @@ StringDecoder::StringDecoder(byte* buffer_, bool valSorted_) : Decoder(buffer_) 
 	valSorted = valSorted_;
 	setBuffer(buffer_);
 }
+
 StringDecoder::StringDecoder(StringDecoder& decoder_) : Decoder(decoder_) { 
 	reader=decoder_.reader;
 	numStringsPtr=decoder_.numStringsPtr;
@@ -57,7 +58,7 @@ Block* StringDecoder::getNextBlock() {
 	byte* buffer;
 	if (!(buffer=reader.getBuffer(numVals))) return NULL;
 	outMultiBlock->setBuffer(currPos, numVals,*ssizePtr,buffer);
-	//currPos+=numVals;
+	currPos+=numVals;
 	return outMultiBlock;
 }
 

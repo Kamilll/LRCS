@@ -26,7 +26,7 @@ class Block {
 		// Iterator access to block
 		virtual bool hasNext()=0;
 		// returns true if has next value and next value is equal to value_ 
-		virtual bool hasNext(int value_)=0;
+		//virtual bool hasNext(int value_)=0;
 		virtual ValPos* getNext()=0;
 		virtual ValPos* peekNext()=0;
 		virtual void setType(short type_);

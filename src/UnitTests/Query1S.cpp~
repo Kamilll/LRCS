@@ -20,8 +20,8 @@ Query1S::~Query1S() {
 bool Query1S::run() {
 	Log::writeToLog("Query1S", 10, "Query 1 starting...");
 	bool success=true;
-	bool createcolumn=false;
-	string path="../data/StringTestData.mid";  
+	bool createcolumn=true;
+	string path="../data/StringTestData.large";  
 
 	if (createcolumn){	
 		Log::writeToLog("Query1S", 10, "Creating Column1...");  
@@ -35,7 +35,7 @@ bool Query1S::run() {
 		                                        decoder, 
 		                                        2,       
 		                                        false);
-		pagePlacer->placeColumn("StringTest03.ID", false, true);
+		pagePlacer->placeColumn("StringTest01.ID", false, true);
 		delete pagePlacer;
 		delete ce;
 		delete encoder;
@@ -53,21 +53,21 @@ bool Query1S::run() {
 		                            decoder, 
 		                            2,       
 		                            false);  
-		pagePlacer->placeColumn("StringTest03.DESC", false, false);
+		pagePlacer->placeColumn("StringTest01.DESC", false, false);
 		delete pagePlacer;
 		delete ce;
 		delete encoder;
 		delete decoder;
 
-		system("mv StringTest03* " RUNTIME_DATA);
+		system("mv StringTest01* " RUNTIME_DATA);
 	}
 
 	Log::writeToLog("Query1S", 10, "Opening Column1...");
 	StopWatch stopWatch;
 	stopWatch.start();
 
-	ROSAM* am1 = new ROSAM( "StringTest03.ID" , 2 ,sizeof(int), 10, ValPos::INTTYPE, ValPos::STRINGTYPE);
-	ROSAM* am2 = new ROSAM( "StringTest03.DESC" , 2, sizeof(int), 11, ValPos::INTTYPE, ValPos::STRINGTYPE);
+	ROSAM* am1 = new ROSAM( "StringTest01.ID" , 2 ,sizeof(int), 10, ValPos::INTTYPE, ValPos::STRINGTYPE);
+	ROSAM* am2 = new ROSAM( "StringTest01.DESC" , 2, sizeof(int), 11, ValPos::INTTYPE, ValPos::STRINGTYPE);
 	Predicate* pred1=new Predicate(Predicate::OP_LESS_THAN);
 	Predicate* pred2=new Predicate(Predicate::OP_LESS_THAN);
 	StringDataSource* ds1=new StringDataSource(am1,true,true);
@@ -96,7 +96,7 @@ bool Query1S::run() {
 
 
 	BlockPrinter* bPrint=new BlockPrinter(srcs, numCols,2,NULL);
-	bPrint->printColumns();
+	//bPrint->printColumns();
 
 	cout << "Query 1 S took: " << stopWatch.stop() << " ms" <<  endl;
 

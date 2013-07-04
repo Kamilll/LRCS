@@ -2,7 +2,8 @@
 
 StringEncoder::StringEncoder(Operator* dataSrc_, int colIndex_, int stringSize, int bfrSizeInBits_) : Encoder(dataSrc_, colIndex_)
 {
-	if (dataSrc_==NULL) mode=PUSH;
+	if (dataSrc_==NULL) mode=Encoder::PUSH;
+	else mode=Encoder::UNINIT;
 	currBlock=NULL;
 	currPair=NULL;
 	init=true;
@@ -12,7 +13,6 @@ StringEncoder::StringEncoder(Operator* dataSrc_, int colIndex_, int stringSize, 
 	startPosPtr=lengthPtr+1;
 	ssizePtr=lengthPtr+2;
 	writer->skipToIntPos(3);
-	mode=StringEncoder::UNINIT;
 }
 
 StringEncoder::~StringEncoder()
@@ -32,7 +32,7 @@ byte* StringEncoder::getPage() {
 		writer->resetBuffer();
 		return buffer;
 	}
-	Log::writeToLog("StringEncoder", 0, "Called getPage()");
+	//Log::writeToLog("StringEncoder", 0, "Called getPage()");
 	while (true) {
 		// get the next block
 		if (((currBlock==NULL) || (!currBlock->hasNext())) && (currPair == NULL)) {			
@@ -66,8 +66,6 @@ byte* StringEncoder::getPage() {
 			*startPosPtr=currPair->position;	
 			*ssizePtr = writer->getStringSize();
 			if (!writer->writeString(currPair->value)) throw new UnexpectedException("StringEncoder: Could not write initial value");
-			//Log::writeToLog("StringEncoder", 1, "Wrote in init: startPos=", currPair->position);
-			//Log::writeToLog("StringEncoder", 1, "Wrote in init: value=", currPair->value);
 			*lengthPtr=1;
 			init=false;
 			currPair=NULL;
@@ -78,7 +76,7 @@ byte* StringEncoder::getPage() {
 
 			if (!writer->writeString(currPair->value)) {
 				init=true;
-				Log::writeToLog("StringEncoder", 1, "Page full, returning page, length",*lengthPtr);
+				//Log::writeToLog("StringEncoder", 1, "Page full, returning page, length",*lengthPtr);
 				return buffer;
 			}
 			else {

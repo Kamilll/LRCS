@@ -10,7 +10,8 @@ DataSource::DataSource(AM* am_, bool isROS_, bool valSorted_, Decoder* decoder_)
 	init(am_, isROS_);
 	valSorted=valSorted_;
 	decoder = decoder_;
-	currBlock=NULL;;	
+	currBlock=NULL;
+
 }
 
 void DataSource::init(AM* am_, bool isROS_) {
@@ -31,6 +32,7 @@ void DataSource::init(AM* am_, bool isROS_) {
 	pred=NULL;
 
 	posFilter=NULL;
+	filterCursor = NULL;
 	matchedPredPos = new MultiPosFilterBlock ();
 	posOutTripleOnPred=new RLETriple();
 	firstCall = true;

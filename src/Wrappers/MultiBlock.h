@@ -26,10 +26,8 @@ class MultiBlock : public Block
 		
 		// Iterator access to block
 		virtual bool hasNext();
-		virtual bool hasNext(int value_);
 		virtual ValPos* getNext();
 		virtual ValPos* peekNext();
-		virtual int getValue();
 		virtual unsigned int getPosition();
 		virtual unsigned int getLastPosition();
 		virtual unsigned int getEndPosition();
@@ -45,7 +43,7 @@ class MultiBlock : public Block
 		//the utilityPair variable so can be called by getNext(). 
 		virtual ValPos* getPairAtLocNotUtility(unsigned int loc_);
 		virtual int getCurrLoc();
-		virtual void setValAtLoc(unsigned int loc_, int val);
+		//virtual void setValAtLoc(unsigned int loc_, int val);
 		virtual bool skipToLoc(unsigned int loc_);
 
 		// return size of block (number of values)
