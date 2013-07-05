@@ -93,13 +93,18 @@ bool StringDecoder::skipToPos(unsigned int blockPos_) {
 }
 
 bool StringDecoder::skipToBlockOnValue(ValPos* rhs_) {
-	reader.resetPos();
+	rhs_->position = 0;
+	if(reader.skipToValPos(rhs_)){
+		currPos = *startPosPtr + rhs_->position - 1;
+		return true;
+	}else return false;
+/*	reader.resetPos();
 	char* value = new char[*ssizePtr];
-		
+
 	while (reader.readString(value)) {		
 		ValPos* lhs = new StringValPos(*ssizePtr);
 		lhs->set(value);
-		
+
 		if (*lhs!=rhs_){
 			currPos++;
 			if (valSorted && *lhs>rhs_)return false;
@@ -107,7 +112,7 @@ bool StringDecoder::skipToBlockOnValue(ValPos* rhs_) {
 			return true;
 		}
 	}
-	return false;
+	return false;*/
 }
 
 

@@ -87,3 +87,9 @@ byte* StringEncoder::getPage() {
 		}
 	}
 }
+
+//Return the exact buffer size
+int StringEncoder::getBufferSize()
+{
+	return (3*sizeof(int) + (*ssizePtr)*(*lengthPtr));
+}

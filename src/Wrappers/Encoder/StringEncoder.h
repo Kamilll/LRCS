@@ -19,6 +19,7 @@ public:
 	virtual void resetPair();
     virtual int getNumValsPerPage(){return *lengthPtr;}
 	virtual short getValSize(){return (short)*ssizePtr;}
+	virtual int getBufferSize();//Get the exact buffer size in the page
 	virtual unsigned int getStartPos(){return (unsigned int)*startPosPtr;}
 	virtual unsigned int getPageSize(){return PAGE_SIZE;}
 protected:

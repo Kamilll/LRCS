@@ -110,3 +110,9 @@ bool UncompressedEncoder::writeVal(char* val_, unsigned int pos_)  {
     return false;
   }	
 }
+
+//Return the exact buffer size
+int UncompressedEncoder::getBufferSize()
+{
+	return (3*sizeof(int) + (*ssizePtr)*(*lengthPtr));
+}

@@ -249,20 +249,20 @@ bool DataSource::getPosOnPredValueSorted(ValPos* rhsvp_, ValPos* tempVP_){
 			else posOutTripleOnPred->setTriple(NULL, position, end-position+1);
 			break;
 		case Predicate::OP_LESS_THAN:
-			if (position==minPos) return false;
+			//if (position==minPos) return false;
 			page=(byte*) skipToPageValue(rhsval);
 			if (page!=NULL) {
 				decoder->setBuffer(page);
 				if (decoder->skipToBlockOnValue(rhsvp_))
 					position=((MultiBlock*)getDecodedBlock(decoder))->getPosition();
 			}
-			else ;
-			position--;
-			if (position<=0) return false;
-			else posOutTripleOnPred->setTriple(NULL, minPos, position-minPos+1);
+			else matchedPredPos->setCompleteSet(true);
+			//position--;
+			if (position>=1 && !matchedPredPos->isCompleteSet())
+				posOutTripleOnPred->setTriple(NULL, minPos, position-minPos+1);
 			break;
 		case Predicate::OP_LESS_THAN_OR_EQUAL:
-			if (position==minPos)return false;
+			//if (position==minPos)return false;
 			page=(byte*) skipToPageValue(temp);
 			if (page!=NULL) {
 				decoder->setBuffer(page);
@@ -270,9 +270,9 @@ bool DataSource::getPosOnPredValueSorted(ValPos* rhsvp_, ValPos* tempVP_){
 					position=((MultiBlock*)getDecodedBlock(decoder))->getPosition();
 			}
 			else matchedPredPos->setCompleteSet(true);
-			position--;
-			if (position<=0)return false;
-			else posOutTripleOnPred->setTriple(NULL, minPos, position-minPos+1);
+			//position--;
+			if (position>=1 && !matchedPredPos->isCompleteSet())
+			   posOutTripleOnPred->setTriple(NULL, minPos, position-minPos+1);
 			break;
 		default:
 			 return false;

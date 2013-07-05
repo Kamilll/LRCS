@@ -110,3 +110,8 @@ bool IntEncoder::writeVal(int val_, unsigned int pos_)  {
 	}	
 }
 
+//Return the exact buffer size
+int IntEncoder::getBufferSize()
+{
+	return (2*sizeof(int) + sizeof(int)*(*lengthPtr));
+}

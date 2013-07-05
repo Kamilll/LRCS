@@ -44,7 +44,7 @@ void BlockPrinter::printColumns(bool skip_output) {
   PosOperator* posOperator = new PosOperator();
   for(int i=0; i<numSrcs; i++){
 	 //zklee: Currently only consider AND situtation
-	 if (i>0)posOperator->addWhereOp('|'); 
+	 if (i>0)posOperator->addWhereOp('&'); 
 	 posOperator->addPosBlock(dataSrc[i]->getPosOnPred());	 
   }
   posOperator->finishWhereOp();

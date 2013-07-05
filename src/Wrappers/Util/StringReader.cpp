@@ -73,3 +73,23 @@ StringValPos* StringReader::readLast() {
 	vp->set(lastPos, lastValPtr);
 	return vp;
 }
+bool StringReader::skipToValPos(ValPos* vp_){
+   biSearch(vp_, 1,  numBytesInBuffer/stringSize);
+}
+
+bool StringReader::biSearch(ValPos* vp_, unsigned int begin, unsigned int last) {
+    if(begin > last)return false;
+	unsigned int mid=(begin+last)/2;
+
+	skipToStringPos(mid);
+	if(memcmp(vp_->value, currPosPtr, stringSize) == 0){
+        vp_->position = currPos;
+		return true;
+	}
+	
+    if(memcmp(vp_->value, currPosPtr, stringSize) < 0){
+		biSearch(vp_, begin, mid-1);
+	}else{
+		biSearch(vp_, mid+1, last);
+	}
+}

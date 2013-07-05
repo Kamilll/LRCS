@@ -19,6 +19,7 @@ public:
 	virtual bool writeVal(int val_, unsigned int pos_);
     virtual int getNumValsPerPage(){return *lengthPtr;}
 	virtual short getValSize(){return (short)sizeof(int);}
+	virtual int getBufferSize();
 	virtual unsigned int getStartPos(){return (unsigned int)*startPosPtr;}
 	virtual unsigned int getPageSize(){return PAGE_SIZE;}
 protected:
