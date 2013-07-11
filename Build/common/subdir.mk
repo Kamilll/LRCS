@@ -3,6 +3,7 @@ ${addprefix $(ROOT)/common/, \
 Block.cpp \
 DataSource.cpp \
 Exception.cpp \
+PosBlock.cpp \
 PosFilterBlock.cpp \
 MultiPosFilterBlock.cpp \
 Predicate.cpp \

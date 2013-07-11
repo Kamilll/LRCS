@@ -16,7 +16,7 @@ class RLETriple {
 			startPos=trip_.startPos;
 			reps=trip_.reps;
 		}
-		virtual ~RLETriple(){delete value;};
+		virtual ~RLETriple(){delete value;}
 		void setTriple(ValPos* val_, int pos_, int reps_) {
 			delete value;
 			value=(val_==NULL?NULL:val_->clone());

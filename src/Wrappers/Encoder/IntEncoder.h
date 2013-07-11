@@ -12,7 +12,7 @@
 class IntEncoder : public Encoder
 {
 public:
-	IntEncoder(Operator* dataSrc_, int colIndex_, int bfrSizeInBits_);
+	IntEncoder(Operator* dataSrc_, int colIndex_,PosEncoder* posEncoder_, int bfrSizeInBits_);
 	virtual ~IntEncoder();
 	virtual byte* getPage();
 	virtual void resetPair();

@@ -20,7 +20,10 @@ MultiPosFilterCursor::MultiPosFilterCursor(MultiPosFilterBlock* MPFB_){
 }
 
 MultiPosFilterCursor::~MultiPosFilterCursor(){
-
+   if(currSPFC != NULL){
+	   delete currSPFC;
+	   currSPFC = NULL;
+   }
 }
 
 unsigned int MultiPosFilterCursor::getNext() {
@@ -35,8 +38,8 @@ unsigned int MultiPosFilterCursor::getNext() {
 		retPos = currSPFC->getNext();
 		if (retPos == 0){ //if run out of a block,iterate to next block
 			_currBlockNum = currBlockNum + 1;
-			if(setCurrBlock(_currBlockNum)){
-				delete currSPFC;
+			delete currSPFC;
+			if(setCurrBlock(_currBlockNum)){				
 				currSPFC = (Cursor*)currBlock->getCursor();
 				retPos = currSPFC->getNext();
 			}else{

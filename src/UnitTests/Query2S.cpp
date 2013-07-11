@@ -30,6 +30,7 @@ bool Query2S::run() {
 		SColumnExtracter* ce = new SColumnExtracter(path, 1, 10,false);
 		StringEncoder* encoder = new StringEncoder((Operator*) ce, // data source
 		                                           0,              // column index
+		                                           NULL,
 		                                           10,             // string Size
 		                                           20*PAGE_SIZE);   // buffer size in bits
 		StringDecoder* decoder = new StringDecoder(true);         // value sorted
@@ -52,6 +53,7 @@ bool Query2S::run() {
 		ce = new SColumnExtracter(path, 2, 11,false);
 		encoder = new StringEncoder((Operator*) ce, // data source
 		                            0,              // column index
+		                            NULL,
 		                            11,             // string Size
 		                            20*PAGE_SIZE);   // buffer size in bits
 		decoder = new StringDecoder(true);         // value sorted
@@ -78,7 +80,7 @@ bool Query2S::run() {
 
 	ROSAM* am1 = new ROSAM( "StringTest02.ID" , 2 ,sizeof(int), 10, ValPos::INTTYPE, ValPos::STRINGTYPE);
 	ROSAM* am2 = new ROSAM( "StringTest02.DESC" , 2, sizeof(int), 11, ValPos::INTTYPE, ValPos::STRINGTYPE);
-	Predicate* pred1=new Predicate(Predicate::OP_EQUAL);
+	Predicate* pred1=new Predicate(Predicate::OP_LESS_THAN);
 	Predicate* pred2=new Predicate(Predicate::OP_LESS_THAN);
 	LZDataSource* ds1=new LZDataSource(am1,true,true,(new StringDecoder(true)));
 	LZDataSource* ds2=new LZDataSource(am2,true,true,(new StringDecoder(true)));
@@ -107,7 +109,10 @@ bool Query2S::run() {
 
 	delete ds1;
 	delete am1;
+	delete rhs1;
 	delete ds2;
 	delete am2;
+	delete rhs2;
+	delete bPrint;
 	return success;	
 }

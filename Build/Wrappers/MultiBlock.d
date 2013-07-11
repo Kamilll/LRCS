@@ -17,6 +17,7 @@ Wrappers/MultiBlock.d Wrappers/MultiBlock.o: ../src/Wrappers/MultiBlock.cpp ../s
  ../src/Wrappers/../Operators/../common/PosFilterBlock.h \
  ../src/Wrappers/../Operators/../common/../Util/BitUtil.h \
  ../src/Wrappers/../Operators/../common/UnexpectedException.h \
+ ../src/Wrappers/../Operators/../common/PosBlock.h \
  ../src/Wrappers/../Operators/../common/../Wrappers/RLETriple.h \
  ../src/Wrappers/../Operators/../common/../Wrappers/CodingException.h \
  ../src/Wrappers/../Operators/../common/../Wrappers/../common/ValPos.h \

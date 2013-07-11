@@ -8,7 +8,7 @@ PosFilterCursor::PosFilterCursor(PosFilterBlock* SPFB_){
 	numValues=(unsigned int*) (bfrWithHeader+2*sizeof(int));
 
 	buffer = bfrWithHeader + (3*sizeof(int));
-	bufferPtrAsIntArr = (unsigned int*)buffer; 
+	bufferPtrAsIntArr =  (unsigned int*)(bfrWithHeader + (2*sizeof(int))); 
 	currInt = 1;
 	currPos = 0;
 	currStartPos = 0;

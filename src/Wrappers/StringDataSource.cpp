@@ -13,12 +13,17 @@ StringDataSource::StringDataSource(AM* am_, bool valSorted_, bool isROS)
 StringDataSource::~StringDataSource()
 {
 
-	if (decoder!=NULL) delete decoder;
-	if (currBlock!=NULL) delete currBlock;
+	if (decoder!=NULL) {
+		delete decoder;
+		decoder = NULL;
+	}
+	
+	//if (currBlock!=NULL) delete currBlock;
 }
 
 //Get the position block on predicaiton
 MultiPosFilterBlock* StringDataSource::getPosOnPred(){
+	matchedPredPos = new MultiPosFilterBlock ();
 	if(pred==NULL)matchedPredPos->setCompleteSet(true);
 	else{
 		predChanged=false;//Reset predChanged

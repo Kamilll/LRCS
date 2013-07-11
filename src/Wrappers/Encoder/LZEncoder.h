@@ -11,7 +11,6 @@ using namespace std;
 class LZEncoder : public Encoder
 {
 public:
-	//LZEncoder(Operator* dataSrc_, int colIndex_, int numValsPerPage_, short valsize_);
 	LZEncoder(Encoder* encoder_);
 	virtual ~LZEncoder();
 	virtual byte* getPage();
@@ -21,15 +20,11 @@ public:
 	virtual unsigned int getStartPos(){return 0;}//I don't think it is necessary
 	virtual unsigned int getPageSize();
 protected:
-	//unsigned int startPos;
-	//int numValsPerPage;
-	//short valsize;
 	int bufferSize;
 	byte* page;
 	byte* buffer;
 	Encoder* encoder;
 	unsigned int sizeCompressedData;
-	//BasicBlockWriter* writer;
 };
 
 #endif //_LZENCODER_H_

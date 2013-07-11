@@ -1,6 +1,6 @@
 #include "IntEncoder.h"
 
-IntEncoder::IntEncoder(Operator* dataSrc_, int colIndex_, int bfrSizeInBits_) : Encoder(dataSrc_, colIndex_)
+IntEncoder::IntEncoder(Operator* dataSrc_, int colIndex_,PosEncoder* posEncoder_, int bfrSizeInBits_) : Encoder(dataSrc_, colIndex_, posEncoder_)
 {
 	if (dataSrc_==NULL) mode=PUSH;
 	currBlock=NULL;

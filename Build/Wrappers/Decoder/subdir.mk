@@ -1,6 +1,7 @@
 CPP_SRCS += \
 ${addprefix $(ROOT)/Wrappers/Decoder/, \
 Decoder.cpp \
+BitmapDecoder.cpp \
 IntDecoder.cpp \
 LZDecoder.cpp \
 PosDecoder.cpp \

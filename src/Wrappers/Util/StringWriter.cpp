@@ -13,7 +13,10 @@ StringWriter::StringWriter(int stringSize_, int bfrSizeInBits_)
 
 StringWriter::~StringWriter()
 {
-	
+	if(buffer != NULL){
+		delete[] buffer;
+		buffer = NULL;
+	}
 }
 
 bool StringWriter::writeString(char* val_) {

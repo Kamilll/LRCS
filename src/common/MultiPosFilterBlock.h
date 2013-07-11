@@ -60,6 +60,6 @@ class MultiPosFilterBlock{
 		virtual bool removePrecedingZero(PosFilterBlock* &posFilterBlock_);
 
 	private:
-		bool isBufferSet;
+		//bool isBufferSet;
 };
 #endif // POSFILTERBLOCK_H

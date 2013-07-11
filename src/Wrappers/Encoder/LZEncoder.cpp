@@ -2,7 +2,7 @@
 #include <lzo1x.h>
 #include <lzoutil.h>
 
-LZEncoder::LZEncoder(Encoder* encoder_): Encoder(NULL, 1)
+LZEncoder::LZEncoder(Encoder* encoder_): Encoder(NULL, 1,NULL)
 {
 	assert(encoder_ != NULL);
 	encoder = encoder_;		

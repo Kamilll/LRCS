@@ -33,14 +33,24 @@ void DataSource::init(AM* am_, bool isROS_) {
 
 	posFilter=NULL;
 	filterCursor = NULL;
-	matchedPredPos = new MultiPosFilterBlock ();
+	matchedPredPos = NULL;
 	posOutTripleOnPred=new RLETriple();
 	firstCall = true;
 }
 
 DataSource::~DataSource() {	
-	delete posOutTripleOnPred;
-	delete matchedPredPos;
+	if(posOutTripleOnPred){ 
+		delete posOutTripleOnPred;
+		posOutTripleOnPred = NULL;
+	}
+	if(matchedPredPos){
+		delete matchedPredPos;
+		matchedPredPos = NULL;
+	}
+	if(filterCursor){
+		delete filterCursor;
+		filterCursor = NULL;
+	}
 }
 
 // Changes the RHS binding for this datasource
@@ -69,12 +79,16 @@ void DataSource::setPositionFilter(MultiPosFilterBlock* bitstringDataSource_) {
 //getLastPosition returns the last position in the data source (column)
 int DataSource::getLastPosition() {
 	if (posPrimaryIndex)
-		return *(int*)am->getLastIndexValuePrimary();	
+		return *(int*)am->getLastIndexValuePrimary();
+	else
+		return 1; //To be implemented
 }
 
 const void* DataSource::getNextPageValue() {
 	if (posPrimaryIndex)
 		return am->getNextPagePrimary();
+	else
+		return NULL;//To be implemented
 }
 
 const void* DataSource::skipToPageValue(char* key) {
@@ -87,6 +101,8 @@ const void* DataSource::skipToPageValue(char* key) {
 const void* DataSource::skipToPagePosition(int key) {
 	if (posPrimaryIndex)
 		return am->skipToPagePrimary((char*)&key);
+	else
+		return NULL;//To be implemented
 }
 
 Block* DataSource::getDecodedBlock() {
@@ -167,6 +183,7 @@ MultiPosFilterBlock* DataSource::getPosOnPred(){
 	 * For the reason of different value types.
 	 * The default here is string.
 */
+	matchedPredPos = new MultiPosFilterBlock ();
 	if(pred==NULL)matchedPredPos->setCompleteSet(true);
 	else{
 		predChanged=false;//Reset predChanged
@@ -245,8 +262,10 @@ bool DataSource::getPosOnPredValueSorted(ValPos* rhsvp_, ValPos* tempVP_){
 			}
 			else end=0;
 
-			if (end==0) posOutTripleOnPred->setTriple(NULL, position, maxPos-position+1);			
-			else posOutTripleOnPred->setTriple(NULL, position, end-position+1);
+			if (end==0){
+				if(position ==1)matchedPredPos->setCompleteSet(true);
+			    else posOutTripleOnPred->setTriple(NULL, position, maxPos-position+1); 			
+			}else posOutTripleOnPred->setTriple(NULL, position, end-position+1);
 			break;
 		case Predicate::OP_LESS_THAN:
 			//if (position==minPos) return false;

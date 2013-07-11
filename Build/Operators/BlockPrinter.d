@@ -18,6 +18,7 @@ Operators/BlockPrinter.d Operators/BlockPrinter.o: ../src/Operators/BlockPrinter
  ../src/Operators/../common/MultiPosFilterBlock.h \
  ../src/Operators/../common/PosFilterBlock.h \
  ../src/Operators/../common/../Util/BitUtil.h \
+ ../src/Operators/../common/PosBlock.h \
  ../src/Operators/../common/../Wrappers/RLETriple.h \
  ../src/Operators/../common/../Wrappers/CodingException.h \
  ../src/Operators/../common/../Wrappers/../common/Exception.h \

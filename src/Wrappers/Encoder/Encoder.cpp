@@ -1,8 +1,9 @@
 #include "Encoder.h"
 
-Encoder::Encoder(Operator* dataSrc_, int colIndex_)
+Encoder::Encoder(Operator* dataSrc_, int colIndex_, PosEncoder* posEncoder_)
 {
 	dataSrc=dataSrc_;
+	posEncoder=posEncoder_;
 	colIndex=colIndex_;
 	mode=Encoder::UNINIT;
 }

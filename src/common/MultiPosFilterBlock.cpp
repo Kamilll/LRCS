@@ -11,14 +11,10 @@ void MultiPosFilterBlock::init( ){
 	currBlock = NULL;
 	currBlockNum = 0;
 	numValues = 0;
-	isBufferSet = false;
 	setCompleteSet(false);
-	//setFilterFinished(false);
 }
 
 MultiPosFilterBlock::~MultiPosFilterBlock( ){
-	//delete posFilterBlockVec;
-	if(!isBufferSet)
 	for(int i = 0; i<getNumBlocks();i++)
         delete posFilterBlockVec.at(i);
 }
@@ -157,12 +153,12 @@ void MultiPosFilterBlock::optimize( ){
 		}
 		prevPosFilterBlock = posFilterBlockVec.at(i-1);
 		currPosFilterBlock->setCurrInt(1);
-		if(prevPosFilterBlock->addPosition(currPosFilterBlock->getNext())){
+		if(prevPosFilterBlock->addPosition(currPosFilterBlock->getNextPos())){
 			//Try to add the start position to the previous block. If success, then try to add next position.
 			prevFull = false;
 			while(currPosFilterBlock != NULL){
 				while(currPosFilterBlock->hasNext()){
-					if(!(prevPosFilterBlock->addPosition(currPosFilterBlock->getNext()))){
+					if(!(prevPosFilterBlock->addPosition(currPosFilterBlock->getNextPos()))){
 						currPosFilterBlock->cutGetRightAtPos(currPosFilterBlock->getCurrPosition());
 						prevFull = true;
 						break;
@@ -228,13 +224,13 @@ unsigned int MultiPosFilterBlock::getNext( ){
 	unsigned int _currBlockNum;
 	if (currBlock == NULL){
 		if(setCurrBlock( 0 ) )
-			retPos = currBlock->getNext(); //Start from beginning
+			retPos = currBlock->getNextPos(); //Start from beginning
 	}else{
-		retPos = currBlock->getNext();
+		retPos = currBlock->getNextPos();
 		if (retPos == 0){ //if run out of a block,iterate to next block
 			_currBlockNum = currBlockNum + 1;
 			if(setCurrBlock(_currBlockNum))
-				retPos = currBlock->getNext();
+				retPos = currBlock->getNextPos();
 			else{
 				retPos = 0;
 				setCurrBlock(0);

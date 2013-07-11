@@ -56,6 +56,7 @@ Wrappers/Decoder/PosDecoder.d Wrappers/Decoder/PosDecoder.o: ../src/Wrappers/Dec
  ../src/Wrappers/Decoder/../../Operators/../common/PosFilterBlock.h \
  ../src/Wrappers/Decoder/../../Operators/../common/../Util/BitUtil.h \
  ../src/Wrappers/Decoder/../../Operators/../common/UnexpectedException.h \
+ ../src/Wrappers/Decoder/../../Operators/../common/PosBlock.h \
  ../src/Wrappers/Decoder/../../Operators/../common/../Wrappers/RLETriple.h \
  ../src/Wrappers/Decoder/../../Operators/../common/../Wrappers/CodingException.h \
  ../src/Wrappers/Decoder/../../Operators/../common/../Wrappers/../common/ValPos.h \

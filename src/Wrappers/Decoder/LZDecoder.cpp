@@ -15,9 +15,6 @@ void LZDecoder::setBuffer(byte* buffer_) {
 		throw new CodingException("LZDecoder: Error, buffer passed in is NULL");
 	sizeCompressed = *((unsigned int*) (buffer_));
 	sizeOrignal = *((unsigned int*) (buffer_+sizeof(int)));
-	//numVals = *((unsigned int*) (buffer_+sizeof(int)));
-	//startPos=*((unsigned int*) (buffer_+2*sizeof(int)));
-	//valSize=*((unsigned int*) (buffer_+3*sizeof(int)));
 
 	byte* data=buffer_+2*sizeof(int);
 	lzo_uint new_len;
@@ -28,8 +25,8 @@ void LZDecoder::setBuffer(byte* buffer_) {
 	else 
 		throw new UnexpectedException("LZDecoder: Decompress Error!");
 
-	Decoder::setBuffer(decompressedBuffer);			
-	decoder->setBuffer(buffer);
+	//Decoder::setBuffer(decompressedBuffer);			
+	decoder->setBuffer(decompressedBuffer);
 
 }
 

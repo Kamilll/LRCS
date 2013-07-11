@@ -3,6 +3,7 @@ ${addprefix $(ROOT)/UnitTests/, \
 UnitTest.cpp \
 Query1S.cpp \
 Query2S.cpp \
+Query3S.cpp \
 }
 
 # Each subdirectory must supply rules for building sources it contributes

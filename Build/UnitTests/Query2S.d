@@ -59,6 +59,7 @@ UnitTests/Query2S.d UnitTests/Query2S.o: ../src/UnitTests/Query2S.cpp ../src/Uni
  ../src/UnitTests/../Wrappers/Encoder/../../Operators/../common/PosFilterBlock.h \
  ../src/UnitTests/../Wrappers/Encoder/../../Operators/../common/../Util/BitUtil.h \
  ../src/UnitTests/../Wrappers/Encoder/../../Operators/../common/UnexpectedException.h \
+ ../src/UnitTests/../Wrappers/Encoder/../../Operators/../common/PosBlock.h \
  ../src/UnitTests/../Wrappers/Encoder/../../Operators/../common/../Wrappers/RLETriple.h \
  ../src/UnitTests/../Wrappers/Encoder/../../Operators/../common/../Wrappers/CodingException.h \
  ../src/UnitTests/../Wrappers/Encoder/../../Operators/../common/../Wrappers/../common/ValPos.h \

@@ -2,38 +2,21 @@
 #include "../Operators/PosFilterCursor.h"
 
 using namespace std;
-PosFilterBlock::PosFilterBlock()
+PosFilterBlock::PosFilterBlock():PosBlock(NULL)
 {
-	init();
 }
 
-PosFilterBlock::PosFilterBlock(byte* buffer_)
+PosFilterBlock::PosFilterBlock(byte* buffer_):PosBlock(NULL)
 {
-	init();
-	setBuffer(buffer_);
+	setBufferDirect(buffer_);
 }
 
-
-void PosFilterBlock::init(){
-    currInt = 0;
-    endInt = 0;
-	isBufferSet = false;
-	posIndex = new int[8*sizeof(int)+1];
-	assert(BLOCK_SIZE >= 5*sizeof(int));
-	//MAX_INT = (BLOCK_SIZE - 4*sizeof(int))/sizeof(int);
-}
 
 PosFilterBlock::~PosFilterBlock( )
 {
-  if(!isBufferSet && bfrWithHeader)delete[] bfrWithHeader;
-  delete[] posIndex;
+
 }
 
-
-void PosFilterBlock::resetBlock() {
-  if (bfrWithHeader)
-    memset(bfrWithHeader, 0, BLOCK_SIZE);
-}
 
 PosFilterBlock* PosFilterBlock::clone() {
   PosFilterBlock* newBlock = new PosFilterBlock();
@@ -53,12 +36,12 @@ PosFilterBlock*  PosFilterBlock::cutGetRightAtPos(unsigned int pos_){
   int moveBit = (pos_-*startPos)%(8*sizeof(int));
   *startPos = pos_;
   *numValues = 0; //number of values has no use in this case, so just ignore it.
-  memcpy(buffer+sizeof(int), buffer+(cutInt+1)*sizeof(int), leftInt*sizeof(int));
+  memcpy(buffer, buffer+cutInt*sizeof(int), leftInt*sizeof(int));
   endInt = leftInt;
   leftMove(moveBit);
   caculateEndInt();
   if(MAX_INT>endInt)//set all the left ints to zero
-    memset(buffer+(endInt+1)*sizeof(int),0,(MAX_INT-endInt)*sizeof(int));
+    memset(buffer+endInt*sizeof(int),0,(MAX_INT-endInt)*sizeof(int));
   setCurrInt(1);
   return this;
 }
@@ -72,7 +55,7 @@ PosFilterBlock*  PosFilterBlock::cutGetLeftAtPos(unsigned int pos_){
 	caculateEndInt();
 	cutTail();
 	if(MAX_INT>endInt)//set all the left ints to zero
-		memset(buffer+(endInt+1)*sizeof(int),0,(MAX_INT-endInt)*sizeof(int));
+		memset(buffer+endInt*sizeof(int),0,(MAX_INT-endInt)*sizeof(int));
 	setCurrInt(1);
     return this;
 }
@@ -97,51 +80,23 @@ void PosFilterBlock::initEmptyBuffer(unsigned int startPos_) {
  *	+-----------------------------------+
  *	|  startPos |   endPos  | numValues |
  *	+-----------------------------------+
- *  |  Value (Int type )                |
- *  +-----------------------------------+
  *	|	 F R E E A R E A-->
  *	+-----------------------------------+
  *  startPos is the start position of this block,
  *  endPos is the end position of this block,
  *  numValues is number of values of this block,
  */
-
+  assert(BLOCK_SIZE >= 4*sizeof(int));
   bfrWithHeader=new byte[BLOCK_SIZE];
   memset(bfrWithHeader, 0, BLOCK_SIZE);
-
-  startPos=(unsigned int*)bfrWithHeader;
-  endPos=(unsigned int*) (bfrWithHeader+sizeof(int));
-  numValues=(unsigned int*) (bfrWithHeader+2*sizeof(int));
+  init();
   *startPos = startPos_;
   *endPos = startPos_;
   *numValues = 1;
   currStartPos = *startPos;
-
-  buffer = bfrWithHeader + (3*sizeof(int));
-  bufferPtrAsIntArr = (unsigned int*)buffer; 
   currInt = 1;
   endInt = currInt;
   bufferPtrAsIntArr[currInt] = bufferPtrAsIntArr[currInt] | (1 << 31);
-}
-
-void PosFilterBlock::setBuffer(byte* buffer_){
-	assert(buffer_ != NULL && sizeof(buffer_) == BLOCK_SIZE);
-	isBufferSet = true;
-	bfrWithHeader = buffer_;
-	startPos=(unsigned int*)bfrWithHeader;
-	endPos=(unsigned int*) (bfrWithHeader+sizeof(int));
-	numValues=(unsigned int*) (bfrWithHeader+2*sizeof(int));	
-
-	buffer = bfrWithHeader + (3*sizeof(int));
-	bufferPtrAsIntArr = (unsigned int*)buffer; 
-	currInt = 0;
-	currPos = 0;
-	currStartPos = 0;
-	caculateEndInt();
-}
-
-byte* PosFilterBlock::getBuffer() {
-   return bfrWithHeader;
 }
 
 PosFilterCursor* PosFilterBlock::getCursor() {
@@ -230,24 +185,7 @@ void PosFilterBlock::setRangePos(unsigned int length){
 	*numValues = length;
 }
 
-bool PosFilterBlock::setCurrInt(unsigned int currInt_){
-	if(currInt_ > endInt)return false;
-	currInt = currInt_;
-	/*if (currInt > 0){
-		if (bufferPtrAsIntArr[currInt] == 0)currPos=0;
-		else{
-		  setPosIndex(bufferPtrAsIntArr[currInt], posIndex, currIndexInVal);
-		  currPos = ((currInt-1)*sizeof(int)*8)+*startPos+posIndex[currIndexInVal];
-		  currIndexInVal++;
-		  if (posIndex[currIndexInVal] == 255)currIndexInVal=0;
-		}
-		setCurrStartPosition( );
-	}*/
-	currIndexInVal=0;
-	return true;
-}
-
-unsigned int PosFilterBlock::getNext() {
+unsigned int PosFilterBlock::getNextPos() {
 	if (currInt<=endInt) {
 		if(currInt == 0)setCurrInt(1);
 		if (currIndexInVal) {
@@ -327,24 +265,8 @@ unsigned int PosFilterBlock::getIntStartPos( unsigned int Int_ ) {
 		}
 }
 
-bool PosFilterBlock::hasNext() {
-	return (currPos < *endPos);
-}
-
 bool PosFilterBlock::hasNextInt() {
 	return (currInt < endInt);
-}
-
-void PosFilterBlock::setPosIndex(int v, int* pidx, int& currIndexInVal) {
-  currIndexInVal=0;
-  for (int i = (8*sizeof(int))-1; i>=0; i--) {
-    if ((1 << i) & v) {
-      pidx[currIndexInVal] = ((8*sizeof(int))-1)-i;
-      currIndexInVal++;
-    }
-  }
-  pidx[currIndexInVal]=255;
-  currIndexInVal=0;
 }
 
 unsigned int PosFilterBlock::getStartPosition() {
@@ -377,12 +299,6 @@ unsigned int PosFilterBlock::getCurrPosition() {
    return currPos;
 }
 
-/*bool PosFilterBlock::setCurrPosition(unsigned int pos_) {
-	if(pos_ > *endPos)return false;
-	currPos = pos_;
-	return true;
-}*/
-
 unsigned int PosFilterBlock::getCurrStartPosition() {
    return currStartPos;
 }
@@ -401,12 +317,6 @@ The purpose is to continue the filtering at pervious break point
 */
 	currStartPos = currPos;
 }
-
-void PosFilterBlock::caculateEndInt( ) {
-	//endInt =(*endPos-*startPos+1)%(8*sizeof(int))?((*endPos-*startPos+1)/(8*sizeof(int)) + 1):(*endPos-*startPos+1)/(8*sizeof(int));
-	endInt = (*endPos-*startPos)/(8*sizeof(int))+1;
-}
-
 
 void PosFilterBlock::printBits(int bits) {
 	for (int i = 0; i < 32; i++)

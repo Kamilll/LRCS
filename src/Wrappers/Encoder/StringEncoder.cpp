@@ -1,6 +1,7 @@
 #include "StringEncoder.h"
+#include "PosEncoder.h"
 
-StringEncoder::StringEncoder(Operator* dataSrc_, int colIndex_, int stringSize, int bfrSizeInBits_) : Encoder(dataSrc_, colIndex_)
+StringEncoder::StringEncoder(Operator* dataSrc_, int colIndex_,PosEncoder* posEncoder_,int stringSize, int bfrSizeInBits_) : Encoder(dataSrc_, colIndex_, posEncoder_)
 {
 	if (dataSrc_==NULL) mode=Encoder::PUSH;
 	else mode=Encoder::UNINIT;
@@ -32,7 +33,7 @@ byte* StringEncoder::getPage() {
 		writer->resetBuffer();
 		return buffer;
 	}
-	//Log::writeToLog("StringEncoder", 0, "Called getPage()");
+
 	while (true) {
 		// get the next block
 		if (((currBlock==NULL) || (!currBlock->hasNext())) && (currPair == NULL)) {			
@@ -40,22 +41,17 @@ byte* StringEncoder::getPage() {
 				currBlock=dataSrc->getNextValBlock(colIndex);	
 				if (currBlock==NULL) {
 					if (init)	{
-						Log::writeToLog("StringEncoder", 1, "Block was NULL, we dried DataSrc: returning NULL");
 						return NULL; // signal we are really done
 					}
 					else {
 						init=true;
 						currPair=NULL;
-						Log::writeToLog("StringEncoder", 1, "Block was NULL, we dried DataSrc: returning buffer, numInts=",*lengthPtr);
+						if(posEncoder != NULL)posEncoder->purgeMap2Queue();
 						return buffer;	// we dried up dataSrc
 					}
 				}
-				Log::writeToLog("StringEncoder", 0, "Got new block");
 			} while (!currBlock->hasNext());
 		}
-
-		/*		if (!currBlock->isPosContiguous())
-		throw new UnexpectedException("StringEncoder: cannot encode a non contiguous column");*/
 
 		// write initial value to a blank page
 		if (init) {
@@ -68,7 +64,7 @@ byte* StringEncoder::getPage() {
 			if (!writer->writeString(currPair->value)) throw new UnexpectedException("StringEncoder: Could not write initial value");
 			*lengthPtr=1;
 			init=false;
-			currPair=NULL;
+			currPair=NULL;			
 		}
 		// append more values to same page
 		else {
@@ -76,16 +72,25 @@ byte* StringEncoder::getPage() {
 
 			if (!writer->writeString(currPair->value)) {
 				init=true;
-				//Log::writeToLog("StringEncoder", 1, "Page full, returning page, length",*lengthPtr);
 				return buffer;
 			}
 			else {
-				//Log::writeToLog("StringEncoder", 0, "Wrote: value=", currPair->value);
 				currPair=NULL;
 				*lengthPtr=*lengthPtr+1;
 			}
 		}
+		if(posEncoder != NULL)posEncoder->addValPos(currPair);
 	}
+}
+
+byte* StringEncoder::getEncodedPosPage(byte** posValue_, unsigned int* posPageSize_){
+	assert(posEncoder != NULL);
+	*posValue_ = new byte[*ssizePtr];
+	byte* _page = posEncoder->getPageAndValue(*posValue_);
+	if(_page != NULL){
+		*posPageSize_ = BLOCK_SIZE*(*(unsigned int*)_page);
+		return _page;
+	}else return NULL;
 }
 
 //Return the exact buffer size

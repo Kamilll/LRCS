@@ -31,7 +31,8 @@ common/DataSource.d common/DataSource.o: ../src/common/DataSource.cpp ../src/com
  ../src/common/../Wrappers/CodingException.h \
  ../src/common/../Wrappers/../common/Exception.h \
  ../src/common/MultiPosFilterBlock.h ../src/common/PosFilterBlock.h \
- ../src/common/../Util/BitUtil.h ../src/common/../Wrappers/RLETriple.h \
+ ../src/common/../Util/BitUtil.h ../src/common/PosBlock.h \
+ ../src/common/../Wrappers/RLETriple.h \
  ../src/common/../Wrappers/../common/ValPos.h \
  ../src/common/../Util/StringUtil.h \
  ../src/common/../Wrappers/MultiBlock.h \

@@ -56,8 +56,10 @@ MultiBlock::~MultiBlock()
 {
 	delete vp;
 	delete utilityVP;
-	if (buffer && !bufferdirect)
+	if (buffer && !bufferdirect){
 		delete[] buffer;
+		buffer = NULL;
+	}
 }
 
 void MultiBlock::resetBlock() {
@@ -268,7 +270,8 @@ void MultiBlock::filterWithPos(MultiPosFilterCursor* filterCursor){
 			break; //filter is finished
 		nextPos = nextFilterPos-filterCursor->getCurrStartPosition();
 	}
-	delete[] buffer;
-	setBufferDirect(filterCursor->getCurrStartPosition(),swriter->getNumValuesWritten(),valsize,swriter->getBuffer());
+	//delete[] buffer;
+	setBuffer(filterCursor->getCurrStartPosition(),swriter->getNumValuesWritten(),valsize,swriter->getBuffer());
+	delete swriter;
 	filterCursor->setCurrStartPosition();//Record current start position.
 }

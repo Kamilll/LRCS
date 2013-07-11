@@ -20,7 +20,10 @@ StringDecoder::StringDecoder(StringDecoder& decoder_) : Decoder(decoder_) {
 
 StringDecoder::~StringDecoder()
 {
-
+   if(outMultiBlock != NULL){
+	   delete outMultiBlock;
+	   outMultiBlock = NULL;
+   }
 }
 
 void StringDecoder::setBuffer(byte* buffer_) { 
@@ -68,6 +71,7 @@ Block* StringDecoder::getNextBlockSingle() {
 	if (!(reader.readString(value))) return NULL;
 	outMultiBlock->setBuffer(currPos, 1,*ssizePtr,(byte*)&value);
 	currPos++;
+	delete[] value;
 	return outMultiBlock;
 }
 
@@ -78,6 +82,7 @@ Block* StringDecoder::peekNextBlock() {
 	if (!(reader.readString(value))) return NULL;
 	reader.skipToStringPos(oldPos);
 	outMultiBlock->setBuffer(currPos, 1, *ssizePtr,(byte*)&value);
+	delete[] value;
 	return outMultiBlock;
 }
 bool StringDecoder::skipToPos(unsigned int blockPos_) { 

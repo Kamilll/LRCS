@@ -87,12 +87,19 @@ ROSAM::~ROSAM()
 		_db_arr[ i ] = NULL;
 	}
 
-	if ( _internalBuffer )
+	if ( _internalBuffer ){
 		delete [] _internalBuffer;
+	    _internalBuffer = NULL;
+	}
 
 	if ( _bulkBuffer ) {
 		delete [] _bulkBuffer;
 		_bulkBuffer = NULL;
+	}
+
+	if ( pos_array ) {
+		delete [] pos_array;
+		pos_array = NULL;
 	}
 }
 
@@ -202,15 +209,16 @@ const void* ROSAM::skipToPagePrimary( char* key )
 
 	ret = _iter_arr[ PRIMARY ]->get( &pkey, &data, DB_SET_RANGE );
 
+	delete[] key_buf;
+	
 	if ( ret < 0 )
 	{
 		// Iterator on last value failed. That can only mean one thing
 		// there is no such value in the DB.	
-		delete[] key_buf;
 		return NULL;
 	}
 
-	delete[] key_buf;
+	
 	return data.get_data();
 }
 
@@ -326,9 +334,6 @@ const void* ROSAM::doCursorGetPos(char* key_, u_int32_t flags)
 	memset(pos_array, 0, _bulkBuffer_size);
 	*pos_size = 0;	
 
-	/*if (key_ == NULL)
-	key_ =new char[seckeysize];*/
-
 	key.set_data( key_ );
 	key.set_size( seckeysize);
 	key.set_ulen( seckeysize );
@@ -367,20 +372,14 @@ const void* ROSAM::doCursorGetPosMulti(char* key_, u_int32_t flags)
 	bulk_key.set_ulen( seckeysize);
 	bulk_key.set_flags(DB_DBT_USERMEM);
 
-	delete dBulk_iter;
+	
 	memset(_bulkBuffer, 0, _bulkBuffer_size);
-	//memset(&bulk_data,0,sizeof(&bulk_data));
 	memset(pos_array, 0, _bulkBuffer_size);
 	*pos_size = 0;
 
 	/*zklee: all the index is position primary and value secondary*/
 	ret = _iter_arr[ SECONDARY ]->get( &bulk_key, &bulk_data, _flags );
-	if ( ret < 0 ) {
-		//delete[] key_buf;
-		return NULL;}
-
-	//memcpy(key_, bulk_key.get_data(), seckeysize);
-	//delete[] key_buf;
+	if ( ret < 0 ) return NULL;
 
 	dBulk_iter = new DbMultipleDataIterator(bulk_data);
 	while(dBulk_iter->next(myData) ) {
@@ -390,15 +389,44 @@ const void* ROSAM::doCursorGetPosMulti(char* key_, u_int32_t flags)
 		memcpy(pos_ptr, myData.get_data(),sizeof(int));
 		pos_ptr+=sizeof(int);
 	}
-
+	
+    delete dBulk_iter;
+	dBulk_iter = NULL;
+	
 	if (*pos_size > 0)
 		return pos_array;
 	else 
 		return NULL;
 }
 
+const void* ROSAM::doCursorGetPage(char* key,u_int32_t flags)
+{ 
+	Dbt data, pkey; 
+	int ret;
+
+	memset(&pkey, 0, sizeof(pkey)); 
+	memset(&data, 0, sizeof(data)); 
+
+	pkey.set_flags(DB_DBT_MALLOC);
+	pkey.set_size( seckeysize );
+	pkey.set_data( key );
+
+
+	ret = _iter_arr[ SECONDARY]->get( &pkey, &data, flags );
+
+	if ( ret < 0 )
+	{
+		// Iterator on last value failed. That can only mean one thing
+		// there is no such value in the DB.
+		return NULL;
+	}
+	
+	return data.get_data();
+} 
+
 /*zklee:Move the cursor to the specified key/data pair of the database,
- and return the datum associated with the given key.*/
+ and return the datum associated with the given key.
+ The datum is a position array */
 const void* ROSAM::getDbSet ( char* rkey )
 {
 	return doCursorGetPosMulti(rkey,DB_SET); 
@@ -406,26 +434,25 @@ const void* ROSAM::getDbSet ( char* rkey )
 
 /*zklee:Identical to the getDbSet, except the key is returned as well as the 
  data item and the returned key/data pair is the smallest key greater than 
- or equal to the specified key*/
+ or equal to the specified key.  The datum is a position array*/
 const void* ROSAM::getDbSetRange (char* rkey)
 {
 	return doCursorGetPosMulti(rkey,DB_SET_RANGE);
 }
 
 /*zklee:the cursor is moved to the next key/data pair of the database, 
- and that data is returned*/
+ and that data is returned.  The datum is a position array*/
 const void* ROSAM::getDbNext ( )
 {
 	char* _key = new char[seckeysize];
 	const void* rdata = doCursorGetPosMulti(_key, DB_NEXT);
-	if (rdata != NULL){
-		delete[] _key;
-		return rdata;
-	}
+	delete[] _key;
+	return rdata;
 }
 
 
-/*zklee:the method get data from a range (lowKey, highKey).*/
+/*zklee:the method get data from a range (lowKey, highKey).
+The datum is a position array.*/
 const void* ROSAM::getDbNextRange (char* lowKey, char* highKey,bool firstCall_ )
 {
 	assert(memcmp(lowKey,highKey,seckeysize)<0);
@@ -436,36 +463,116 @@ const void* ROSAM::getDbNextRange (char* lowKey, char* highKey,bool firstCall_ )
 	else
 		_key = new char[seckeysize];
 	const void* rdata = doCursorGetPosMulti(_key, DB_NEXT);
-	if(rdata != NULL)
+	if(rdata != NULL){
 		if(memcmp(_key, highKey, seckeysize)<0){
 			delete[] _key;
-			return rdata;}
-	else{
-		delete[] _key;
-		return NULL;}
-	else {
+			return rdata;
+		}else{
+			delete[] _key;
+			return NULL;}
+	}else {
 		delete[] _key;
 		return NULL;}
 }
 
-/*zklee:the method get data from a range (firstkey, highKey).*/
+/*zklee:the method get data from a range (firstkey, highKey).
+ The datum is a position array*/
 const void* ROSAM::getDbNextRange (char* highKey,bool firstCall_ )
 {
 	char* _key = new char[seckeysize];
 	u_int32_t _flag = (firstCall_?DB_FIRST:DB_NEXT);
 	const void* rdata = doCursorGetPosMulti(_key, _flag);
-	if(rdata != NULL)
+	if(rdata != NULL){
 		if(memcmp(_key, highKey, seckeysize)<0){
 			delete[] _key;
-			return rdata;}
-	else {
+			return rdata;
+		}else{
+			delete[] _key;
+			return NULL;}
+	}else {
 		delete[] _key;
-		return NULL;
-	}
-	else {
+		return NULL;}
+}
+
+/*zklee:Move the cursor to the specified key/data pair of the database,
+ and return the datum associated with the given key.
+ The datum is a whole DB page */
+const void* ROSAM::getDbPageSet ( char* rkey )
+{
+	return doCursorGetPage(rkey,DB_SET); 
+}
+
+/*zklee:Identical to the getDbSet, except the key is returned as well as the 
+ data item and the returned key/data pair is the smallest key greater than 
+ or equal to the specified key.  The datum is a whole DB page*/
+const void* ROSAM::getDbPageRange (char* rkey)
+{
+	return doCursorGetPage(rkey,DB_SET_RANGE);
+}
+
+/*zklee:the cursor is moved to the next key/data pair of the database, 
+ and that data is returned.  The datum is a whole DB page*/
+const void* ROSAM::getDbPageNext( )
+{
+	char* _key = new char[seckeysize];
+	const void* rdata = doCursorGetPage(_key, DB_NEXT);
+	delete[] _key;
+	return rdata;
+}
+
+/*zklee:the cursor is moved to the next key/data pair of the database.
+ If the next key is duplicate, data is returned, else NULL.
+ The datum is a whole DB page*/
+const void* ROSAM::getDbPageNextDup ( )
+{
+	char* _key = new char[seckeysize];
+	const void* rdata = doCursorGetPage(_key, DB_NEXT_DUP);
+	delete[] _key;
+	return rdata;
+}
+
+
+/*zklee:the method get data from a range (lowKey, highKey).
+ he datum is a whole DB page.*/
+const void* ROSAM::getDbPageNextRange (char* lowKey, char* highKey,bool firstCall_ )
+{
+	assert(memcmp(lowKey,highKey,seckeysize)<0);
+	char* _key;
+	Dbt _data;
+	if (firstCall_)
+		return getDbPageRange (lowKey);
+	else
+		_key = new char[seckeysize];
+	const void* rdata = doCursorGetPage(_key, DB_NEXT);
+	if(rdata != NULL){
+		if(memcmp(_key, highKey, seckeysize)<0){
+			delete[] _key;
+			return rdata;
+		}else{
+			delete[] _key;
+			return NULL;}
+	}else {
 		delete[] _key;
-		return NULL;
-	}
+		return NULL;}
+}
+
+/*zklee:the method get data from a range (firstkey, highKey).
+ he datum is a whole DB page*/
+const void* ROSAM::getDbPageNextRange (char* highKey,bool firstCall_ )
+{
+	char* _key = new char[seckeysize];
+	u_int32_t _flag = (firstCall_?DB_FIRST:DB_NEXT);
+	const void* rdata = doCursorGetPage(_key, _flag);
+	if(rdata != NULL){
+		if(memcmp(_key, highKey, seckeysize)<0){
+			delete[] _key;
+			return rdata;
+		}else{
+			delete[] _key;
+			return NULL;}
+	}else {
+		delete[] _key;
+		return NULL;}
 }
 
 char* ROSAM::getLastIndexValuePrimary() 

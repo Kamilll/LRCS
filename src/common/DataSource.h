@@ -57,6 +57,7 @@ class DataSource : public Operator {
 		bool valSorted;	
 		bool posFilterChanged;
 		bool predChanged;
+		bool firstCall;
 
 		// Filter streams
 		MultiPosFilterBlock* posFilter;
@@ -89,7 +90,7 @@ class DataSource : public Operator {
 
 	private:
 		void init(AM* am_, bool isROS_);
-		bool firstCall;
+		
 };
 
 #endif // DATASOURCE_H

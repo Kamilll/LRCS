@@ -1,7 +1,7 @@
 #include "PosOperator.h"
 
 PosOperator::PosOperator( ){
-   caculatedPosBlock = new MultiPosFilterBlock();  
+   //caculatedPosBlock = new MultiPosFilterBlock();  
    WhereOp = NULL;
    Level = 0;
    caculatedPosBlock = NULL;
@@ -14,8 +14,15 @@ PosOperator::PosOperator( ){
 }
 
 PosOperator::~PosOperator( ){
-  delete caculatedPosBlock;
-  delete WhereOp;
+	//delete caculatedPosBlock;
+	currWhereOp = WhereOp;
+	whereOp* whereOpTemp; 
+	while (currWhereOp != NULL){
+		whereOpTemp = currWhereOp;
+		//delete whereOpTemp->posBlock;
+		currWhereOp = whereOpTemp->nextOp;
+		delete whereOpTemp;
+	}
 }
 
 bool PosOperator::addWhereOp(char op){

@@ -29,11 +29,19 @@ class ROSAM : public AM
 		const void* getDbNext();
 		const void* getDbNextRange(char* lowKey, char* highKey, bool firstCall_);
 		const void* getDbNextRange(char* highKey, bool firstCall_);
+
+		const void* getDbPageSet(char* rkey);
+		const void* getDbPageRange(char* rkey);
+		const void* getDbPageNext();
+		const void* getDbPageNextDup();
+		const void* getDbPageNextRange(char* lowKey, char* highKey, bool firstCall_);
+		const void* getDbPageNextRange(char* highKey, bool firstCall_);
+		
 		virtual void initCursors();
 		virtual const void* getNextPagePrimary();
 		virtual const void* getNextPageSecondary();
 		virtual const void* skipToPagePrimary(char* key);
-		virtual const void* skipToPageSecondary(char* key);
+		virtual const void* skipToPageSecondary(char* key);	
 		virtual char* getLastIndexValuePrimary();
 		virtual char* getLastIndexValueSecondary();
 		virtual string toString();
@@ -77,6 +85,7 @@ class ROSAM : public AM
 	private:
 		const void* doCursorGetPos(char* key_,u_int32_t flags);
 		const void* doCursorGetPosMulti(char* key_,u_int32_t flags);
+		const void* doCursorGetPage(char* key,u_int32_t flags);
 };
 
 #endif // __ROSAM_H

@@ -6,21 +6,23 @@
 #include "../Util/BitUtil.h"
 #include "Constants.h"
 #include "UnexpectedException.h"
+#include "PosBlock.h"
 class PosFilterCursor;
 
-class PosFilterBlock
+class PosFilterBlock: public PosBlock
 {
 public:	
 	void *parentMultiBlock;
 
 	PosFilterBlock( );
 	PosFilterBlock(byte* buffer_);
+	
 	virtual ~PosFilterBlock();
-
-	virtual void init( );
+	
 	virtual void initEmptyBuffer(unsigned int startpos);
-	virtual bool addPosition(unsigned int pos);
-	virtual void resetBlock();
+	//virtual void setBuffer(byte* buffer_);
+	virtual bool addPosition(unsigned int pos);	
+	
 	virtual PosFilterBlock* clone();
 	virtual PosFilterBlock* cutGetRightAtPos(unsigned int pos_);
 	virtual PosFilterBlock* cutGetLeftAtPos(unsigned int pos_);
@@ -29,10 +31,8 @@ public:
 	virtual bool addInt(unsigned int Int_);
 
 	// Iterator access to block
-	virtual bool setCurrInt(unsigned int currInt_);
-	virtual bool hasNext();
 	virtual bool hasNextInt();
-	virtual unsigned int getNext();
+	virtual unsigned int getNextPos();
 	virtual unsigned int getNextInt();
 	virtual unsigned int getCurrIntValue();
 	virtual unsigned int getStartPosition();
@@ -40,42 +40,25 @@ public:
 	virtual unsigned int getNumValues();
 	virtual unsigned int getNumValuesR(); //Re-caculate number of values;
 	virtual unsigned int getCurrPosition();
-	//virtual bool setCurrPosition(unsigned int pos_);
 	virtual unsigned int getCurrStartPosition();//Get current start position after filtered a DB page
 	virtual void setCurrStartPosition();//Set current start position after filtered a DB page
 	virtual unsigned int getCurrIntStartPos();//Get current Int's first bit's position
 	virtual unsigned int getCurrIntRealStartPos();//Get current Int's first '1'bit's position
     virtual unsigned int getMaxNumPos();
 	virtual void setRangePos(unsigned int length);
-	virtual void caculateEndInt();
-	virtual byte* getBuffer();
+	
   	virtual PosFilterCursor* getCursor();
 	virtual void printBlock();
 
 protected:
-
-    byte* bfrWithHeader;
-	byte* buffer;
-	unsigned int* bufferPtrAsIntArr;
-	unsigned int* numValues;
-	unsigned int* startPos;
-	unsigned int* endPos;
-	int* posIndex;
 	unsigned int currStartPos;
-	int currIndexInVal;
-    unsigned int currInt;
-	unsigned int currPos;
-    unsigned int endInt;
-	//unsigned int maxInt;
 
-    virtual void setPosIndex(int v, int* pidx, int& currIndexInVal);	
 	static unsigned int getIntStartPos( unsigned int Int_ );
 	static unsigned int getIntEndPos( unsigned int Int_ );
 	virtual void printBits(int bits);
 	
-private:
-	bool isBufferSet;
-	virtual void setBuffer(byte* buffer_);
-
+private:	
+	//bool isBufferSet;
+	//void init( );
 };
 #endif // POSFILTERBLOCK_H

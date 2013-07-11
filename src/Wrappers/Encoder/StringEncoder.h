@@ -13,9 +13,10 @@
 class StringEncoder : public Encoder
 {
 public:
-	StringEncoder(Operator* dataSrc_, int colIndex_, int stringSize, int bfrSizeInBits_);
+	StringEncoder(Operator* dataSrc_, int colIndex_, PosEncoder* posEncoder_, int stringSize, int bfrSizeInBits_);
 	virtual ~StringEncoder();
 	virtual byte* getPage();
+	virtual byte* getEncodedPosPage(byte** posValue_, unsigned int* posPageSize_);
 	virtual void resetPair();
     virtual int getNumValsPerPage(){return *lengthPtr;}
 	virtual short getValSize(){return (short)*ssizePtr;}
@@ -23,8 +24,6 @@ public:
 	virtual unsigned int getStartPos(){return (unsigned int)*startPosPtr;}
 	virtual unsigned int getPageSize(){return PAGE_SIZE;}
 protected:
-	//int totalNum;
-	//int totalLength;
 	StringWriter* writer;
 	byte* buffer;
 	int* lengthPtr;

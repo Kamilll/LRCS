@@ -1,6 +1,6 @@
 #include "UncompressedEncoder.h"
 
-UncompressedEncoder::UncompressedEncoder(Operator* dataSrc_, int colIndex_, int stringSize, int bfrSizeInBits_) : Encoder(dataSrc_, colIndex_)
+UncompressedEncoder::UncompressedEncoder(Operator* dataSrc_, int colIndex_, int stringSize, int bfrSizeInBits_) : Encoder(dataSrc_, colIndex_, NULL)
 {
   if (dataSrc_==NULL) mode=PUSH;
   currBlock=NULL;

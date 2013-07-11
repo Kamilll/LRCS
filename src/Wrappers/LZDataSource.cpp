@@ -19,6 +19,7 @@ LZDataSource::~LZDataSource()
 
 //Get the position block on predicaiton
 MultiPosFilterBlock* LZDataSource::getPosOnPred(){
+	matchedPredPos = new MultiPosFilterBlock ();
 	if(pred==NULL)matchedPredPos->setCompleteSet(true);
 	else{
 		predChanged=false;//Reset predChanged

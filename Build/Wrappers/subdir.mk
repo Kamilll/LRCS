@@ -4,6 +4,7 @@ BasicBlock.cpp \
 BitBlock.cpp \
 CodingException.cpp \
 MultiBlock.cpp \
+BitmapDataSource.cpp \
 LZDataSource.cpp \
 StringDataSource.cpp \
 RLEBlock.cpp \

@@ -57,6 +57,18 @@ void PagePlacer::placeColumn(string name_, bool splitOnValue_, bool valSorted_) 
 			writePage(pageWriter, page, page_size, posPrimary, numIndexes);
 			page=encoder->getPage();
 		}
+
+		//If the encoder has a position encoder, dry up the position pages
+		if(encoder->hasPosEncoder()){
+			byte* posValue;
+			unsigned int* posPageSize;
+			byte* posPage = encoder->getEncodedPosPage(&posValue,posPageSize);
+			while(posPage != NULL){
+				pageWriter->placePage((char*)posPage,(char*)posValue,posPageSize);
+				posPage = encoder->getEncodedPosPage(&posValue,posPageSize);
+			}
+		}
+		
 		pageWriter->closeDB();
 		delete pageWriter;
 	}
@@ -274,12 +286,20 @@ void PagePlacer::writePage(PageWriter* writer_, byte* page_, int page_size, bool
 			temppos = decoder->getEndPos();
 			writer_->placePage((char*) page_, (char*)&temppos, page_size);
 			//Value secondary Index
-			while(decoder->hasNextBlock()){
-				Block* outBlock = decoder->getNextBlock();
-				while(outBlock->hasNext()){
-					ValPos* vp = outBlock->getNext();
-					temppos = vp->position;
-					writer_->placeUnsortedRecord((char*)vp->value,(char*) &temppos);
+			if(encoder->hasPosEncoder()){
+				byte* posValue;
+				unsigned int* posPageSize;
+				byte* posPage = encoder->getEncodedPosPage(&posValue,posPageSize);
+				if(posPage != NULL)
+					writer_->placePage((char*)posPage,(char*)posValue,posPageSize);
+			}else{
+				while(decoder->hasNextBlock()){
+					Block* outBlock = decoder->getNextBlock();
+					while(outBlock->hasNext()){
+						ValPos* vp = outBlock->getNext();
+						temppos = vp->position;
+						writer_->placeUnsortedRecord((char*)vp->value,(char*) &temppos);
+					}
 				}
 			}
 		}
