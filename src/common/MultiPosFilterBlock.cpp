@@ -34,9 +34,10 @@ MultiPosFilterBlock* MultiPosFilterBlock::clone( ){
 
 void MultiPosFilterBlock::addPosFilterBlock( PosFilterBlock* posFilterBlock_ ){
 	assert(posFilterBlock_ != NULL);
+	posFilterBlock_->caculateEndInt();
 	if(startPos == 0){//add the first block
 		startPos = posFilterBlock_->getStartPosition();	
-		endPos = posFilterBlock_->getEndPosition();
+		endPos = posFilterBlock_->getEndPosition();		
 		posFilterBlockVec.push_back(posFilterBlock_);
 		numValues += posFilterBlock_->getNumValues();
 		posFilterBlock_->parentMultiBlock = this;
@@ -146,7 +147,7 @@ void MultiPosFilterBlock::optimize( ){
 		}
 
 		//02. try to merge the block into previous block
-		if(i == 0){//Incase the first block, there is no previous block
+		if(i == 0){//In case the first block, there is no previous block
 			i++;
 			startPos = currPosFilterBlock->getStartPosition();
 			continue;
@@ -158,9 +159,10 @@ void MultiPosFilterBlock::optimize( ){
 			prevFull = false;
 			while(currPosFilterBlock != NULL){
 				while(currPosFilterBlock->hasNext()){
-					if(!(prevPosFilterBlock->addPosition(currPosFilterBlock->getNextPos()))){
+					if(!(prevPosFilterBlock->addPosition(currPosFilterBlock->getNextPos()))){			
 						currPosFilterBlock->cutGetRightAtPos(currPosFilterBlock->getCurrPosition());
 						prevFull = true;
+						//prevPosFilterBlock->caculateEndInt();
 						break;
 					}
 				}
@@ -177,6 +179,7 @@ void MultiPosFilterBlock::optimize( ){
 		}else
 			i++;
 	}
+	//03. re-caculate end int in each block.
 }
 
 bool MultiPosFilterBlock::removePrecedingZero(PosFilterBlock* &posFilterBlock_){

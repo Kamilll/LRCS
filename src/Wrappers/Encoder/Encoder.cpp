@@ -1,4 +1,5 @@
 #include "Encoder.h"
+#include "PosEncoder.h"
 
 Encoder::Encoder(Operator* dataSrc_, int colIndex_, PosEncoder* posEncoder_)
 {
@@ -29,4 +30,17 @@ bool Encoder::writeVal(int val_, unsigned int pos_) {
 		mode=Encoder::PUSH;
 	}
 	return false;
+}
+
+byte* Encoder::getEncodedPosPage(byte** posValue_, unsigned int** posPageSize_){
+	assert(posEncoder != NULL);
+	//*posValue_ = new byte[*ssizePtr];
+	byte* _posValue = NULL;
+	byte* _page = posEncoder->getPageAndValue(&_posValue);
+	*posValue_ = _posValue;
+	if(_page != NULL){
+		unsigned int pageSize = BLOCK_SIZE*(*(unsigned int*)_page);
+		*posPageSize_ = &pageSize;
+		return _page;
+	}else return NULL;
 }

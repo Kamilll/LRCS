@@ -42,4 +42,7 @@ Wrappers/Encoder/Encoder.d Wrappers/Encoder/Encoder.o: ../src/Wrappers/Encoder/E
  ../src/Wrappers/Encoder/../../common/StringValPos.h \
  ../src/Wrappers/Encoder/../../common/../Wrappers/BasicBlock.h \
  ../src/Wrappers/Encoder/../../common/../Wrappers/CodingException.h \
- ../src/Wrappers/Encoder/../../common/../Wrappers/../common/Exception.h
+ ../src/Wrappers/Encoder/../../common/../Wrappers/../common/Exception.h \
+ ../src/Wrappers/Encoder/PosEncoder.h \
+ ../src/Wrappers/Encoder/../Encoder/Encoder.h \
+ ../src/Wrappers/Encoder/../Util/IntWriter.h

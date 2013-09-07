@@ -1,0 +1,45 @@
+#ifndef _INTDECODER_H_
+#define _INTDECODER_H_
+
+#include "Decoder.h"
+#include "../Util/IntReader.h"
+#include "../Util/ByteReader.h"
+#include "../MultiBlock.h"
+#include "../../common/Constants.h"
+
+class IntDecoder : public Decoder
+{
+public:
+	IntDecoder(bool valSorted_);
+	IntDecoder(byte* buffer_, bool valSorted_);
+	IntDecoder(IntDecoder& decoder_); 
+	virtual ~IntDecoder();
+	
+	virtual void setBuffer(byte* buffer_);
+	virtual int getValueSize();
+	virtual int getPageLengthBits();
+	
+	virtual bool hasNextBlock();
+	virtual Block* peekNextBlock();
+	virtual Block* getNextBlock();
+	virtual Block* getNextBlockSingle();
+	virtual bool skipToPos(unsigned int blockLoc_);
+	virtual bool skipToBlockOnValue(ValPos* rhs_);
+
+
+
+	virtual ValPos* getStartVal();
+	virtual unsigned int getStartPos();
+	virtual ValPos* getEndVal();
+	virtual unsigned int getEndPos();
+	virtual unsigned int getSize() { return *numIntsPtr; }
+protected:
+	unsigned int* numIntsPtr;
+	unsigned int* startPosPtr;
+	IntReader reader;
+	MultiBlock* outBlock;
+	ValPos* outPair;
+	unsigned int currPos;
+};
+
+#endif //_INTDECODER_H_

@@ -66,7 +66,7 @@ void PageWriter::initDB(string c_name, bool dupsort) {
 		/*Only secondary index support duplicate*/
 		if (which!=0 && dupsort) {
 			_db_local[ which ]->set_flags(DB_DUP);
-			switch (type){
+			/*switch (type){
 				case ValPos::INTTYPE:
 					_db_local[ which ]->set_dup_compare( ROSAM::compare_int );
 					break;
@@ -78,7 +78,7 @@ void PageWriter::initDB(string c_name, bool dupsort) {
 					break;
 				default:
 					throw new UnexpectedException("Unknown Type");
-			}
+			}*/
 		}
 		char* dbname = new char[1024];
 		strcpy(dbname, (c_name+ 
@@ -94,7 +94,6 @@ void PageWriter::initDB(string c_name, bool dupsort) {
 			throw new AccessException("PageWriter.cpp: Failed to open table");
 		}
 	}
-
 }
 
 void PageWriter::closeDB() {
@@ -112,6 +111,11 @@ void PageWriter::placePage(char* page, char* primkey, char* seckey,int page_size
 
 void PageWriter::placePage(char* page, char* primkey, int page_size) {
 	placeRecord( _db_local[ PRIMARY ], primkey, primkeysize, page, page_size );
+
+}
+
+void PageWriter::placePageSecondary(char* page, char* seckey_, int page_size) {
+	placeRecord( _db_local[ SECONDARY ], seckey_, seckeysize, page, page_size );
 
 }
 

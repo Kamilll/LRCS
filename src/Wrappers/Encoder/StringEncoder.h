@@ -16,7 +16,7 @@ public:
 	StringEncoder(Operator* dataSrc_, int colIndex_, PosEncoder* posEncoder_, int stringSize, int bfrSizeInBits_);
 	virtual ~StringEncoder();
 	virtual byte* getPage();
-	virtual byte* getEncodedPosPage(byte** posValue_, unsigned int* posPageSize_);
+	//virtual byte* getEncodedPosPage(byte** posValue_, unsigned int** posPageSize_);
 	virtual void resetPair();
     virtual int getNumValsPerPage(){return *lengthPtr;}
 	virtual short getValSize(){return (short)*ssizePtr;}

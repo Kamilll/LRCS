@@ -5,6 +5,7 @@
 #include <assert.h>
 #include "UnitTests/Query1S.h"
 #include "UnitTests/Query2S.h"
+#include "UnitTests/Query3S.h"
 
 class main{
 public:

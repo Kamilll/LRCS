@@ -1,0 +1,12 @@
+#include "ValPos.h"
+ValPos::~ValPos()
+{
+  if (value && type != STRINGTYPE)
+    delete[] value;
+}
+
+//overloads for stl::map
+bool ValPos::operator < (const ValPos &vp) const
+{
+  return *(int*)value < vp.value;
+}

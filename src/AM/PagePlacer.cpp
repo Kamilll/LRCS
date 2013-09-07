@@ -13,7 +13,7 @@ PagePlacer::PagePlacer(Encoder* src_, Decoder* decoder_, int numIndexes_, bool p
 
 PagePlacer::~PagePlacer()
 {
-	
+
 }
 
 void PagePlacer::setSrc(Encoder* src_, Decoder* decoder_, int numIndexes_, bool posPrimary_) {
@@ -29,7 +29,7 @@ void PagePlacer::setSrc(Encoder* src_, Decoder* decoder_, int numIndexes_, bool 
 }
 
 void PagePlacer::placeColumn(string name_, bool splitOnValue_, bool valSorted_) {
-    valSorted = valSorted_;
+	valSorted = valSorted_;
 	int page_size;
 	if (!splitOnValue_) {
 		Log::writeToLog("PagePlacer", 2, "NOT Spliting on Value");
@@ -39,36 +39,38 @@ void PagePlacer::placeColumn(string name_, bool splitOnValue_, bool valSorted_) 
 			page_size = encoder->getPageSize();
 			decoder->setBuffer(page);
 			if (!pageWriter) {
-			  int primkeysize=sizeof(int);
-			  int seckeysize=sizeof(int);
-			  short primkeytype = ValPos::INTTYPE;
-			  short seckeytype = ValPos::INTTYPE;
-			  if (!posPrimary) {
-			    primkeysize=decoder->getStartVal()->getSize();
-			    primkeytype=decoder->getStartVal()->type;
-			  }
-			  if (posPrimary && numIndexes==2) {
-			    seckeysize=decoder->getStartVal()->getSize();
-			    seckeytype=decoder->getStartVal()->type;
-			  }
-			  pageWriter = new PageWriter(numIndexes, primkeysize, seckeysize, primkeytype, seckeytype);
-			  pageWriter->initDB(name_, (valSorted?false:true));
+				int primkeysize=sizeof(int);
+				int seckeysize=sizeof(int);
+				short primkeytype = ValPos::INTTYPE;
+				short seckeytype = ValPos::INTTYPE;
+				if (!posPrimary) {
+					primkeysize=decoder->getStartVal()->getSize();
+					primkeytype=decoder->getStartVal()->type;
+				}
+				if (posPrimary && numIndexes==2) {
+					seckeysize=decoder->getStartVal()->getSize();
+					seckeytype=decoder->getStartVal()->type;
+				}
+				pageWriter = new PageWriter(numIndexes, primkeysize, seckeysize, primkeytype, seckeytype);
+				pageWriter->initDB(name_, (valSorted?false:true));
 			}	
 			writePage(pageWriter, page, page_size, posPrimary, numIndexes);
 			page=encoder->getPage();
 		}
 
-		//If the encoder has a position encoder, dry up the position pages
+		//If the encoder has a special position encoder, dry up the position pages
 		if(encoder->hasPosEncoder()){
 			byte* posValue;
 			unsigned int* posPageSize;
-			byte* posPage = encoder->getEncodedPosPage(&posValue,posPageSize);
+			byte* posPage = encoder->getEncodedPosPage(&posValue,&posPageSize);
 			while(posPage != NULL){
-				pageWriter->placePage((char*)posPage,(char*)posValue,posPageSize);
-				posPage = encoder->getEncodedPosPage(&posValue,posPageSize);
+				pageWriter->placePageSecondary((char*)posPage,(char*)posValue,*posPageSize);
+				delete[] posPage;
+				delete[] posValue;
+				posPage = encoder->getEncodedPosPage(&posValue,&posPageSize);
 			}
 		}
-		
+
 		pageWriter->closeDB();
 		delete pageWriter;
 	}
@@ -108,48 +110,48 @@ void PagePlacer::placeColumn(string name_, bool splitOnValue_, bool valSorted_) 
 			/*else {
 				Log::writeToLog("PagePlacer", 0, "Writing to pageWriter, with value", value);
 				pageWriter=valueMap[value];	
-				}*/
-			
+		}*/
+
 			// write the page with corresponding indexes
 			writePage(pageWriter, page,page_size, true, 1);
-	  		
-	  		// get the next page
+
+			// get the next page
 			page=encoder->getPage();
 		}
 		Log::writeToLog("PagePlacer", 0, "Pages of Values dry, (NULL returned by encoder), now writing value page");
 		UncompressedEncoder* valEncoder=new UncompressedEncoder(NULL, 0, valsize, 8*PAGE_SIZE);
 		UncompressedDecoder* valDecoder=new UncompressedDecoder(valSorted_,value->type);
 		int currPos=1;
-		
+
 		ValPos* val = NULL;
 		PageWriter* pw;
 		ValPos** vparray = encoder->getValueIndex();
 		int currindex = 0;
 		bool doWhile = false;
 		if (value->type == ValPos::INTTYPE) { // special case: vparray is empty so fill it
-		  if (!valueMap->isEmpty()) {
-		    val = valueMap->getKey()->clone();
-		    doWhile = true;
-		  }
+			if (!valueMap->isEmpty()) {
+				val = valueMap->getKey()->clone();
+				doWhile = true;
+			}
 		}
 		else {
-		  if (val = vparray[currindex++]) {
-		    doWhile = true;
-		  }
+			if (val = vparray[currindex++]) {
+				doWhile = true;
+			}
 		}
 		//while (!valueMap->isEmpty()) {
 		while (doWhile) {
-		  //delete val;
-		  //val = valueMap->getKey()->clone();
-		  pw = (PageWriter*) valueMap->remove(val);
-		  //for (map<int, PageWriter*>::iterator pos=valueMap.begin(); pos!=valueMap.end(); ++pos) {
-		  //int value=pos->first;
-		  //(pos->second)->closeDB();
-		  pw->closeDB();
-		  delete pw;
-		  //delete pos->second;
-		  //Log::writeToLog("PagePlacer", 0, "Closed DB and delete PageWriter for value=", value);
-		  assert(val->getSize()==valsize);
+			//delete val;
+			//val = valueMap->getKey()->clone();
+			pw = (PageWriter*) valueMap->remove(val);
+			//for (map<int, PageWriter*>::iterator pos=valueMap.begin(); pos!=valueMap.end(); ++pos) {
+			//int value=pos->first;
+			//(pos->second)->closeDB();
+			pw->closeDB();
+			delete pw;
+			//delete pos->second;
+			//Log::writeToLog("PagePlacer", 0, "Closed DB and delete PageWriter for value=", value);
+			assert(val->getSize()==valsize);
 			if (valEncoder->writeVal((char*)val->value,currPos)) {
 				currPos++;	
 			}
@@ -159,26 +161,26 @@ void PagePlacer::placeColumn(string name_, bool splitOnValue_, bool valSorted_) 
 				//Log::writeToLog("PagePlacer", 2, "Writing Val page, w/ start value", valDecoder->getStartInt());
 				//Log::writeToLog("PagePlacer", 2, "Writing Val page, w/ numValues", valDecoder->getSize());
 				if (valSorted_) {
-				  assert(false); //deal with this case later
-				  int temppos = valDecoder->getEndPos();
-				  valPageWriter->placePage((char*) page, (char*)valDecoder->getEndVal()->value,(char*)&temppos);
+					assert(false); //deal with this case later
+					int temppos = valDecoder->getEndPos();
+					valPageWriter->placePage((char*) page, (char*)valDecoder->getEndVal()->value,(char*)&temppos);
 				}
 				else { 
-				  int temppos = valDecoder->getEndPos();
-				  valPageWriter->placePage((char*) page, (char*)&temppos);				
+					int temppos = valDecoder->getEndPos();
+					valPageWriter->placePage((char*) page, (char*)&temppos);				
 				}
 			}
 			doWhile = false;
 			if (value->type == ValPos::INTTYPE) { // special case: vparray is empty so fill it
-			  if (!valueMap->isEmpty()) {
-			    val = valueMap->getKey()->clone();
-			    doWhile = true;
-			  }
+				if (!valueMap->isEmpty()) {
+					val = valueMap->getKey()->clone();
+					doWhile = true;
+				}
 			}
 			else {
-			  if (val = vparray[currindex++]) {
-			    doWhile = true;
-			  }
+				if (val = vparray[currindex++]) {
+					doWhile = true;
+				}
 			}
 		}
 		assert(valueMap->isEmpty());
@@ -188,15 +190,15 @@ void PagePlacer::placeColumn(string name_, bool splitOnValue_, bool valSorted_) 
 		//Log::writeToLog("PagePlacer", 2, "Writing Val page, w/ start value", valDecoder->getStartInt());
 		//Log::writeToLog("PagePlacer", 2, "Writing Val page, w/ numValues", valDecoder->getSize());
 		if (valSorted_) {
-		  assert(false); //deal with this case later
-		  int temppos = valDecoder->getEndPos();
-		  valPageWriter->placePage((char*) page, (char*)valDecoder->getEndVal()->value,(char*)&temppos);
+			assert(false); //deal with this case later
+			int temppos = valDecoder->getEndPos();
+			valPageWriter->placePage((char*) page, (char*)valDecoder->getEndVal()->value,(char*)&temppos);
 		}
 		else {
-		  int temppos = valDecoder->getEndPos();
-		  valPageWriter->placePage((char*) page, (char*)&temppos);				
+			int temppos = valDecoder->getEndPos();
+			valPageWriter->placePage((char*) page, (char*)&temppos);				
 		}
-		
+
 		valPageWriter->closeDB();
 		delete valPageWriter;
 		Log::writeToLog("PagePlacer", 0, "Closed DB for Value page");
@@ -211,17 +213,17 @@ void PagePlacer::placeColumn(string name_, bool splitOnValue_, bool valSorted_) 
 		//delete val;
 		val = NULL;
 		while (!nameMap->isEmpty()) {
-		  delete val;
-		  val = nameMap->getKey()->clone();
-		  nm = (char*) nameMap->remove(val);
-		  //for (map<int, string>::iterator pos=nameMap.begin();
-		  //   pos!=nameMap.end();
-		  //   ++pos) {
-		  ROSAM* am = new ROSAM(nm, 1, sizeof(int), sizeof(int), ValPos::INTTYPE, ValPos::INTTYPE);
-		  while ((page = (byte*)am->getNextPagePrimary()))
-		    writePage(newWriter, page,page_size, false, 2);
-		  delete am;
-		  delete[] nm;
+			delete val;
+			val = nameMap->getKey()->clone();
+			nm = (char*) nameMap->remove(val);
+			//for (map<int, string>::iterator pos=nameMap.begin();
+			//   pos!=nameMap.end();
+			//   ++pos) {
+			ROSAM* am = new ROSAM(nm, 1, sizeof(int), sizeof(int), ValPos::INTTYPE, ValPos::INTTYPE);
+			while ((page = (byte*)am->getNextPagePrimary()))
+				writePage(newWriter, page,page_size, false, 2);
+			delete am;
+			delete[] nm;
 		}
 		delete val;
 		val = NULL;
@@ -268,7 +270,7 @@ void PagePlacer::writePage(PageWriter* writer_, byte* page_, int page_size, bool
 						useSecondary=false;
 				}
 
-				
+
 				if (useSecondary) {
 					temppos = decoder->getEndPos();
 					writer_->placePage((char*) page_, (char*)&(temppos), (char*)lastSecondaryValue->value,page_size);
@@ -276,7 +278,7 @@ void PagePlacer::writePage(PageWriter* writer_, byte* page_, int page_size, bool
 					temppos = decoder->getEndPos();
 					writer_->placePage((char*) page_, (char*)&(temppos),page_size);
 				}
-				
+
 			}else {
 				temppos = decoder->getEndPos();
 				writer_->placePage((char*) page_, (char*)decoder->getEndVal()->value,(char*)&(temppos), page_size);
@@ -286,13 +288,7 @@ void PagePlacer::writePage(PageWriter* writer_, byte* page_, int page_size, bool
 			temppos = decoder->getEndPos();
 			writer_->placePage((char*) page_, (char*)&temppos, page_size);
 			//Value secondary Index
-			if(encoder->hasPosEncoder()){
-				byte* posValue;
-				unsigned int* posPageSize;
-				byte* posPage = encoder->getEncodedPosPage(&posValue,posPageSize);
-				if(posPage != NULL)
-					writer_->placePage((char*)posPage,(char*)posValue,posPageSize);
-			}else{
+			if(!encoder->hasPosEncoder()){//Skip special position encode case
 				while(decoder->hasNextBlock()){
 					Block* outBlock = decoder->getNextBlock();
 					while(outBlock->hasNext()){

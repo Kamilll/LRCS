@@ -68,4 +68,5 @@ void runTest(string testName, char* arg1, char* arg2){
 void initAllTestSuites(map<string, UnitTest*> &testSuites){
    testSuites["Query1S"] = new Query1S();
    testSuites["Query2S"] = new Query2S();
+   testSuites["Query3S"] = new Query3S();
 }

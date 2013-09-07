@@ -14,7 +14,7 @@ LZDataSource::~LZDataSource()
 {
 
 	if (decoder!=NULL) delete decoder;
-	if (currBlock!=NULL) delete currBlock;
+	//if (currBlock!=NULL) delete currBlock;
 }
 
 //Get the position block on predicaiton

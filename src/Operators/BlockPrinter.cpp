@@ -50,8 +50,8 @@ void BlockPrinter::printColumns(bool skip_output) {
 	posOperator->finishWhereOp();
 
 	posFilter = posOperator->getPosFilter();
-	posFilter->getNumValuesR();
-	posFilter->printBlocks();
+	cout<<posFilter->getNumValuesR()<<endl;
+	//posFilter->printBlocks();
 	for(int i=0; i<numSrcs; i++)
 		dataSrc[i]->setPositionFilter(posFilter);
 

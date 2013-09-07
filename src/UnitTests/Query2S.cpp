@@ -5,7 +5,8 @@
  *
  * Projections: (StringTest03.ID| StringTest03.DESC)
  *
- * Strategy:
+ * Purpose:
+ * Test string data selection with LZ compress
  */
 #include "Query2S.h"
 #include "../common/ValPos.h"
@@ -53,7 +54,7 @@ bool Query2S::run() {
 		ce = new SColumnExtracter(path, 2, 11,false);
 		encoder = new StringEncoder((Operator*) ce, // data source
 		                            0,              // column index
-		                            NULL,
+		                            NULL,           // position encoder
 		                            11,             // string Size
 		                            20*PAGE_SIZE);   // buffer size in bits
 		decoder = new StringDecoder(true);         // value sorted

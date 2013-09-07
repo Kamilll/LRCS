@@ -5,7 +5,8 @@
  *
  * Projections: (StringTest01.ID| StringTest01.DESC)
  *
- * Strategy:
+ * Purpose:
+ * Test string data seletions with value un-sorted.
  */
 #include "Query1S.h"
 #include "../common/ValPos.h"

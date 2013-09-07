@@ -148,7 +148,7 @@ byte* DataSource::getRightPage() {
       else
 	    return getPageOnPos();
 	else
-	  return getPage();
+	  return getPage();//Sequential Reading
 }
 
 byte* DataSource::getPage() {

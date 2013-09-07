@@ -39,6 +39,7 @@ class ValPos{
 		virtual bool operator <= (ValPos*)=0;
 		virtual bool operator == (ValPos*)=0;
 		virtual bool operator != (ValPos*)=0;
+
 };
 
 #endif // VALPOS_H

@@ -64,7 +64,7 @@ byte* StringEncoder::getPage() {
 			if (!writer->writeString(currPair->value)) throw new UnexpectedException("StringEncoder: Could not write initial value");
 			*lengthPtr=1;
 			init=false;
-			currPair=NULL;			
+			//currPair=NULL;	
 		}
 		// append more values to same page
 		else {
@@ -75,23 +75,29 @@ byte* StringEncoder::getPage() {
 				return buffer;
 			}
 			else {
-				currPair=NULL;
+				//currPair=NULL;
 				*lengthPtr=*lengthPtr+1;
 			}
 		}
 		if(posEncoder != NULL)posEncoder->addValPos(currPair);
+		currPair=NULL;
 	}
+
+	if(posEncoder != NULL)posEncoder->purgeMap2Queue();
 }
 
-byte* StringEncoder::getEncodedPosPage(byte** posValue_, unsigned int* posPageSize_){
+/*byte* StringEncoder::getEncodedPosPage(byte** posValue_, unsigned int** posPageSize_){
 	assert(posEncoder != NULL);
-	*posValue_ = new byte[*ssizePtr];
-	byte* _page = posEncoder->getPageAndValue(*posValue_);
+	//*posValue_ = new byte[*ssizePtr];
+	byte* _posValue = NULL;
+	byte* _page = posEncoder->getPageAndValue(&_posValue);
+	*posValue_ = _posValue;
 	if(_page != NULL){
-		*posPageSize_ = BLOCK_SIZE*(*(unsigned int*)_page);
+		unsigned int pageSize = BLOCK_SIZE*(*(unsigned int*)_page);
+		*posPageSize_ = &pageSize;
 		return _page;
 	}else return NULL;
-}
+}*/
 
 //Return the exact buffer size
 int StringEncoder::getBufferSize()

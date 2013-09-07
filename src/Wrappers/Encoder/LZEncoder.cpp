@@ -1,4 +1,5 @@
 #include "LZEncoder.h"
+//#include "PosEncoder.h"
 #include <lzo1x.h>
 #include <lzoutil.h>
 
@@ -6,6 +7,7 @@ LZEncoder::LZEncoder(Encoder* encoder_): Encoder(NULL, 1,NULL)
 {
 	assert(encoder_ != NULL);
 	encoder = encoder_;		
+	posEncoder = encoder_->posEncoder;
 	page=new byte[PAGE_SIZE];
 }
 
