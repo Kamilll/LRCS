@@ -1,18 +1,17 @@
 [Anjuta]
-Maximized=1
-Geometry=1280x741+0+27
+Geometry=790x575+251+90
 
 [Project Manager]
-Expand=src%%%src//UnitTests%%%src//Wrappers
+Expand=src%%%src//common
 
 [File Loader]
-Files=../../UnitTests/Query3S.cpp#34%%%../../Operators/BlockPrinter.cpp#48%%%../../common/PosBlock.h#61%%%../../common/PosBlock.cpp#109%%%../../Wrappers/Decoder/BitmapDecoder.h#37%%%../../Wrappers/Decoder/BitmapDecoder.cpp#17%%%../../Wrappers/Encoder/BitmapEncoder.cpp#23%%%../../Wrappers/Encoder/BitmapEncoder.h#23%%%../../AM/PagePlacer.cpp#67%%%../../Wrappers/Encoder/StringEncoder.cpp#89%%%../../Wrappers/Encoder/PosEncoder.h#17%%%../../Wrappers/Encoder/PosEncoder.cpp#12%%%../../Wrappers/Util/StringWriter.cpp#5%%%../../main.cpp#52%%%../../AM/PageWriter.cpp#116%%%../../Wrappers/Encoder/Encoder.h#11%%%../../Wrappers/BitmapDataSource.cpp#81%%%../../Wrappers/Decoder/Decoder.h#10%%%../../common/DataSource.cpp#170%%%../../AM/ROSAM.cpp#513%%%../../AM/ROSAM.h#36%%%../../Operators/PosOperator.cpp#26%%%../../Operators/PosOperator.h#1%%%../../Wrappers/Encoder/Encoder.cpp#3%%%../../common/PosFilterBlock.cpp#212%%%../../Wrappers/Encoder/LZEncoder.cpp#46%%%../../Wrappers/Encoder/StringEncoder.h#19%%%../../Wrappers/BitmapDataSource.h#21%%%../../common/DataSource.h#60%%%../../UnitTests/Query1S.cpp#101%%%../../Wrappers/StringDataSource.cpp#22%%%../../UnitTests/Query2S.cpp#90
+Files=../../UnitTests/Query3S.cpp#105%%%../../Operators/BlockPrinter.cpp#61%%%../../Wrappers/BitmapDataSource.cpp#73%%%../../Wrappers/StringDataSource.cpp#1%%%../../common/MultiPosFilterBlock.cpp#45%%%../../Wrappers/LZDataSource.cpp#17%%%../../Operators/PosOperator.cpp#83%%%../../AM/PagePlacer.cpp#55%%%../../AM/PageWriter.cpp#67%%%../../AM/ROSAM.cpp#692%%%../../common/PosFilterBlock.cpp#25%%%../../Wrappers/Decoder/BitmapDecoder.cpp#10%%%../../Wrappers/Decoder/BitmapDecoder.h#11%%%../../common/PosBlock.cpp#186
 
 [Document Manager]
 bookmarks=<?xml version="1.0" encoding="UTF-8"?>\n<bookmarks/>\n
 
 [Execution]
-Program arguments=0 1 Query2S%%%0 1 Query1S%%%0 1 2
+Program arguments=0 1 Query3S%%%0 1 Query1S%%%0 1 Query2S%%%0 1 2
 Program uri=../../cstoreqptest
 Run in terminal=2
 Working directories=../../../src
@@ -26,6 +25,6 @@ BuildArgs/Profiling=--enable-maintainer-mode 'CFLAGS=-g -pg' 'CXXFLAGS=-g -pg' '
 BuildArgs/Optimized=--enable-maintainer-mode 'CFLAGS=-O2' 'CXXFLAGS=-O2' 'JFLAGS=-O2' 'FFLAGS=-O2'
 
 [Debugger]
-Watch=lhs->value%%%value%%%bufferPtrAsIntArr[1]%%%pair
-Breakpoint=1:../../UnitTests/Query1S.cpp:101:0:%%%1:../../common/DataSource.cpp:264:0:%%%1:../../common/DataSource.cpp:170:0:
+Watch=posFilterBlock%%% posFilter%%% currWhereOp
+Breakpoint=1:../../Operators/BlockPrinter.cpp:52:0:
 Stop at beginning=2
