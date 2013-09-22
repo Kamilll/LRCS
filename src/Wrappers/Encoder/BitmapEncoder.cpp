@@ -8,7 +8,7 @@
  *  |Block2(6000byte)-->
  *	+-----------------------------------+
  */
-BitmapEncoder::BitmapEncoder(int valSize_, int bfrSizeInBits_) : PosEncoder(valSize_, bfrSizeInBits_)
+BitmapEncoder::BitmapEncoder(int valSize_, int bfrSizeInBits_) : PosEncoder()
 {
 	bufferSizeInBytes=bfrSizeInBits_/8;
 	valSize= valSize_;
@@ -20,19 +20,21 @@ BitmapEncoder::~BitmapEncoder()
 }
 
 
-byte* BitmapEncoder::getPageAndValue(byte** value_) {
-   if(!outPutQ.empty()){
-	  ele pair = outPutQ.front();
-	  outPutQ.pop();
-	  *value_ = pair.value;	  
-	  return pair.page;
-   }else return NULL;
+byte* BitmapEncoder::getPageAndValue(byte** value_, unsigned int** valSize_) {
+	if(!outPutQ.empty()){
+		ele pair = outPutQ.front();
+		outPutQ.pop();
+		*value_ = pair.value;	  
+		unsigned int pageSize = BLOCK_SIZE*(*(unsigned int*)pair.page) + sizeof(int);
+		*valSize_ = &pageSize;
+		return pair.page;
+	}else return NULL;
 }
 
 void BitmapEncoder::addValPos(ValPos* vp_){
 	map<string, byte*>::iterator p_it;
 	map<string, PosBlock*>::iterator b_it; 
-
+	
 	string valueStr( reinterpret_cast<char const*>(vp_->value), vp_->getSize());
 
 	b_it=blockMap.find(valueStr);
@@ -71,7 +73,8 @@ void BitmapEncoder::initANewBlock(string valueStr_, ValPos* vp_){
 
 bool BitmapEncoder::appendBlocktoPage(byte* page_, PosBlock* posBlock_){
 	unsigned int* numBlocks = (unsigned int*)page_;
-	if((*numBlocks+1)*BLOCK_SIZE > (unsigned int)bufferSizeInBytes)return false;//Page is full
+	if((*numBlocks+1)*BLOCK_SIZE > (unsigned int)(bufferSizeInBytes - sizeof(int)))
+		return false;//Page is full
 	memcpy(page_+(sizeof(int)+(*numBlocks)*BLOCK_SIZE), posBlock_->getBuffer(), BLOCK_SIZE);
 	*numBlocks+=1;
 	delete posBlock_;

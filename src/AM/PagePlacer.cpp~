@@ -55,18 +55,19 @@ void PagePlacer::placeColumn(string name_, bool splitOnValue_, bool valSorted_) 
 				pageWriter->initDB(name_, (valSorted?false:true));
 			}	
 			writePage(pageWriter, page, page_size, posPrimary, numIndexes);
+			//If the encoder has a special position encoder, dry up the position pages
+			if(encoder->hasPosEncoder()){
+				byte* posValue;
+				unsigned int* posPageSize;
+				byte* posPage = encoder->getEncodedPosPage(&posValue,&posPageSize);
+				while(posPage != NULL){
+					pageWriter->placePageSecondary((char*)posPage,(char*)posValue,*posPageSize);
+					delete[] posPage;
+					delete[] posValue;
+					posPage = encoder->getEncodedPosPage(&posValue,&posPageSize);
+				}
+			}			
 			page=encoder->getPage();
-		}
-
-		//If the encoder has a special position encoder, dry up the position pages
-		if(encoder->hasPosEncoder()){
-			byte* posValue;
-			unsigned int* posPageSize;
-			byte* posPage = encoder->getEncodedPosPage(&posValue,&posPageSize);
-			while(posPage != NULL){
-				pageWriter->placePageSecondary((char*)posPage,(char*)posValue,*posPageSize);
-				posPage = encoder->getEncodedPosPage(&posValue,&posPageSize);
-			}
 		}
 
 		pageWriter->closeDB();

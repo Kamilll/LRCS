@@ -46,7 +46,7 @@ MultiPosFilterBlock* BitmapDataSource::getPosOnPred(){
 //Get position on predition if the value is unsorted:check
 bool BitmapDataSource::getPosOnPredValueUnsorted(ROSAM* am_,ValPos* rhsvp_, ValPos* tempVP_){
 	byte* page=NULL;
-	BitmapDecoder* bitmapDecoder = new BitmapDecoder(rhsvp_);
+	BitmapDecoder* bitmapDecoder = new BitmapDecoder();
 	PosOperator* posOperator = new PosOperator();
 	MultiPosFilterBlock* multiPosBlock;
 	bool done = false;
@@ -110,6 +110,7 @@ bool BitmapDataSource::getPosOnPredValueUnsorted(ROSAM* am_,ValPos* rhsvp_, ValP
     }
 	posOperator->finishWhereOp();
     matchedPredPos = posOperator->getPosFilter();
+	cout<<matchedPredPos->getNumValuesR()<<endl;
 	delete bitmapDecoder;
 	delete posOperator;
 	

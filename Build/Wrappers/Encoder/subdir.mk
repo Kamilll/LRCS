@@ -5,6 +5,7 @@ BitmapEncoder.cpp \
 IntEncoder.cpp \
 PosEncoder.cpp \
 LZEncoder.cpp \
+RLEncoder.cpp \
 StringEncoder.cpp \
 UncompressedEncoder.cpp \
 }

@@ -5,9 +5,10 @@
 
 class RLETriple {
 	public:
-		RLETriple() { value=NULL; startPos=0; reps=0;}
+		RLETriple() { value=NULL; startPos=0; reps=0;currPos=0;}
 		RLETriple(ValPos* value_, unsigned int startPos_, unsigned int reps_) 
 			: value(value_==NULL?NULL:value_->clone()), startPos(startPos_), reps(reps_) {
+				currPos=0;
 				if (reps==0)
 					throw new CodingException("RLETriple: error, reps==0");
 			}
@@ -15,13 +16,15 @@ class RLETriple {
 			value=(trip_.value==NULL?NULL:trip_.value->clone());
 			startPos=trip_.startPos;
 			reps=trip_.reps;
+			currPos=0;
 		}
-		virtual ~RLETriple(){delete value;};
+		virtual ~RLETriple(){delete value;}
 		void setTriple(ValPos* val_, int pos_, int reps_) {
 			delete value;
 			value=(val_==NULL?NULL:val_->clone());
 			startPos=pos_;
 			reps=reps_;
+			currPos=0;
 			if (reps==0)
 				throw new CodingException("RLETriple: error, reps==0");
 		}
@@ -33,6 +36,7 @@ class RLETriple {
 				value=(triple_->value==NULL?NULL:triple_->value->clone());
 				startPos=triple_->startPos;
 				reps=triple_->reps;	
+				currPos=0;
 			}
 		}
 
@@ -42,9 +46,27 @@ class RLETriple {
 			return (value ==NULL && startPos==0 && reps ==0);
 		}
 
+		bool hasNext(){
+			//assert(!isNUll());
+			if(startPos==0 && reps ==0)return false;
+			if(currPos < (startPos + reps - 1))
+				return true;
+			else
+				return false;			
+		}
+
+		unsigned int getNext(){
+			if(currPos == 0)
+				currPos = startPos;
+			else
+				currPos++; 
+			return currPos;
+		}
+
 		ValPos* value;
 		unsigned int startPos;
 		unsigned int reps;	
+		unsigned int currPos;	
 };
 
 #endif // RLETRIPLE_H

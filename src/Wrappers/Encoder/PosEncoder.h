@@ -11,10 +11,10 @@
 class PosEncoder : public Encoder
 {
 public:
-	PosEncoder(int valSize_, int bfrSizeInBits_);
+	PosEncoder();
 	virtual ~PosEncoder();
 	virtual byte* getPage(){return NULL;}
-	virtual byte* getPageAndValue(byte** value_)=0;
+	virtual byte* getPageAndValue(byte** value_, unsigned int** valSize_)=0;
     virtual int getNumValsPerPage(){return 0;}
 	virtual short getValSize(){return (short)sizeof(int);}
 	virtual int getBufferSize(){return 0;}

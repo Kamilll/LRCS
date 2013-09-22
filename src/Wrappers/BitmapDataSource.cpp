@@ -110,6 +110,7 @@ bool BitmapDataSource::getPosOnPredValueUnsorted(ROSAM* am_,ValPos* rhsvp_, ValP
     }
 	posOperator->finishWhereOp();
     matchedPredPos = posOperator->getPosFilter();
+	//cout<<matchedPredPos->getNumValuesR()<<endl;
 	delete bitmapDecoder;
 	delete posOperator;
 	

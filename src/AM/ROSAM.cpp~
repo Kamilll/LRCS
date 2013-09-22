@@ -407,7 +407,7 @@ const void* ROSAM::doCursorGetPage(char* key,u_int32_t flags)
 	memset(&pkey, 0, sizeof(pkey)); 
 	memset(&data, 0, sizeof(data)); 
 
-	pkey.set_flags(DB_DBT_MALLOC);
+	pkey.set_flags(DB_DBT_USERMEM);
 	pkey.set_size( seckeysize );
 	pkey.set_data( key );
 
@@ -701,6 +701,10 @@ int ROSAM::compare_key(Db *dbp, const Dbt *a, const Dbt *b)
 	char* j = ((char *)b->get_data());
 	int size1 = a->get_size();
 	int size2 = b->get_size();
+	if(size1 != size2){
+		cout<<size1<<endl;
+		cout<<size2<<endl;
+	}
 	assert(size1 == size2);
 	return memcmp(i,j,size1);
 }

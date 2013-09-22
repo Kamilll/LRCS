@@ -24,7 +24,7 @@ MultiPosFilterBlock* MultiPosFilterBlock::clone( ){
 	MultiPosFilterBlock* newBlock = new MultiPosFilterBlock();
 	if(isCompleteSet ()){
 		newBlock->setCompleteSet(true);
-	}else if (!isNullSet()){
+	}else if (!isNullSet() || getNumBlocks() == 0){
 		for(int i = 0; i<getNumBlocks();i++)
 			newBlock->addPosFilterBlock(posFilterBlockVec.at(i)->clone());	
 		newBlock->setCurrBlock(0);
@@ -33,7 +33,9 @@ MultiPosFilterBlock* MultiPosFilterBlock::clone( ){
 }
 
 void MultiPosFilterBlock::addPosFilterBlock( PosFilterBlock* posFilterBlock_ ){
-	assert(posFilterBlock_ != NULL);
+	if(posFilterBlock_ == NULL){
+		return;
+	}
 	posFilterBlock_->caculateEndInt();
 	if(startPos == 0){//add the first block
 		startPos = posFilterBlock_->getStartPosition();	
@@ -45,17 +47,22 @@ void MultiPosFilterBlock::addPosFilterBlock( PosFilterBlock* posFilterBlock_ ){
 	}
 
 	if(posFilterBlock_->getEndPosition() < startPos){//insert a new block at beginning
-        startPos = posFilterBlock_->getStartPosition();
+		startPos = posFilterBlock_->getStartPosition();
 		posFilterBlockVec.insert(posFilterBlockVec.begin(),posFilterBlock_);
-		numValues += posFilterBlock_->getNumValues();
-	}else if(posFilterBlock_->getEndPosition() > startPos && posFilterBlock_->getEndPosition() < endPos){
-		//insert a new block at middle
-		posFilterBlockVec.insert((posFilterBlockVec.begin()+currBlockNum),posFilterBlock_);
 		numValues += posFilterBlock_->getNumValues();
 	}else if(posFilterBlock_->getStartPosition() > endPos){//append a new block
 		endPos = posFilterBlock_->getEndPosition();
 		posFilterBlockVec.push_back(posFilterBlock_);
 		numValues += posFilterBlock_->getNumValues();
+	}else{//insert a new block at middle
+		for(int i = (getNumBlocks()-1); i>0;i--){
+			if(posFilterBlock_->getStartPosition() > posFilterBlockVec.at(i)->getStartPosition()){
+				currBlockNum = i;
+                break;
+			}
+		}
+		posFilterBlockVec.insert((posFilterBlockVec.begin()+currBlockNum+1),posFilterBlock_);
+		numValues += posFilterBlock_->getNumValues();	
 	}
 	posFilterBlock_->parentMultiBlock = this;
 }
@@ -130,6 +137,8 @@ void MultiPosFilterBlock::optimize( ){
 	
 	int i = 0;
 	bool prevFull;
+	unsigned int nextPos;
+	
 	PosFilterBlock* currPosFilterBlock;
 	PosFilterBlock* prevPosFilterBlock;
 	while(true){		
@@ -141,8 +150,11 @@ void MultiPosFilterBlock::optimize( ){
 		}
 
 		//01. remove all the preceding Zeros
+		//re-caculate end int in each block.
+		//currPosFilterBlock->caculateEndInt();
 		if(!removePrecedingZero(currPosFilterBlock)){//The whole block is zero,erase it directly
-            posFilterBlockVec.erase(posFilterBlockVec.begin() + i);
+            delete currPosFilterBlock;
+			posFilterBlockVec.erase(posFilterBlockVec.begin() + i);
 			continue;
 		}
 
@@ -154,13 +166,16 @@ void MultiPosFilterBlock::optimize( ){
 		}
 		prevPosFilterBlock = posFilterBlockVec.at(i-1);
 		currPosFilterBlock->setCurrInt(1);
+
 		if(prevPosFilterBlock->addPosition(currPosFilterBlock->getNextPos())){
 			//Try to add the start position to the previous block. If success, then try to add next position.
 			prevFull = false;
-			while(currPosFilterBlock != NULL){
+			//while(currPosFilterBlock != NULL){			
 				while(currPosFilterBlock->hasNext()){
-					if(!(prevPosFilterBlock->addPosition(currPosFilterBlock->getNextPos()))){			
-						currPosFilterBlock->cutGetRightAtPos(currPosFilterBlock->getCurrPosition());
+					nextPos = currPosFilterBlock->getNextPos();
+					if(nextPos == 0)break;
+					if(!(prevPosFilterBlock->addPosition(nextPos))){			
+						currPosFilterBlock->cutGetRightAtPos(nextPos);
 						prevFull = true;
 						//prevPosFilterBlock->caculateEndInt();
 						break;
@@ -169,17 +184,20 @@ void MultiPosFilterBlock::optimize( ){
 
 				//run out of current block, delete the block and get next block;
 				if(!prevFull){
+					delete currPosFilterBlock;
 					posFilterBlockVec.erase(posFilterBlockVec.begin() + i);
-					break;
+					//break;
 				}else{
 					i++;
-					break;
+					//break;
 				}
-			}
-		}else
+		
+			//}	
+		}else{
 			i++;
+		}
 	}
-	//03. re-caculate end int in each block.
+	
 }
 
 bool MultiPosFilterBlock::removePrecedingZero(PosFilterBlock* &posFilterBlock_){
@@ -189,8 +207,12 @@ bool MultiPosFilterBlock::removePrecedingZero(PosFilterBlock* &posFilterBlock_){
 	while(posFilterBlock_->hasNextInt()){
 		_currInt = posFilterBlock_->getNextInt();
 		if( _currInt == 0)continue;
-		else{	 
-			posFilterBlock_->cutGetRightAtPos(posFilterBlock_->getCurrIntRealStartPos());
+		else{
+			unsigned int newStartPos = posFilterBlock_->getCurrIntRealStartPos();
+			if(newStartPos > posFilterBlock_->getEndPosition())
+				return false;//The whole block is zero
+			else
+			  posFilterBlock_->cutGetRightAtPos(newStartPos);
 			return true;
 		}
 	}
@@ -224,15 +246,15 @@ bool MultiPosFilterBlock::hasNext( ){
 
 unsigned int MultiPosFilterBlock::getNext( ){
 	unsigned int retPos;
-	unsigned int _currBlockNum;
+	//unsigned int _currBlockNum;
 	if (currBlock == NULL){
 		if(setCurrBlock( 0 ) )
 			retPos = currBlock->getNextPos(); //Start from beginning
 	}else{
 		retPos = currBlock->getNextPos();
 		if (retPos == 0){ //if run out of a block,iterate to next block
-			_currBlockNum = currBlockNum + 1;
-			if(setCurrBlock(_currBlockNum))
+			//_currBlockNum = currBlockNum + 1;
+			if(setCurrBlock(++currBlockNum))
 				retPos = currBlock->getNextPos();
 			else{
 				retPos = 0;
@@ -244,13 +266,13 @@ unsigned int MultiPosFilterBlock::getNext( ){
 }
 
 PosFilterBlock* MultiPosFilterBlock::getNextBlock( ){
-	unsigned int _currBlockNum;
+	//unsigned int _currBlockNum;
 	if (currBlock == NULL){
 		if(setCurrBlock( 0 ) )
 			return currBlock; //Start from the first block
 	}else{
-		_currBlockNum = currBlockNum + 1;
-		if(setCurrBlock(_currBlockNum))
+		//_currBlockNum = currBlockNum + 1;
+		if(setCurrBlock(++currBlockNum))
 			return currBlock;
 		else
 			return NULL;//run out of all blocks
@@ -275,6 +297,9 @@ unsigned int MultiPosFilterBlock::getNumValues() {
    return numValues;
 }
 unsigned int MultiPosFilterBlock::getNumValuesR() {
+/* if (completeSet == true)Get the totoal number of items 
+ * from catagory meta data.
+ */
   numValues = 0;
   for(int i = 0; i<getNumBlocks();i++)
 	  numValues +=posFilterBlockVec.at(i)->getNumValuesR();
@@ -351,5 +376,15 @@ void MultiPosFilterBlock::setTriple(RLETriple* triple_){
 		currBlock->initEmptyBuffer(startPos);    
 		currBlock->setRangePos(mod);
 		addPosFilterBlock(currBlock);
+	}
+}
+
+void MultiPosFilterBlock::addRLEBlock(RLEBlock* block_){
+	if (currBlock == NULL){//The first time add a triple
+      setTriple(block_->getTriple());
+	}else{//Next times add by postions.
+       while(block_->hasNext()){
+		   addPosition(block_->getNext()->position);
+	   }
 	}
 }

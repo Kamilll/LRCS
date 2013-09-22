@@ -2,7 +2,6 @@
 #define POSFILTERBLOCK_H
 #include "assert.h"
 #include <cstring>
-#include <iostream>
 #include "../Util/BitUtil.h"
 #include "Constants.h"
 #include "UnexpectedException.h"
@@ -48,14 +47,14 @@ public:
 	virtual void setRangePos(unsigned int length);
 	
   	virtual PosFilterCursor* getCursor();
-	virtual void printBlock();
+	//virtual void printBlock();
 
 protected:
 	unsigned int currStartPos;
 
 	static unsigned int getIntStartPos( unsigned int Int_ );
 	static unsigned int getIntEndPos( unsigned int Int_ );
-	virtual void printBits(int bits);
+	//virtual void printBits(int bits);
 	
 private:	
 	//bool isBufferSet;

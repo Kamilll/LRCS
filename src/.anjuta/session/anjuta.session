@@ -1,11 +1,11 @@
 [Anjuta]
-Geometry=790x575+270+124
+Geometry=1144x683+94+84
 
 [Project Manager]
-Expand=src%%%src//common
+Expand=src%%%src//UnitTests
 
 [File Loader]
-Files=../../UnitTests/Query3S.cpp#105%%%../../Operators/BlockPrinter.cpp#61%%%../../Wrappers/BitmapDataSource.cpp#73%%%../../Wrappers/StringDataSource.cpp#1%%%../../common/MultiPosFilterBlock.cpp#45%%%../../Wrappers/LZDataSource.cpp#17%%%../../Operators/PosOperator.cpp#83%%%../../AM/PagePlacer.cpp#55%%%../../AM/PageWriter.cpp#67%%%../../AM/ROSAM.cpp#692%%%../../common/PosFilterBlock.cpp#25%%%../../Wrappers/Decoder/BitmapDecoder.cpp#10%%%../../Wrappers/Decoder/BitmapDecoder.h#11%%%../../common/PosBlock.cpp#186
+Files=../../Wrappers/Encoder/BitmapEncoder.h#26%%%../../Wrappers/Encoder/BitmapEncoder.cpp#14%%%../../Wrappers/RLEBlock.cpp#68%%%../../Wrappers/RLEBlock.h#1%%%../../Wrappers/RLETriple.h#52%%%../../Wrappers/Decoder/RLEDecoder.cpp#97%%%../../Wrappers/Decoder/RLESuperDecoder.h#1%%%../../Wrappers/Encoder/RLEncoder.cpp#46%%%../../Wrappers/Encoder/StringEncoder.cpp#1%%%../../Wrappers/Encoder/RLEncoder.h#28%%%../../common/MultiPosFilterBlock.cpp#146%%%../../common/PosFilterBlock.cpp#30%%%../../Operators/PosOperator.cpp#348%%%../../common/PosBlock.h#44%%%../../common/PosBlock.cpp#215%%%../../Operators/BlockPrinter.cpp#48%%%../../Wrappers/MultiBlock.cpp#78%%%../../UnitTests/Query3S.cpp#99%%%../../Wrappers/BitmapDataSource.cpp#105
 
 [Document Manager]
 bookmarks=<?xml version="1.0" encoding="UTF-8"?>\n<bookmarks/>\n
@@ -25,6 +25,5 @@ BuildArgs/Profiling=--enable-maintainer-mode 'CFLAGS=-g -pg' 'CXXFLAGS=-g -pg' '
 BuildArgs/Optimized=--enable-maintainer-mode 'CFLAGS=-O2' 'CXXFLAGS=-O2' 'JFLAGS=-O2' 'FFLAGS=-O2'
 
 [Debugger]
-Watch=posFilterBlock%%% posFilter%%% currWhereOp
-Breakpoint=1:../../Operators/BlockPrinter.cpp:52:0:
+Breakpoint=1:../../common/MultiPosFilterBlock.cpp:146:0:
 Stop at beginning=2

@@ -53,6 +53,7 @@ AM/PagePlacer.d AM/PagePlacer.o: ../src/AM/PagePlacer.cpp ../src/AM/PagePlacer.h
  ../src/AM/../Wrappers/Decoder/../../Operators/../common/../Util/BitUtil.h \
  ../src/AM/../Wrappers/Decoder/../../Operators/../common/UnexpectedException.h \
  ../src/AM/../Wrappers/Decoder/../../Operators/../common/PosBlock.h \
+ ../src/AM/../Wrappers/Decoder/../../Operators/../common/../Wrappers/RLEBlock.h \
  ../src/AM/../Wrappers/Decoder/../../Operators/../common/../Wrappers/RLETriple.h \
  ../src/AM/../Wrappers/Decoder/../../Operators/../common/../Wrappers/CodingException.h \
  ../src/AM/../Wrappers/Decoder/../../Operators/../common/../Wrappers/../common/ValPos.h \

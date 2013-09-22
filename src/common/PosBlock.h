@@ -2,6 +2,7 @@
 #define _PosBlock_H_
 
 #include "Block.h"
+#include <iostream>
 #include "UnexpectedException.h"
 
 class PosBlock : public Block
@@ -47,6 +48,8 @@ public:
 	virtual bool isPosContiguous();
 	virtual bool isBlockValueSorted();	
 	virtual bool isBlockPosSorted();
+
+	virtual void printBlock();
 protected:
 	byte* bfrWithHeader;
 	byte* buffer;
@@ -63,6 +66,7 @@ protected:
 
 	virtual void setPosIndex(int v, int* pidx, int& currIndexInVal);
 	virtual void init();
+	virtual void printBits(int bits);
 
 private:
 	bool isBufferSet;

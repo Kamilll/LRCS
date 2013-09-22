@@ -20,7 +20,7 @@ public:
 	virtual ~PosFilterBlock();
 	
 	virtual void initEmptyBuffer(unsigned int startpos);
-	virtual void setBuffer(byte* buffer_);
+	//virtual void setBuffer(byte* buffer_);
 	virtual bool addPosition(unsigned int pos);	
 	
 	virtual PosFilterBlock* clone();
@@ -48,14 +48,14 @@ public:
 	virtual void setRangePos(unsigned int length);
 	
   	virtual PosFilterCursor* getCursor();
-	virtual void printBlock();
+	//virtual void printBlock();
 
 protected:
 	unsigned int currStartPos;
 
 	static unsigned int getIntStartPos( unsigned int Int_ );
 	static unsigned int getIntEndPos( unsigned int Int_ );
-	virtual void printBits(int bits);
+	//virtual void printBits(int bits);
 	
 private:	
 	//bool isBufferSet;

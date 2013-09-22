@@ -45,6 +45,7 @@ Wrappers/LZDataSource.d Wrappers/LZDataSource.o: ../src/Wrappers/LZDataSource.cp
  ../src/Wrappers/../common/PosFilterBlock.h \
  ../src/Wrappers/../common/../Util/BitUtil.h \
  ../src/Wrappers/../common/PosBlock.h \
+ ../src/Wrappers/../common/../Wrappers/RLEBlock.h \
  ../src/Wrappers/../common/../Wrappers/RLETriple.h \
  ../src/Wrappers/../common/../Wrappers/../common/ValPos.h \
  ../src/Wrappers/../common/../Util/StringUtil.h \

@@ -71,21 +71,21 @@ bool Query1S::run() {
 
 	ROSAM* am1 = new ROSAM( "StringTest01.ID" , 2 ,sizeof(int), 10, ValPos::INTTYPE, ValPos::STRINGTYPE);
 	ROSAM* am2 = new ROSAM( "StringTest01.DESC" , 2, sizeof(int), 11, ValPos::INTTYPE, ValPos::STRINGTYPE);
-	Predicate* pred1=new Predicate(Predicate::OP_LESS_THAN);
-	Predicate* pred2=new Predicate(Predicate::OP_GREATER_THAN);
+	Predicate* pred1=new Predicate(Predicate::OP_LESS_THAN_OR_EQUAL);
+	Predicate* pred2=new Predicate(Predicate::OP_LESS_THAN);
 	StringDataSource* ds1=new StringDataSource(am1,true,true);
 	StringDataSource* ds2=new StringDataSource(am2,false,true);
 
-	ds1->setPredicate(pred1);
+	//ds1->setPredicate(pred1);
 	ds2->setPredicate(pred2);
 
 	ValPos* rhs1 = new StringValPos(10);
 	char* RHSVal1 = "abcde00050";
 	rhs1->set(RHSVal1);
-	ds1->changeRHSBinding(rhs1);
+	//ds1->changeRHSBinding(rhs1);
 
 	ValPos* rhs2 = new StringValPos(11);
-	char* RHSVal2 = "Cstore99948";
+	char* RHSVal2 = "Cstore00010";
 	rhs2->set(RHSVal2);
 	ds2->changeRHSBinding(rhs2);
 	//Count* agg = new Count((Operator*) ds1, 0, (Operator*) ds1, 0);

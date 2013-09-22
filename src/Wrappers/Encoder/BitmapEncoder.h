@@ -17,7 +17,7 @@ public:
 	BitmapEncoder(int valSize_, int bfrSizeInBits_);
 	virtual ~BitmapEncoder();
 	//virtual byte* getPage( ){return NULL;}
-	virtual byte* getPageAndValue(byte** value_);
+	virtual byte* getPageAndValue(byte** value_, unsigned int** valSize_);
 
 	virtual void addValPos(ValPos* vp_);
 	virtual void purgeMap2Queue();

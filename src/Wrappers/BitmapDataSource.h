@@ -17,7 +17,7 @@ class BitmapDataSource : public DataSource
 		// Gets the Posiotion block on the predication 
 		virtual	MultiPosFilterBlock* getPosOnPred();
 
-		virtual bool BitmapDataSource::skipToRightPosOnPage(unsigned int pos_);
+		virtual bool skipToRightPosOnPage(unsigned int pos_);
 
 	protected:
         bool getPosOnPredValueUnsorted(ROSAM* am_,ValPos* rhsvp_, ValPos* tempVP_);

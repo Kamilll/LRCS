@@ -46,6 +46,7 @@ Wrappers/BitmapDataSource.d Wrappers/BitmapDataSource.o: ../src/Wrappers/BitmapD
  ../src/Wrappers/../common/PosFilterBlock.h \
  ../src/Wrappers/../common/../Util/BitUtil.h \
  ../src/Wrappers/../common/PosBlock.h \
+ ../src/Wrappers/../common/../Wrappers/RLEBlock.h \
  ../src/Wrappers/../common/../Wrappers/RLETriple.h \
  ../src/Wrappers/../common/../Wrappers/../common/ValPos.h \
  ../src/Wrappers/../common/../Util/StringUtil.h \

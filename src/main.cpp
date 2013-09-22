@@ -69,4 +69,5 @@ void initAllTestSuites(map<string, UnitTest*> &testSuites){
    testSuites["Query1S"] = new Query1S();
    testSuites["Query2S"] = new Query2S();
    testSuites["Query3S"] = new Query3S();
+   testSuites["Query4S"] = new Query4S();
 }

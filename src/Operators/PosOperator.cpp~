@@ -19,7 +19,7 @@ PosOperator::~PosOperator( ){
 	whereOp* whereOpTemp; 
 	while (currWhereOp != NULL){
 		whereOpTemp = currWhereOp;
-		delete whereOpTemp->posBlock;
+		//delete whereOpTemp->posBlock;
 		currWhereOp = whereOpTemp->nextOp;
 		delete whereOpTemp;
 	}
@@ -235,7 +235,7 @@ MultiPosFilterBlock* PosOperator::doAndCaculate(MultiPosFilterBlock* posBlock1_,
 			if(!tempPosFilterBlock->addInt(tempInt)){//if Block is full,create a new one
 				cacuPosBlock->addPosFilterBlock(tempPosFilterBlock);
 				tempPosFilterBlock = new PosFilterBlock();
-				tempPosFilterBlock->initEmptyBuffer(tempFilterBlock1->getStartPosition());
+				tempPosFilterBlock->initEmptyBuffer(tempFilterBlock1->getCurrIntRealStartPos());
 				tempPosFilterBlock->setCurrInt(0);
                 tempPosFilterBlock->addInt(tempInt);//Aways true
 			};
@@ -271,6 +271,9 @@ MultiPosFilterBlock* PosOperator::doOrCaculate(MultiPosFilterBlock* posBlock1_, 
 	//if(cacuPosBlock)delete cacuPosBlock;
 	bool done = false;
 	
+
+	//if(ifPrint)posBlock1_->printBlocks();
+	
 	PosFilterBlock* tempPosFilterBlock;
 	PosFilterBlock* posFilterBlock1;
 	PosFilterBlock* posFilterBlock2;
@@ -299,7 +302,7 @@ MultiPosFilterBlock* PosOperator::doOrCaculate(MultiPosFilterBlock* posBlock1_, 
 	cacuPosBlock = new MultiPosFilterBlock();
 	posFilterBlock1 = posBlock1_->getFirstBlock();
 	posFilterBlock2 = posBlock2_->getFirstBlock();
-
+	//bool ifPrint;
 	while(true){
 
 		if(posFilterBlock1 == NULL && posFilterBlock2 != NULL){
@@ -313,6 +316,10 @@ MultiPosFilterBlock* PosOperator::doOrCaculate(MultiPosFilterBlock* posBlock1_, 
 		}else if (posFilterBlock1 == NULL && posFilterBlock2 == NULL)//run out of the blocks
 			break;
 
+		/*if(posFilterBlock2->getStartPosition() == 766584){
+			ifPrint = true;
+		}*/
+		
 		if(posFilterBlock1->getCurrIntStartPos() > posFilterBlock2->getEndPosition()){			
             cacuPosBlock->addPosFilterBlock(posFilterBlock2->cutGetRightAtPos(posFilterBlock2->getCurrIntStartPos())->clone());
 			posFilterBlock2 = (( MultiPosFilterBlock*)(posFilterBlock2->parentMultiBlock))->getNextBlock();
@@ -354,7 +361,7 @@ MultiPosFilterBlock* PosOperator::doOrCaculate(MultiPosFilterBlock* posBlock1_, 
 			if(!tempPosFilterBlock->addInt(tempInt)){//if Block is full,create a new one
 				cacuPosBlock->addPosFilterBlock(tempPosFilterBlock);
 				tempPosFilterBlock = new PosFilterBlock();
-				tempPosFilterBlock->initEmptyBuffer(tempFilterBlock1->getStartPosition());
+				tempPosFilterBlock->initEmptyBuffer(tempFilterBlock1->getCurrIntRealStartPos());
 				tempPosFilterBlock->setCurrInt(0);
                 tempPosFilterBlock->addInt(tempInt);//Always true
 			};
@@ -381,11 +388,11 @@ MultiPosFilterBlock* PosOperator::doOrCaculate(MultiPosFilterBlock* posBlock1_, 
 		}
 	}
 
-
 	delete posBlock1_;
 	delete posBlock2_;
-	cacuPosBlock->optimize();
+    cacuPosBlock->optimize();
 	cacuPosBlock->setCurrBlock(0);
-	//cacuPosBlock->printBlocks();
+	cacuPosBlock->getNumValuesR();
+	//if(ifPrint)cacuPosBlock->printBlocks();
 	return cacuPosBlock;
 }

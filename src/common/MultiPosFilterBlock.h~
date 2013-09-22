@@ -41,6 +41,7 @@ class MultiPosFilterBlock{
 		virtual bool isCompleteSet();
 		virtual void setCompleteSet(bool flag_);
 		virtual void setTriple(RLETriple* triple_);
+		virtual void addTriple(RLETriple* triple_);
 		MultiPosFilterCursor* getCursor();
 		virtual void printBlocks();
 
@@ -60,6 +61,6 @@ class MultiPosFilterBlock{
 		virtual bool removePrecedingZero(PosFilterBlock* &posFilterBlock_);
 
 	private:
-		bool isBufferSet;
+		//bool isBufferSet;
 };
 #endif // POSFILTERBLOCK_H

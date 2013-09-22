@@ -55,6 +55,7 @@ Wrappers/Encoder/StringEncoder.d Wrappers/Encoder/StringEncoder.o: ../src/Wrappe
  ../src/Wrappers/Encoder/../../Operators/../common/../Util/BitUtil.h \
  ../src/Wrappers/Encoder/../../Operators/../common/UnexpectedException.h \
  ../src/Wrappers/Encoder/../../Operators/../common/PosBlock.h \
+ ../src/Wrappers/Encoder/../../Operators/../common/../Wrappers/RLEBlock.h \
  ../src/Wrappers/Encoder/../../Operators/../common/../Wrappers/RLETriple.h \
  ../src/Wrappers/Encoder/../../Operators/../common/../Wrappers/CodingException.h \
  ../src/Wrappers/Encoder/../../Operators/../common/../Wrappers/../common/ValPos.h \

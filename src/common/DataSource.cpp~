@@ -114,18 +114,21 @@ Block* DataSource::getDecodedBlock(Decoder* decoder_) {
 }
 // Gets the next value block from the operator 
 Block* DataSource::getNextValBlock(int colIndex_) {
-//zklee: Each page is converted to a multiblock, no loop required anymore!
+	//zklee: Each page is converted to a multiblock, no loop required anymore!
 	if (colIndex_ < 0)return NULL;
 
 	byte* page=getRightPage( );
 	if (page==NULL) return NULL;
 	decoder->setBuffer(page);
-	unsigned int currStartPos = filterCursor->getCurrStartPosition();
-	skipToRightPosOnPage(currStartPos);
-	currBlock=(MultiBlock*) getDecodedBlock();
-	if (currBlock == NULL) return NULL;
-
-	currBlock->filterWithPos(filterCursor);
+	if (posFilter != NULL){
+		unsigned int currStartPos = filterCursor->getCurrStartPosition();
+		skipToRightPosOnPage(currStartPos);
+		currBlock=(MultiBlock*) getDecodedBlock();
+		if (currBlock == NULL) return NULL;
+		currBlock->filterWithPos(filterCursor);
+	}else{
+		currBlock=(MultiBlock*) getDecodedBlock();
+	}
 
 	return currBlock;
 }
@@ -140,15 +143,17 @@ byte* DataSource::getRightPage() {
 		predChanged=false;
 	}
 
-	if(posFilter != NULL)
-	  if(posFilter->isCompleteSet())
+	if(posFilter != NULL){
+		if(posFilter->isCompleteSet()){
+			posFilter = NULL;
+			return getPage();//Sequential Reading
+		}
+		else if(posFilter->isNullSet())
+			return NULL;
+		else
+			return getPageOnPos();
+	}else
 		return getPage();//Sequential Reading
-	  else if(posFilter->isNullSet())
-		return NULL;
-      else
-	    return getPageOnPos();
-	else
-	  return getPage();
 }
 
 byte* DataSource::getPage() {
@@ -156,12 +161,12 @@ byte* DataSource::getPage() {
 }
 
 byte* DataSource::getPageOnPos() {	
-	assert(posFilter != NULL);
 	if(filterCursor == NULL){
 		filterCursor = posFilter->getCursor();
 		filterCursor->getNext();//Move to the start position
 		filterCursor->setCurrStartPosition(); //Record current start position
-	}
+	}	
+
 	if (!filterCursor->isFilterFinished()){
 		am->initCursors();
 		return (byte*)skipToPagePosition(filterCursor->getCurrStartPosition());
@@ -276,20 +281,19 @@ bool DataSource::getPosOnPredValueSorted(ValPos* rhsvp_, ValPos* tempVP_){
 					position=((MultiBlock*)getDecodedBlock(decoder))->getPosition();
 			}
 			else matchedPredPos->setCompleteSet(true);
-			//position--;
+			position--;
 			if (position>=1 && !matchedPredPos->isCompleteSet())
 				posOutTripleOnPred->setTriple(NULL, minPos, position-minPos+1);
 			break;
 		case Predicate::OP_LESS_THAN_OR_EQUAL:
 			//if (position==minPos)return false;
-			page=(byte*) skipToPageValue(temp);
+			page=(byte*) skipToPageValue(rhsval);
 			if (page!=NULL) {
 				decoder->setBuffer(page);
-				if (decoder->skipToBlockOnValue(tempVP_))
+				if (decoder->skipToBlockOnValue(rhsvp_))
 					position=((MultiBlock*)getDecodedBlock(decoder))->getPosition();
 			}
 			else matchedPredPos->setCompleteSet(true);
-			//position--;
 			if (position>=1 && !matchedPredPos->isCompleteSet())
 			   posOutTripleOnPred->setTriple(NULL, minPos, position-minPos+1);
 			break;

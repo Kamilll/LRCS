@@ -16,6 +16,7 @@ Operators/PosOperator.d Operators/PosOperator.o: ../src/Operators/PosOperator.cp
  ../src/Operators/../common/FloatValPos.h \
  ../src/Operators/../common/DoubleValPos.h \
  ../src/Operators/../common/StringValPos.h \
+ ../src/Operators/../common/../Wrappers/RLEBlock.h \
  ../src/Operators/../common/../Wrappers/RLETriple.h \
  ../src/Operators/../common/../Wrappers/CodingException.h \
  ../src/Operators/../common/../Wrappers/../common/Exception.h \

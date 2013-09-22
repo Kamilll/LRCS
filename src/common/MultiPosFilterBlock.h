@@ -4,7 +4,7 @@
 #include <vector>
 #include "assert.h"
 #include "UnexpectedException.h"
-#include "../Wrappers/RLETriple.h"
+#include "../Wrappers/RLEBlock.h"
 using namespace std;
 
 class MultiPosFilterCursor;
@@ -41,6 +41,7 @@ class MultiPosFilterBlock{
 		virtual bool isCompleteSet();
 		virtual void setCompleteSet(bool flag_);
 		virtual void setTriple(RLETriple* triple_);
+		virtual void addRLEBlock(RLEBlock* block_);
 		MultiPosFilterCursor* getCursor();
 		virtual void printBlocks();
 

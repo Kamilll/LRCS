@@ -7,6 +7,7 @@ common/MultiPosFilterBlock.d common/MultiPosFilterBlock.o: ../src/common/MultiPo
  ../src/common/UnimplementedException.h ../src/common/NullValPos.h \
  ../src/common/LongValPos.h ../src/common/FloatValPos.h \
  ../src/common/DoubleValPos.h ../src/common/StringValPos.h \
+ ../src/common/../Wrappers/RLEBlock.h \
  ../src/common/../Wrappers/RLETriple.h \
  ../src/common/../Wrappers/CodingException.h \
  ../src/common/../Wrappers/../common/Exception.h \

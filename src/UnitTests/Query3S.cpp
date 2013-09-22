@@ -88,7 +88,7 @@ bool Query3S::run() {
 	ROSAM* am1 = new ROSAM( "StringTest03.ID" , 2 ,sizeof(int), 10, ValPos::INTTYPE, ValPos::STRINGTYPE);
 	ROSAM* am2 = new ROSAM( "StringTest03.CODE" , 2, sizeof(int), 4, ValPos::INTTYPE, ValPos::STRINGTYPE);
 	Predicate* pred1=new Predicate(Predicate::OP_LESS_THAN);
-	Predicate* pred2=new Predicate(Predicate::OP_EQUAL);
+	Predicate* pred2=new Predicate(Predicate::OP_LESS_THAN_OR_EQUAL);
 	LZDataSource* ds1=new LZDataSource(am1,true,true,(new StringDecoder(true)));
     BitmapDataSource* ds2=new BitmapDataSource(am2,false,true,(new StringDecoder(true)));
 
@@ -96,13 +96,13 @@ bool Query3S::run() {
 	char* RHSVal1 = "abc0000040";
 	rhs1->set(RHSVal1);
 	ValPos* rhs2 = new StringValPos(4);
-	char* RHSVal2 = "1000";
+	char* RHSVal2 = "2000";
 	rhs2->set(RHSVal2);	
 
 	//ds1->setPredicate(pred1);
 	//ds1->changeRHSBinding(rhs1);
-	//ds2->setPredicate(pred2);
-    //ds2->changeRHSBinding(rhs2);
+	ds2->setPredicate(pred2);
+    ds2->changeRHSBinding(rhs2);
 	
 	Operator* srcs[2]={ds1,ds2};
 	int numCols[2]={1,1};

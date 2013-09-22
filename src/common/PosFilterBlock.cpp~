@@ -28,36 +28,44 @@ PosFilterBlock* PosFilterBlock::clone() {
 }
 
 PosFilterBlock*  PosFilterBlock::cutGetRightAtPos(unsigned int pos_){
-  if ((int)(pos_ - *startPos) < 0)return NULL;
-  if ((int)(pos_ - *startPos) == 0)return this;
-  int cutInt = (pos_-*startPos)/(8*sizeof(int));
-  int leftInt = endInt - cutInt;
-  if(leftInt < 0 )return NULL;
-  int moveBit = (pos_-*startPos)%(8*sizeof(int));
-  *startPos = pos_;
-  *numValues = 0; //number of values has no use in this case, so just ignore it.
-  memcpy(buffer, buffer+cutInt*sizeof(int), leftInt*sizeof(int));
-  endInt = leftInt;
-  leftMove(moveBit);
-  caculateEndInt();
-  if(MAX_INT>endInt)//set all the left ints to zero
-    memset(buffer+endInt*sizeof(int),0,(MAX_INT-endInt)*sizeof(int));
-  setCurrInt(1);
-  return this;
+	if ((int)(pos_ - *startPos) < 0)return NULL;
+	if ((int)(pos_ - *startPos) == 0)return this;	
+	int cutInt = (pos_-*startPos)/(8*sizeof(int));
+	if(cutInt >= endInt)return NULL;
+	
+	int moveBit = (pos_-*startPos)%(8*sizeof(int));
+
+	*startPos = pos_;
+	*numValues = 0; //number of values has no use in this case, so just ignore it.
+
+	unsigned int leftInt = endInt - cutInt;
+	
+	//memcpy(buffer, buffer+cutInt*sizeof(int), leftInt*sizeof(int));
+	for (unsigned int i=1;i<=leftInt;i++)
+		bufferPtrAsIntArr[i] = bufferPtrAsIntArr[i+1];
+	endInt = leftInt;
+	leftMove(moveBit);
+	caculateEndInt();
+	if(MAX_INT>endInt)//set all the left ints to zero
+		memset(buffer+endInt*sizeof(int),0,(MAX_INT-endInt)*sizeof(int));
+	setCurrInt(1);
+	return this;
 }
 
 PosFilterBlock*  PosFilterBlock::cutGetLeftAtPos(unsigned int pos_){
-	if ((int)(pos_ - *startPos) <= 0)return NULL;
-	unsigned int cutInt = (pos_-*startPos)/(8*sizeof(int));
-	if(cutInt>endInt)return NULL;
-	*endPos = pos_;
+	if ((int)(pos_ - *startPos) < 0)return NULL;
+	int cutInt = (pos_-*startPos)/(8*sizeof(int));
+	int moveBit = (pos_-*startPos)%(8*sizeof(int));
+	if(cutInt>=endInt)return NULL;
+
+    *endPos = pos_;
 	*numValues = 0; //number of values has no use in this case, so just ignore it.
 	caculateEndInt();
 	cutTail();
 	if(MAX_INT>endInt)//set all the left ints to zero
 		memset(buffer+endInt*sizeof(int),0,(MAX_INT-endInt)*sizeof(int));
 	setCurrInt(1);
-    return this;
+	return this;
 }
 
 void PosFilterBlock::leftMove(int moveBit_){
@@ -318,13 +326,7 @@ The purpose is to continue the filtering at pervious break point
 	currStartPos = currPos;
 }
 
-/*void PosFilterBlock::caculateEndInt( ) {
-	//endInt =(*endPos-*startPos+1)%(8*sizeof(int))?((*endPos-*startPos+1)/(8*sizeof(int)) + 1):(*endPos-*startPos+1)/(8*sizeof(int));
-	endInt = (*endPos-*startPos)/(8*sizeof(int))+1;
-}*/
-
-
-void PosFilterBlock::printBits(int bits) {
+/*void PosFilterBlock::printBits(int bits) {
 	for (int i = 0; i < 32; i++)
 		cout << (bool)(bits & (((unsigned int)1) << (31-i)));
 	cout << endl;
@@ -336,5 +338,5 @@ void PosFilterBlock::printBlock( ) {
 		<<"numValues:" <<*numValues<<endl;
 	for(int i = 1; i<=endInt; i++)
        printBits(bufferPtrAsIntArr[i]);
-}
+}*/
 

@@ -1,56 +1,68 @@
 #include "RLEDecoder.h"
 
-RLEDecoder::RLEDecoder(bool valSorted_) : RLESuperDecoder() {
+RLEDecoder::RLEDecoder(bool valSorted_, bool isPosColumn_):RLESuperDecoder() {
 	valSorted=valSorted_;
+	isPosColumn=isPosColumn_;
 	result=new RLETriple();
+	if(!isPosColumn)
+	    result->value = new IntValPos();
 	reader=NULL;
 	block=NULL;
-	//assume int type for now ... fix later
-	//vp = new IntValPos();
-	result->value = new IntValPos();
 }
 
-RLEDecoder::RLEDecoder(byte* buffer_, bool valSorted_) : RLESuperDecoder(buffer_)
+RLEDecoder::RLEDecoder(byte* buffer_, bool valSorted_, bool isPosColumn_):RLESuperDecoder(byte* buffer)
 {
 	valSorted=valSorted_;
+	isPosColumn=isPosColumn_;
 	result=new RLETriple();
+	if(!isPosColumn)
+	    result->value = new IntValPos();
 	reader=NULL;
 	block=NULL;
-	//assume int type for now ... fix later
-	//vp = new IntValPos();
-	result->value = new IntValPos();
 	setBuffer(buffer_);
 }
+
 RLEDecoder::~RLEDecoder()
 {
-  delete reader;
-  delete result;
-  delete block;
-  //delete vp;
+   delete result;
+   if(block != NULL )delete block;
+   if(reader != NULL )delete reader;
 }
 
+/*
+ *	+-----------------------------------+
+ *	|valueSize(short)|pageLength(int)|startPosSize(byte)|repsSize(byte)
+ *	+-----------------------------------+
+ *	|Triple->
+ *	+-----------------------------------+
+ *  |Triple-->
+ *	+-----------------------------------+
+ */
 void RLEDecoder::setBuffer(byte* buffer_) {
 	Decoder::setBuffer(buffer_);
 	if (buffer==NULL)
 		throw new CodingException("RLEDecoder: Input to RLEDecoder constructor is NULL");
-
-	data=(buffer+sizeof(short)+sizeof(int)+2);
-	valueSize=*((short*) buffer);
-	startPosSize=*(data-2);
-	repsSize=*(data-1);
-	
-	//Log::writeToLog("RLEDecoder", 0, "Buffer valueSize=", valueSize);
-	//Log::writeToLog("RLEDecoder", 0, "Buffer startPosSize=", startPosSize);
-	//Log::writeToLog("RLEDecoder", 0, "Buffer repsSize=", repsSize);
-	
+    int pageLength;
+	if(!isPosColumn){
+		data=(buffer+sizeof(short)+sizeof(int)+2);
+		valueSize=*((short*) buffer);
+		startPosSize=*(data-2);
+		repsSize=*(data-1);
+		pageLength=(this->getPageLengthBits());
+	}else{
+        data = buffer;
+		valueSize = 0;
+		startPosSize = 8*sizeof(int);
+		repsSize=8*sizeof(int);
+		pageLength=16*sizeof(int);
+	}
 	tripleSize=valueSize+startPosSize+repsSize;
-	int pageLength=(this->getPageLengthBits());
+	
 
 	if (reader==NULL)
 		reader=new BitReader(data, pageLength);
 	else
 		reader->setBuffer(data, pageLength);
-	//Log::writeToLog("RLEDecoder", 0, "Initializing reader with page length", pageLength);
 }
 
 bool RLEDecoder::hasNextTriple() {
@@ -77,9 +89,8 @@ RLETriple* RLEDecoder::getNextTriple() {
 		Log::writeToLog("RLEDecoder", 0, "getNextTriple() Could not read reps");
 		return NULL;
 	}
-	//result->value=(unsigned int) value; // assuming encoding for all positive values
-	result->value->set(result->startPos, (byte*)&value);
-	//result->value = vp;
+	if(!isPosColumn)
+	  result->value->set(result->startPos, (byte*)&value);
 	return result;
 }
 RLETriple* RLEDecoder::peekNextTriple() {
@@ -118,10 +129,10 @@ RLETriple* RLEDecoder::getTriple(unsigned int triplePos_) {
 		return NULL;
 	}
 	
-	//result->value=(unsigned int) value; // assuming encoding for all positive values		
-	result->value->set(result->startPos, (byte*)&value);
-	//result->value = vp;
-	// return to old position for sequential read
+	
+    if(!isPosColumn)
+	   result->value->set(result->startPos, (byte*)&value);	  
+
 	reader->skipToBitPos(oldBitPos);	
 	return result;	
 }
@@ -167,7 +178,7 @@ bool RLEDecoder::skipToPos(unsigned int blockPos_) {
 	
 	return true;
 }
-bool RLEDecoder::skipToBlockOnValue(ValPos* rhs_) {
+bool RLEDecoder::skipToBlockOnValue(int value_) {
 	//Log::writeToLog("RLEDecoder", 0, "skipToBlockOnValue() called, val", value_);
 	// currently scan down, however can do binary search when sorted in future
 	reader->resetPos();

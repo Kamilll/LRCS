@@ -407,7 +407,8 @@ const void* ROSAM::doCursorGetPage(char* key,u_int32_t flags)
 	memset(&pkey, 0, sizeof(pkey)); 
 	memset(&data, 0, sizeof(data)); 
 
-	pkey.set_flags(DB_DBT_MALLOC);
+	pkey.set_flags(DB_DBT_USERMEM);
+	pkey.set_ulen( seckeysize );
 	pkey.set_size( seckeysize );
 	pkey.set_data( key );
 

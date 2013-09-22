@@ -57,7 +57,7 @@ void StringValPos::set(byte* value_, unsigned short valSize_) {
 	valsize = valSize_;
 	if (valsize!=0){
 		value = new byte[valsize];
-		memcpy(value, value_, valsize);
+		memcpy(value, value_, valsize+1);
 	}
 }
 

@@ -33,7 +33,7 @@ public:
 	virtual ValPos* getEndPair(){return NULL;}//Not necessary
 	virtual unsigned int getEndPosition(){return *endPos;}
 	virtual unsigned int getStartPosition(){return *startPos;}
-    virtual unsigned int getNumValues();
+    virtual unsigned int getNumValues(){return *numValues;};
 	virtual void caculateEndInt();
 	virtual bool setCurrInt(unsigned int currInt_);
 
@@ -47,6 +47,8 @@ public:
 	virtual bool isPosContiguous();
 	virtual bool isBlockValueSorted();	
 	virtual bool isBlockPosSorted();
+
+	virtual void printBlock();
 protected:
 	byte* bfrWithHeader;
 	byte* buffer;
@@ -63,6 +65,7 @@ protected:
 
 	virtual void setPosIndex(int v, int* pidx, int& currIndexInVal);
 	virtual void init();
+	virtual void printBits(int bits);
 
 private:
 	bool isBufferSet;

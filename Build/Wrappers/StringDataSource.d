@@ -46,6 +46,7 @@ Wrappers/StringDataSource.d Wrappers/StringDataSource.o: ../src/Wrappers/StringD
  ../src/Wrappers/../common/PosFilterBlock.h \
  ../src/Wrappers/../common/../Util/BitUtil.h \
  ../src/Wrappers/../common/PosBlock.h \
+ ../src/Wrappers/../common/../Wrappers/RLEBlock.h \
  ../src/Wrappers/../common/../Wrappers/RLETriple.h \
  ../src/Wrappers/../common/../Wrappers/../common/ValPos.h \
  ../src/Wrappers/../common/../Util/StringUtil.h \

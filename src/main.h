@@ -6,6 +6,7 @@
 #include "UnitTests/Query1S.h"
 #include "UnitTests/Query2S.h"
 #include "UnitTests/Query3S.h"
+#include "UnitTests/Query4S.h"
 
 class main{
 public:

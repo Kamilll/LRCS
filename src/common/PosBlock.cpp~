@@ -1,6 +1,6 @@
 #include "PosBlock.h"
-#include <iostream>
-
+//#include <iostream>
+using namespace std;
 PosBlock::PosBlock(ValPos* vp_) : Block()
 {
 	posIndex = new int[8*sizeof(int)+1];  
@@ -132,7 +132,7 @@ bool PosBlock::addPosition(unsigned int pos) {
 		bufferPtrAsIntArr[currInt] |= 1<<31;
 	}else{
 		//assert(pos > *startPos);//The position is added in order
-        if(pos < *startPos){
+        if(pos <= *startPos){
 			cout<<pos<<endl;
 			cout<<*startPos<<endl;
 		}
@@ -183,8 +183,11 @@ bool PosBlock::isBlockPosSorted() {
 	return true;
 }
 
-void PosBlock::caculateEndInt( ) {
-	endInt = (*endPos-*startPos)/(8*sizeof(int))+1;
+void PosBlock::caculateEndInt( ) {\
+    if(*endPos < *startPos){
+		endInt = 0;
+	}else 
+		endInt = (*endPos-*startPos)/(8*sizeof(int))+1;
 }
 
 void PosBlock::setPosIndex(int v, int* pidx, int& currIndexInVal) {
@@ -197,4 +200,18 @@ void PosBlock::setPosIndex(int v, int* pidx, int& currIndexInVal) {
   }
   pidx[currIndexInVal]=255;
   currIndexInVal=0;
+}
+
+void PosBlock::printBits(int bits) {
+	for (int i = 0; i < 32; i++)
+		cout << (bool)(bits & (((unsigned int)1) << (31-i)));
+	cout << endl;
+}
+
+void PosBlock::printBlock( ) {
+	cout<<"startPos:" <<*startPos<<", "
+		<<"endPos:" <<*endPos<<", "
+		<<"numValues:" <<*numValues<<endl;
+	for(int i = 1; i<=1; i++)
+       printBits(bufferPtrAsIntArr[i]);
 }
